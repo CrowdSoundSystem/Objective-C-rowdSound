@@ -2,32 +2,20 @@
 //  ConnectionManager.h
 //  CrowdSoundIOS
 //
-//  Created by Nishad Krishnan on 2015-07-12.
+//  Created by Nishad Krishnan on 2015-07-20.
 //  Copyright (c) 2015 CrowdSound. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@protocol ConnectionDelegate;
+@interface ConnectionManager : NSObject
 
-@interface ConnectionManager : NSObject <NSStreamDelegate>
++ (ConnectionManager *) sharedManager;
 
-@property (nonatomic, weak) id<ConnectionDelegate> delegate;
-
-+(id)sharedManager;
-
--(void)Connect;
--(void)Disconnect;
-
--(void)CallConnectionDelegate:(BOOL)success;
-
--(void)sendMessage:(NSString*)message;
-
-
-@end
-
-@protocol ConnectionDelegate <NSObject>
-
--(void)DidConnect:(BOOL)connectionSuccess;
+- (void) setServerIP:(NSString *)serverIP;
+- (void) setServerPort:(NSString *)serverPort;
+- (void) sendMessage:(NSString *)message;
+- (void) disconnect;
+- (void) connect;
 
 @end

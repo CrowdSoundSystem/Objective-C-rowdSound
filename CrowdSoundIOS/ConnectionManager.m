@@ -2,136 +2,163 @@
 //  ConnectionManager.m
 //  CrowdSoundIOS
 //
-//  Created by Nishad Krishnan on 2015-07-12.
+//  Created by Nishad Krishnan on 2015-07-20.
 //  Copyright (c) 2015 CrowdSound. All rights reserved.
 //
 
 #import "ConnectionManager.h"
 
-@interface ConnectionManager() {
-    NSInputStream *inputStream;
-    NSOutputStream *outputStream;
-}
+@interface ConnectionManager () <NSStreamDelegate>
+
+@property (nonatomic, strong) NSString *serverIP;
+@property (nonatomic, strong) NSString *serverPort;
+
+@property (nonatomic, strong) NSMutableData *data;
+@property (nonatomic, strong) NSInputStream *iStream;
+@property (nonatomic, strong) NSOutputStream *oStream;
 
 @end
 
 @implementation ConnectionManager
-   
-+ (id)sharedManager {
-    static ConnectionManager *sharedConnManager = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedConnManager = [[self alloc] init];
-    });
-    return sharedConnManager;
+
+static ConnectionManager *_sharedInstance = nil;
+CFReadStreamRef readStream = NULL;
+CFWriteStreamRef writeStream = NULL;
+
++ (void) initialize {
+    static BOOL initialized = NO;
+    if(!initialized) {
+        initialized = YES;
+        _sharedInstance = [[ConnectionManager alloc] init];
+    }
 }
 
-
--(void)Connect {
-    
-    CFReadStreamRef readStream;
-    CFWriteStreamRef writeStream;
-    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"192.168.0.21", 80, &readStream, &writeStream);
-    inputStream = objc_unretainedObject(readStream);
-    outputStream = objc_unretainedObject(writeStream);
-    [inputStream setDelegate:self];
-    [outputStream setDelegate:self];
-    [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [inputStream open];
-    [outputStream open];
-    
-    [self nameSelf];
-    
-    
-    
-    
-    /*
-    //Sets a timer currently because connection management hasnt been done
-    //Sends connection successful message
-    
-    NSMethodSignature *sig = [ConnectionManager instanceMethodSignatureForSelector:@selector(CallConnectionDelegate:)];
-    
-    NSInvocation *stopInvocation = [NSInvocation invocationWithMethodSignature:sig];
-    
-    [stopInvocation setTarget:self];
-    [stopInvocation setSelector:@selector(CallConnectionDelegate:)];
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:2.0 invocation:stopInvocation repeats:NO];*/
-
-    
-    
++ (ConnectionManager *)sharedManager {
+    return _sharedInstance;
 }
 
-- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent {
+- (void) setServerIP:(NSString *)serverIP {
+    _serverIP = serverIP;
+}
+
+- (void) setServerPort:(NSString *)serverPort {
+    _serverPort = serverPort;
+}
+
+- (void) writeToServer:(const uint8_t *) buffer {
+
+    [self.oStream write:buffer maxLength:strlen((char*)buffer)];
+}
+
+- (void) sendIDMessage {
+    NSString *message = @"iam:nish";
+    const uint8_t *str = (uint8_t*) [message cStringUsingEncoding:NSASCIIStringEncoding];
+    [self writeToServer:str];
+}
+
+- (void) sendMessage:(NSString *)message {
+    NSString *formattedMessage  = [NSString stringWithFormat:@"msg:%@", message];
+    const uint8_t *str = (uint8_t *) [formattedMessage cStringUsingEncoding:NSASCIIStringEncoding];
+    if (str != NULL)
+        [self writeToServer:str];
+    else
+        NSLog(@"THIS WAS NULL: %@", message);
+}
+
+- (void) connect {
+    [self connectToServerUsingCFStream:self.serverIP portNo:[self.serverPort intValue]];
+    [self sendIDMessage];
+}
+
+- (void) connectToServerUsingCFStream:(NSString *) urlStr portNo: (uint) portNo {
     
-    switch (streamEvent) {
-            
-        case NSStreamEventOpenCompleted:
-            NSLog(@"Stream opened");
-            [self CallConnectionDelegate:true];
-            break;
-            
+    CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
+                                       (__bridge CFStringRef) urlStr,
+                                       portNo,
+                                       &readStream,
+                                       &writeStream);
+    
+    if (readStream && writeStream) {
+        CFReadStreamSetProperty(readStream,
+                                kCFStreamPropertyShouldCloseNativeSocket,
+                                kCFBooleanTrue);
+        CFWriteStreamSetProperty(writeStream,
+                                 kCFStreamPropertyShouldCloseNativeSocket,
+                                 kCFBooleanTrue);
+        
+        self.iStream = (__bridge NSInputStream *)readStream;
+        [self.iStream setDelegate:self];
+        [self.iStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
+                                forMode:NSDefaultRunLoopMode];
+        [self.iStream open];
+        
+        self.oStream = (__bridge NSOutputStream *)writeStream;
+        [self.oStream setDelegate:self];
+        [self.oStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
+                                forMode:NSDefaultRunLoopMode];
+        [self.oStream open];
+    }
+}
+
+//Stream handler for incoming events
+- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
+    
+    switch(eventCode) {
         case NSStreamEventHasBytesAvailable:
-            if (theStream == inputStream) {
-                
-                uint8_t buffer[1024];
-                NSInteger len;
-                
-                while ([inputStream hasBytesAvailable]) {
-                    len = [inputStream read:buffer maxLength:sizeof(buffer)];
-                    if (len > 0) {
-                        
-                        NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
-                        
-                        if (nil != output) {
-                            NSLog(@"server said: %@", output);
-                        }
-                    }
-                }
+        {
+            if (self.data == nil) {
+                self.data = [[NSMutableData alloc] init];
             }
-            break;
+            uint8_t buf[1024];
+            unsigned long len = 0;
+            len = [(NSInputStream *)stream read:buf maxLength:1024];
+            if(len) {
+                [self.data appendBytes:(const void *)buf length:len];
+                int bytesRead = 0;
+                bytesRead += len;
+            } else {
+                NSLog(@"No data.");
+            }
             
+            NSString *str = [[NSString alloc] initWithData:self.data
+                                                  encoding:NSUTF8StringEncoding];
+            
+            if (nil != str) {
+                NSLog(@"server said: %@", str);
+            }
+            self.data = nil;
+            break;
+        }
+        case NSStreamEventOpenCompleted:
+			NSLog(@"Stream opened");
+			break;
         case NSStreamEventErrorOccurred:
-            NSLog(@"Can not connect to the host!");
-            break;
+			
+			NSLog(@"Can not connect to the host!");
+			break;
+			
+		case NSStreamEventEndEncountered:
             
-        case NSStreamEventEndEncountered:
-            break;
-            
-        default:
-            NSLog(@"Unknown event");
+            [self disconnect];
+			
+			break;
+		default:
+			NSLog(@"Unknown event");
     }
-    
-}
-
--(void)nameSelf {
-    NSString *response  = [NSString stringWithFormat:@"iam:%@", @"nish"];
-    NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
-    [outputStream write:[data bytes] maxLength:[data length]];
-}
-
-- (void)sendMessage:(NSString*)message {
-    NSString *response  = [NSString stringWithFormat:@"msg:%@", message];
-    NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
-    [outputStream write:[data bytes] maxLength:[data length]];
 }
 
 
+-(void) disconnect {
+    [self.iStream close];
+    [self.oStream close];
+}
 
--(void)CallConnectionDelegate:(BOOL)success {
-    
-    id<ConnectionDelegate> strongDelegate = self.delegate;
-    
-    if ([strongDelegate respondsToSelector:@selector(DidConnect:)]) {
-        [strongDelegate DidConnect:YES];
-    }
-
+- (void) dealloc {
+    [self disconnect];
+    if (readStream) CFRelease(readStream);
+    if (writeStream) CFRelease(writeStream);
 }
 
 
--(void)Disconnect {
-    
-}
 
 @end

@@ -11,7 +11,7 @@
 #import "NativeDataScraper.h"
 
 
-@interface TableViewController : UITableViewController <ConnectionDelegate>
+@interface TableViewController : UITableViewController
 
 
 @property (weak)ConnectionManager* connManager;
