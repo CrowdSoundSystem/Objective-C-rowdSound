@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TProtocol.h"
 #import "TApplicationException.h"
 #import "TProtocolException.h"
 #import "TProtocolUtil.h"

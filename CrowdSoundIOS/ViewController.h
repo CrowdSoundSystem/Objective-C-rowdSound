@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "ConnectionManager.h"
 #import "WordCloudViewController.h"
-#import "ThriftHeader.h"
-#import "test.h"
 #import "TableViewController.h"
 
 

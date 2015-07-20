@@ -15,8 +15,6 @@
 		C759F1B91B5324F0007F377B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C759F1B71B5324F0007F377B /* LaunchScreen.xib */; };
 		C759F1C51B5324F0007F377B /* CrowdSoundIOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C759F1C41B5324F0007F377B /* CrowdSoundIOSTests.m */; };
 		C759F1D61B53603D007F377B /* ConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C759F1D51B53603D007F377B /* ConnectionManager.m */; };
-		C759F3301B5979D4007F377B /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = C759F32F1B5979D4007F377B /* test.m */; };
-		C759F3311B5979D4007F377B /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = C759F32F1B5979D4007F377B /* test.m */; };
 		C759F3341B59CDA2007F377B /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C759F3331B59CDA2007F377B /* TableViewController.m */; };
 		C759F3351B59CDA2007F377B /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C759F3331B59CDA2007F377B /* TableViewController.m */; };
 		C759F3381B5A13D6007F377B /* NativeDataScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = C759F3371B5A13D6007F377B /* NativeDataScraper.m */; };
@@ -49,9 +47,6 @@
 		C759F1C41B5324F0007F377B /* CrowdSoundIOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CrowdSoundIOSTests.m; sourceTree = "<group>"; };
 		C759F1D41B53603D007F377B /* ConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionManager.h; sourceTree = "<group>"; };
 		C759F1D51B53603D007F377B /* ConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionManager.m; sourceTree = "<group>"; };
-		C759F2D41B59760B007F377B /* ThriftHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ThriftHeader.h; path = ../ThriftHeader.h; sourceTree = "<group>"; };
-		C759F32E1B5979D4007F377B /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
-		C759F32F1B5979D4007F377B /* test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test.m; sourceTree = "<group>"; };
 		C759F3321B59CDA2007F377B /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableViewController.h; path = src/TableViewController.h; sourceTree = "<group>"; };
 		C759F3331B59CDA2007F377B /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableViewController.m; path = src/TableViewController.m; sourceTree = "<group>"; };
 		C759F3361B5A13D6007F377B /* NativeDataScraper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeDataScraper.h; sourceTree = "<group>"; };
@@ -97,8 +92,6 @@
 		C759F1A71B5324F0007F377B /* CrowdSoundIOS */ = {
 			isa = PBXGroup;
 			children = (
-				C759F2D41B59760B007F377B /* ThriftHeader.h */,
-				C759F32D1B5979D4007F377B /* gen-cocoa */,
 				C759F1D71B5369C5007F377B /* src */,
 				C759F1B21B5324F0007F377B /* Main.storyboard */,
 				C759F1B51B5324F0007F377B /* Images.xcassets */,
@@ -149,15 +142,6 @@
 				C759F3371B5A13D6007F377B /* NativeDataScraper.m */,
 			);
 			name = src;
-			sourceTree = "<group>";
-		};
-		C759F32D1B5979D4007F377B /* gen-cocoa */ = {
-			isa = PBXGroup;
-			children = (
-				C759F32E1B5979D4007F377B /* test.h */,
-				C759F32F1B5979D4007F377B /* test.m */,
-			);
-			path = "gen-cocoa";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,7 +251,6 @@
 				C759F1AE1B5324F0007F377B /* AppDelegate.m in Sources */,
 				C759F3381B5A13D6007F377B /* NativeDataScraper.m in Sources */,
 				C759F1AB1B5324F0007F377B /* main.m in Sources */,
-				C759F3301B5979D4007F377B /* test.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +259,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C759F1C51B5324F0007F377B /* CrowdSoundIOSTests.m in Sources */,
-				C759F3311B5979D4007F377B /* test.m in Sources */,
 				C759F3391B5A13D6007F377B /* NativeDataScraper.m in Sources */,
 				C759F3351B59CDA2007F377B /* TableViewController.m in Sources */,
 			);
@@ -411,6 +393,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = CrowdSoundIOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -418,6 +401,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -428,6 +412,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = CrowdSoundIOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -435,6 +420,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
