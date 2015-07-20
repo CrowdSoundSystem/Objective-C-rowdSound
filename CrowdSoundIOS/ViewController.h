@@ -8,10 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "ConnectionManager.h"
+#import "WordCloudViewController.h"
+#import "ThriftHeader.h"
+#import "test.h"
+#import "TableViewController.h"
 
-@interface ViewController : UIViewController <ConnectionDelegate>
 
+@interface ViewController : UIViewController <NSStreamDelegate, ConnectionDelegate>
 
+@property (strong)ConnectionManager* connManager;
 
 @end
 

@@ -10,16 +10,18 @@
 
 @protocol ConnectionDelegate;
 
-@interface ConnectionManager : NSObject
+@interface ConnectionManager : NSObject <NSStreamDelegate>
 
 @property (nonatomic, weak) id<ConnectionDelegate> delegate;
 
-
++(id)sharedManager;
 
 -(void)Connect;
 -(void)Disconnect;
 
 -(void)CallConnectionDelegate:(BOOL)success;
+
+-(void)sendMessage:(NSString*)message;
 
 
 @end
