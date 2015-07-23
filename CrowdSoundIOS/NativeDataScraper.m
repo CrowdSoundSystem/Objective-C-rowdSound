@@ -43,6 +43,9 @@
         [self constructAndSendMessagewithSongTitle:[song valueForProperty:MPMediaItemPropertyTitle] Artist:[song valueForProperty:MPMediaItemPropertyArtist] Genre:[song valueForProperty:MPMediaItemPropertyGenre]];
     }
     
+    //End of message
+    [self SendMessage:@"mediaitemsended"];
+    
     //Sending One giant string instead of sets of strings
     /*
     NSString *message = [NSString stringWithString:allMediaItems];
