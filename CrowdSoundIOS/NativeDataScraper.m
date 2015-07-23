@@ -29,7 +29,7 @@
     //Mutable string appends all the data to be sent in one giant string
     
     NSMutableString* allMediaItems = [[NSMutableString alloc]init];
-    [allMediaItems setString:@"msg"];
+    [allMediaItems setString:@""];
     
     for (int i = 0; i < songsList.count; i++) {
         

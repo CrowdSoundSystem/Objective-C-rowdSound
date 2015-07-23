@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 CrowdSound. All rights reserved.
 //
 
+@import UIKit;
+
 #import "ConnectionManager.h"
 
 @interface ConnectionManager () <NSStreamDelegate>
@@ -25,6 +27,7 @@
 static ConnectionManager *_sharedInstance = nil;
 CFReadStreamRef readStream = NULL;
 CFWriteStreamRef writeStream = NULL;
+
 
 + (void) initialize {
     static BOOL initialized = NO;
@@ -52,13 +55,14 @@ CFWriteStreamRef writeStream = NULL;
 }
 
 - (void) sendIDMessage {
-    NSString *message = @"iam:nish";
+    NSString *uniqueIdentifier = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    NSString *message = [NSString stringWithFormat:@"iam:%@", uniqueIdentifier];
     const uint8_t *str = (uint8_t*) [message cStringUsingEncoding:NSASCIIStringEncoding];
     [self writeToServer:str];
 }
 
 - (void) sendMessage:(NSString *)message {
-    NSString *formattedMessage  = [NSString stringWithFormat:@"msg:%@", message];
+    NSString *formattedMessage  = [NSString stringWithFormat:@":%@", message];
     const uint8_t *str = (uint8_t *) [formattedMessage cStringUsingEncoding:NSASCIIStringEncoding];
     if (str != NULL)
         [self writeToServer:str];
