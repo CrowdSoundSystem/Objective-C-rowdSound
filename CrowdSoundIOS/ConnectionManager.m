@@ -147,6 +147,7 @@ CFWriteStreamRef writeStream = NULL;
 			break;
 			
 		case NSStreamEventEndEncountered:
+            NSLog(@"Disconnected");
             
             [self disconnect];
 			

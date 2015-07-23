@@ -39,13 +39,16 @@
         /*
         [allMediaItems appendString:[NSString stringWithFormat:@";%@,%@,%@;",[song valueForProperty:MPMediaItemPropertyTitle], [song valueForProperty:MPMediaItemPropertyArtist], [song valueForProperty:MPMediaItemPropertyGenre]]];*/
         
+        NSLog(@"%@:%@:%@", [song valueForProperty:MPMediaItemPropertyTitle], [song valueForProperty:MPMediaItemPropertyArtist], [song valueForProperty:MPMediaItemPropertyGenre]);
+        
         // Sending song title, artist, and genre for each media item
         [self constructAndSendMessagewithSongTitle:[song valueForProperty:MPMediaItemPropertyTitle] Artist:[song valueForProperty:MPMediaItemPropertyArtist] Genre:[song valueForProperty:MPMediaItemPropertyGenre]];
     }
     
     //End of message
-    [self SendMessage:@"mediaitemsended"];
+    [self constructAndSendMessagewithSongTitle:@"\t" Artist:@"\t" Genre:@"\t"];
     
+    [self SendMessage:@"nigga"];
     //Sending One giant string instead of sets of strings
     /*
     NSString *message = [NSString stringWithString:allMediaItems];
