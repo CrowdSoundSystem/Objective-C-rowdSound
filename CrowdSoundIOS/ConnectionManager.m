@@ -20,6 +20,7 @@
 @end
 
 @implementation ConnectionManager
+@synthesize delegate;
 
 static ConnectionManager *_sharedInstance = nil;
 CFReadStreamRef readStream = NULL;
@@ -124,8 +125,12 @@ CFWriteStreamRef writeStream = NULL;
                                                   encoding:NSUTF8StringEncoding];
             
             if (nil != str) {
-                NSLog(@"server said: %@", str);
+                //NSLog(@"server said: %@", str);
+                [self.delegate messageReceived:str];
             }
+            
+            
+            
             self.data = nil;
             break;
         }

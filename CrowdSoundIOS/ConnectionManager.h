@@ -8,7 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol ConnectionDelegate <NSObject>
+
+- (void) messageReceived:(NSString*)message;
+
+@end
+
 @interface ConnectionManager : NSObject
+
+@property (nonatomic, weak) id <ConnectionDelegate> delegate;
 
 + (ConnectionManager *) sharedManager;
 
@@ -19,3 +27,4 @@
 - (void) connect;
 
 @end
+
