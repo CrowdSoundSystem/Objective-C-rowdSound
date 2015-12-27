@@ -1,0 +1,50 @@
+PODS:
+  - BoringSSL (1.0)
+  - CrowdSound (0.0.1):
+    - CrowdSound/Messages (= 0.0.1)
+    - CrowdSound/Services (= 0.0.1)
+  - CrowdSound/Messages (0.0.1):
+    - Protobuf (~> 3.0.0-alpha-4)
+  - CrowdSound/Services (0.0.1):
+    - CrowdSound/Messages
+    - gRPC (~> 0.12)
+  - gRPC (0.12.0):
+    - gRPC/C-Core (= 0.12.0)
+    - gRPC/GRPCClient (= 0.12.0)
+    - gRPC/ProtoRPC (= 0.12.0)
+    - gRPC/RxLibrary (= 0.12.0)
+  - gRPC/C-Core (0.12.0):
+    - BoringSSL (~> 1.0)
+  - gRPC/GRPCClient (0.12.0):
+    - gRPC/C-Core
+    - gRPC/RxLibrary
+  - gRPC/ProtoRPC (0.12.0):
+    - gRPC/GRPCClient
+    - gRPC/RxLibrary
+    - Protobuf (~> 3.0.0-alpha-4)
+  - gRPC/RxLibrary (0.12.0)
+  - Protobuf (3.0.0-alpha-4)
+
+DEPENDENCIES:
+  - BoringSSL (from `../../../src/objective-c`)
+  - CrowdSound (from `.`)
+  - gRPC (from `../../..`)
+  - Protobuf (from `../../../third_party/protobuf`)
+
+EXTERNAL SOURCES:
+  BoringSSL:
+    :podspec: ../../../src/objective-c
+  CrowdSound:
+    :path: .
+  gRPC:
+    :path: ../../..
+  Protobuf:
+    :path: ../../../third_party/protobuf
+
+SPEC CHECKSUMS:
+  BoringSSL: 2f8ab6b55f82b0ae2dabb9796add3a46e27db336
+  CrowdSound: e730a21327cccb5d3c66d233a399eb222fc86a5f
+  gRPC: 37f5d0891bed2ad5796ca35a034e6efb3e89a7ac
+  Protobuf: b702b9d429e03afcd01aa86ac81e771bb472f18a
+
+COCOAPODS: 0.39.0

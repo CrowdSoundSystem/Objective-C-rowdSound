@@ -1,0 +1,9 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'CrowdSoundApp' do
+  pod 'Protobuf', :path => "../../../third_party/protobuf"
+  pod 'BoringSSL', :podspec => "../../../src/objective-c"
+  pod 'gRPC', :path => "../../.."
+  # Depend on the generated CrowdSound library.
+  pod 'CrowdSound', :path => '.'
+end

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8B06E12A8BC7ADE97BC9AAF1FFA2035EEC0C9610",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8B06E12A8BC7ADE97BC9AAF1FFA2035EEC0C9610" : 0,
+    "DBA6F8B12B84878540F44342C4772AC004D85ABD" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "61F58F3B-4960-4E9B-850E-FD689BD30702",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8B06E12A8BC7ADE97BC9AAF1FFA2035EEC0C9610" : "grpc\/",
+    "DBA6F8B12B84878540F44342C4772AC004D85ABD" : "grpc\/third_party\/protobuf\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CrowdSoundApp",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "examples\/objective-c\/crowdSound\/CrowdSoundApp.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/grpc\/grpc.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8B06E12A8BC7ADE97BC9AAF1FFA2035EEC0C9610"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/google\/protobuf.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DBA6F8B12B84878540F44342C4772AC004D85ABD"
+    }
+  ]
+}

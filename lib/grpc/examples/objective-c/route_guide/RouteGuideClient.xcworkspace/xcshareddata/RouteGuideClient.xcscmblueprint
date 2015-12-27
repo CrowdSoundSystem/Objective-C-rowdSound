@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8B06E12A8BC7ADE97BC9AAF1FFA2035EEC0C9610",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8B06E12A8BC7ADE97BC9AAF1FFA2035EEC0C9610" : 0,
+    "DBA6F8B12B84878540F44342C4772AC004D85ABD" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "98F8B87B-897A-482B-8105-23C104724EBB",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8B06E12A8BC7ADE97BC9AAF1FFA2035EEC0C9610" : "grpc\/",
+    "DBA6F8B12B84878540F44342C4772AC004D85ABD" : "grpc\/third_party\/protobuf\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "RouteGuideClient",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "examples\/objective-c\/route_guide\/RouteGuideClient.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/grpc\/grpc.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8B06E12A8BC7ADE97BC9AAF1FFA2035EEC0C9610"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/google\/protobuf.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DBA6F8B12B84878540F44342C4772AC004D85ABD"
+    }
+  ]
+}
