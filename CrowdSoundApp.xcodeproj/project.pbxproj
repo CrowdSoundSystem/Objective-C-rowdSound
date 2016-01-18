@@ -7,15 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45223CEE7798F6F9A5701AD4 /* libPods-CrowdSoundApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E07753255B1AA292E356898F /* libPods-CrowdSoundApp.a */; };
 		C71947D41C2EFB610075FEF8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C71947D31C2EFB610075FEF8 /* main.m */; };
 		C71947D71C2EFB610075FEF8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C71947D61C2EFB610075FEF8 /* AppDelegate.m */; };
 		C71947DA1C2EFB610075FEF8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C71947D91C2EFB610075FEF8 /* ViewController.m */; };
 		C71947DD1C2EFB610075FEF8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C71947DB1C2EFB610075FEF8 /* Main.storyboard */; };
-		C71947DF1C2EFB610075FEF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C71947DE1C2EFB610075FEF8 /* Assets.xcassets */; };
 		C71947E21C2EFB610075FEF8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C71947E01C2EFB610075FEF8 /* LaunchScreen.storyboard */; };
 		C71947ED1C2EFB610075FEF8 /* CrowdSoundAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C71947EC1C2EFB610075FEF8 /* CrowdSoundAppTests.m */; };
 		C71947F81C2EFB610075FEF8 /* CrowdSoundAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C71947F71C2EFB610075FEF8 /* CrowdSoundAppUITests.m */; };
-		F4E7A22A68FD1CB93945105E /* libPods-CrowdSoundApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83922E8D5531EA96DB38F988 /* libPods-CrowdSoundApp.a */; };
+		C71948071C2F8B770075FEF8 /* CSAlwaysOnTopHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = C71948061C2F8B770075FEF8 /* CSAlwaysOnTopHeader.xib */; };
+		C719480A1C2F8BC00075FEF8 /* CSStickyParallaxHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C71948091C2F8BC00075FEF8 /* CSStickyParallaxHeaderViewController.m */; };
+		C719480D1C2F8BEB0075FEF8 /* CSAlwaysOnTopHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = C719480C1C2F8BEB0075FEF8 /* CSAlwaysOnTopHeader.m */; };
+		C71948121C2F8C600075FEF8 /* CSCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C719480F1C2F8C600075FEF8 /* CSCell.m */; };
+		C71948131C2F8C600075FEF8 /* CSSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = C71948111C2F8C600075FEF8 /* CSSectionHeader.m */; };
+		C719481D1C303B450075FEF8 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C719481C1C303B450075FEF8 /* RootViewController.m */; };
+		C71948231C3043E40075FEF8 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C71948221C3043E40075FEF8 /* BaseViewController.m */; };
+		C71948261C3047AB0075FEF8 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C71948251C3047AB0075FEF8 /* SettingsViewController.m */; };
+		C71948291C30771D0075FEF8 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C71948281C30771D0075FEF8 /* MenuViewController.m */; };
+		C719482B1C30851A0075FEF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C719482A1C30851A0075FEF8 /* Assets.xcassets */; };
+		C719482E1C3090CE0075FEF8 /* TrendingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C719482D1C3090CE0075FEF8 /* TrendingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +47,6 @@
 
 /* Begin PBXFileReference section */
 		31E7222DBCF9EAB08264F5AB /* Pods-CrowdSoundApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrowdSoundApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrowdSoundApp/Pods-CrowdSoundApp.debug.xcconfig"; sourceTree = "<group>"; };
-		83922E8D5531EA96DB38F988 /* libPods-CrowdSoundApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CrowdSoundApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C71947CF1C2EFB610075FEF8 /* CrowdSoundApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrowdSoundApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C71947D31C2EFB610075FEF8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C71947D51C2EFB610075FEF8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -45,7 +54,6 @@
 		C71947D81C2EFB610075FEF8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		C71947D91C2EFB610075FEF8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		C71947DC1C2EFB610075FEF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		C71947DE1C2EFB610075FEF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C71947E11C2EFB610075FEF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C71947E31C2EFB610075FEF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C71947E81C2EFB610075FEF8 /* CrowdSoundAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CrowdSoundAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,6 +62,27 @@
 		C71947F31C2EFB610075FEF8 /* CrowdSoundAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CrowdSoundAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C71947F71C2EFB610075FEF8 /* CrowdSoundAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CrowdSoundAppUITests.m; sourceTree = "<group>"; };
 		C71947F91C2EFB610075FEF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C71948061C2F8B770075FEF8 /* CSAlwaysOnTopHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CSAlwaysOnTopHeader.xib; sourceTree = "<group>"; };
+		C71948081C2F8BC00075FEF8 /* CSStickyParallaxHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSStickyParallaxHeaderViewController.h; sourceTree = "<group>"; };
+		C71948091C2F8BC00075FEF8 /* CSStickyParallaxHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSStickyParallaxHeaderViewController.m; sourceTree = "<group>"; };
+		C719480B1C2F8BEB0075FEF8 /* CSAlwaysOnTopHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAlwaysOnTopHeader.h; sourceTree = "<group>"; };
+		C719480C1C2F8BEB0075FEF8 /* CSAlwaysOnTopHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAlwaysOnTopHeader.m; sourceTree = "<group>"; };
+		C719480E1C2F8C600075FEF8 /* CSCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSCell.h; sourceTree = "<group>"; };
+		C719480F1C2F8C600075FEF8 /* CSCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSCell.m; sourceTree = "<group>"; };
+		C71948101C2F8C600075FEF8 /* CSSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSSectionHeader.h; sourceTree = "<group>"; };
+		C71948111C2F8C600075FEF8 /* CSSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSSectionHeader.m; sourceTree = "<group>"; };
+		C719481B1C303B450075FEF8 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		C719481C1C303B450075FEF8 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		C71948211C3043E40075FEF8 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		C71948221C3043E40075FEF8 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		C71948241C3047AB0075FEF8 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		C71948251C3047AB0075FEF8 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		C71948271C30771D0075FEF8 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		C71948281C30771D0075FEF8 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		C719482A1C30851A0075FEF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C719482C1C3090CE0075FEF8 /* TrendingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrendingViewController.h; sourceTree = "<group>"; };
+		C719482D1C3090CE0075FEF8 /* TrendingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrendingViewController.m; sourceTree = "<group>"; };
+		E07753255B1AA292E356898F /* libPods-CrowdSoundApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CrowdSoundApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3B58CD71DBDCDE8B9450133 /* Pods-CrowdSoundApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrowdSoundApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-CrowdSoundApp/Pods-CrowdSoundApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4E7A22A68FD1CB93945105E /* libPods-CrowdSoundApp.a in Frameworks */,
+				45223CEE7798F6F9A5701AD4 /* libPods-CrowdSoundApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,15 +146,26 @@
 		C71947D11C2EFB610075FEF8 /* CrowdSoundApp */ = {
 			isa = PBXGroup;
 			children = (
+				C719482A1C30851A0075FEF8 /* Assets.xcassets */,
+				C71948141C2FA1470075FEF8 /* UI */,
 				C71947D51C2EFB610075FEF8 /* AppDelegate.h */,
 				C71947D61C2EFB610075FEF8 /* AppDelegate.m */,
 				C71947D81C2EFB610075FEF8 /* ViewController.h */,
 				C71947D91C2EFB610075FEF8 /* ViewController.m */,
 				C71947DB1C2EFB610075FEF8 /* Main.storyboard */,
-				C71947DE1C2EFB610075FEF8 /* Assets.xcassets */,
 				C71947E01C2EFB610075FEF8 /* LaunchScreen.storyboard */,
 				C71947E31C2EFB610075FEF8 /* Info.plist */,
 				C71947D21C2EFB610075FEF8 /* Supporting Files */,
+				C719481B1C303B450075FEF8 /* RootViewController.h */,
+				C719481C1C303B450075FEF8 /* RootViewController.m */,
+				C71948211C3043E40075FEF8 /* BaseViewController.h */,
+				C71948221C3043E40075FEF8 /* BaseViewController.m */,
+				C71948241C3047AB0075FEF8 /* SettingsViewController.h */,
+				C71948251C3047AB0075FEF8 /* SettingsViewController.m */,
+				C71948271C30771D0075FEF8 /* MenuViewController.h */,
+				C71948281C30771D0075FEF8 /* MenuViewController.m */,
+				C719482C1C3090CE0075FEF8 /* TrendingViewController.h */,
+				C719482D1C3090CE0075FEF8 /* TrendingViewController.m */,
 			);
 			path = CrowdSoundApp;
 			sourceTree = "<group>";
@@ -156,10 +196,26 @@
 			path = CrowdSoundAppUITests;
 			sourceTree = "<group>";
 		};
+		C71948141C2FA1470075FEF8 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				C719480E1C2F8C600075FEF8 /* CSCell.h */,
+				C719480F1C2F8C600075FEF8 /* CSCell.m */,
+				C71948101C2F8C600075FEF8 /* CSSectionHeader.h */,
+				C71948111C2F8C600075FEF8 /* CSSectionHeader.m */,
+				C719480B1C2F8BEB0075FEF8 /* CSAlwaysOnTopHeader.h */,
+				C719480C1C2F8BEB0075FEF8 /* CSAlwaysOnTopHeader.m */,
+				C71948081C2F8BC00075FEF8 /* CSStickyParallaxHeaderViewController.h */,
+				C71948091C2F8BC00075FEF8 /* CSStickyParallaxHeaderViewController.m */,
+				C71948061C2F8B770075FEF8 /* CSAlwaysOnTopHeader.xib */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		E9440B0D88F8703F2EB87BF7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				83922E8D5531EA96DB38F988 /* libPods-CrowdSoundApp.a */,
+				E07753255B1AA292E356898F /* libPods-CrowdSoundApp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -270,8 +326,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C71948071C2F8B770075FEF8 /* CSAlwaysOnTopHeader.xib in Resources */,
 				C71947E21C2EFB610075FEF8 /* LaunchScreen.storyboard in Resources */,
-				C71947DF1C2EFB610075FEF8 /* Assets.xcassets in Resources */,
+				C719482B1C30851A0075FEF8 /* Assets.xcassets in Resources */,
 				C71947DD1C2EFB610075FEF8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -346,8 +403,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				C71947DA1C2EFB610075FEF8 /* ViewController.m in Sources */,
+				C71948231C3043E40075FEF8 /* BaseViewController.m in Sources */,
 				C71947D71C2EFB610075FEF8 /* AppDelegate.m in Sources */,
+				C719481D1C303B450075FEF8 /* RootViewController.m in Sources */,
 				C71947D41C2EFB610075FEF8 /* main.m in Sources */,
+				C719480A1C2F8BC00075FEF8 /* CSStickyParallaxHeaderViewController.m in Sources */,
+				C719480D1C2F8BEB0075FEF8 /* CSAlwaysOnTopHeader.m in Sources */,
+				C71948291C30771D0075FEF8 /* MenuViewController.m in Sources */,
+				C71948131C2F8C600075FEF8 /* CSSectionHeader.m in Sources */,
+				C719482E1C3090CE0075FEF8 /* TrendingViewController.m in Sources */,
+				C71948261C3047AB0075FEF8 /* SettingsViewController.m in Sources */,
+				C71948121C2F8C600075FEF8 /* CSCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

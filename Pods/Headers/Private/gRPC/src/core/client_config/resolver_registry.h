@@ -1,0 +1,1 @@
+../../../../../../../lib/grpc/src/core/client_config/resolver_registry.h
