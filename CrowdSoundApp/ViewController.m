@@ -1,7 +1,7 @@
 
 
 #import "ViewController.h"
-#import <Crowdsound_service.pbrpc.h>
+#import <CrowdsoundService.pbrpc.h>
 #import <RxLibrary/GRXWriter+Immediate.h>
 #import <RxLibrary/GRXWriter+Transformations.h>
 #import <GRPCClient/GRPCCall+Tests.h>
