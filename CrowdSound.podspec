@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   # Run protoc with the Objective-C and gRPC plugins to generate protocol messages and gRPC clients.
   s.prepare_command = <<-CMD
     mkdir -p #{dir}
-    protoc -I #{src} --objc_out=#{dir} --objcgrpc_out=#{dir} #{src}/crowdsound_service.proto
+    protoc -I #{src} --objc_out=#{dir} --objcgrpc_out=#{dir} #{src}/crowdSoundProto.proto
   CMD
 
   s.subspec "Messages" do |ms|
