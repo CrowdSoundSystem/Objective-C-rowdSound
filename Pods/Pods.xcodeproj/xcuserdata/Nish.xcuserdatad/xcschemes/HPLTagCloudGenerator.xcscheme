@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '8221DE238159BC12263FA882'
+               BlueprintIdentifier = '64F6618A3F65D71B5EF337C1'
                BlueprintName = 'HPLTagCloudGenerator'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libHPLTagCloudGenerator.a'>

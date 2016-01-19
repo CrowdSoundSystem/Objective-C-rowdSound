@@ -1,4 +1,10 @@
 PODS:
+  - Bolts (1.6.0):
+    - Bolts/AppLinks (= 1.6.0)
+    - Bolts/Tasks (= 1.6.0)
+  - Bolts/AppLinks (1.6.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.6.0)
   - BoringSSL (1.0)
   - CrowdSound (0.0.1):
     - CrowdSound/Messages (= 0.0.1)
@@ -29,6 +35,7 @@ PODS:
   - RESideMenu (4.0.7)
 
 DEPENDENCIES:
+  - Bolts
   - BoringSSL (from `lib/grpc/src/objective-c`)
   - CrowdSound (from `.`)
   - CSStickyHeaderFlowLayout
@@ -48,6 +55,7 @@ EXTERNAL SOURCES:
     :path: lib/grpc/third_party/protobuf
 
 SPEC CHECKSUMS:
+  Bolts: f52a250053bb517ca874523c3913776359ab3def
   BoringSSL: 2f8ab6b55f82b0ae2dabb9796add3a46e27db336
   CrowdSound: 89a9ebd067397f0014e94e018e6bdc91603cae69
   CSStickyHeaderFlowLayout: 5366582779d8b7c9ba9b9cc729c218cc23888776

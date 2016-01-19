@@ -8,6 +8,9 @@ target 'CrowdSoundApp' do
   # Depend on the generated CrowdSound library.
   pod 'CrowdSound', :path => '.'
   
+  #Useful APIs
+  pod 'Bolts'
+  
   #UI Controls
   pod 'CSStickyHeaderFlowLayout'
   pod 'RESideMenu'

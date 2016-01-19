@@ -17,6 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     UIImage *image = [UIImage imageNamed:@"menu"];
     //image.frame = CGRectMake(0, 0, 30, 30);
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(showMenuViewController)];

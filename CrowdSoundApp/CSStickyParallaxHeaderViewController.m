@@ -7,14 +7,8 @@
 //
 
 #import "CSStickyParallaxHeaderViewController.h"
-#import "CSCell.h"
-#import "CSSectionHeader.h"
-#import "CSStickyHeaderFlowLayout.h"
 
 @interface CSStickyParallaxHeaderViewController ()
-
-@property (nonatomic, strong) NSArray *sections;
-@property (nonatomic, strong) UINib *headerNib;
 
 @end
 
@@ -24,31 +18,6 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        self.sections = @[
-                          @[
-                              @"Song 1",
-                              @"Song 2",
-                              @"Song 3",
-                              @"Song 4",
-                              @"Song 5",
-                              @"Song 6",
-                              @"Song 7",
-                              @"Song 8",
-                              @"Song 9",
-                              @"Song 10",
-                              @"Song 11",
-                              @"Song 12",
-                              @"Song 13",
-                              @"Song 14",
-                              @"Song 15",
-                              @"Song 16",
-                              @"Song 17",
-                              @"Song 18",
-                              @"Song 19",
-                              @"Song 20",
-                            ],
-                          ];
-
         self.headerNib = [UINib nibWithNibName:@"CSAlwaysOnTopHeader" bundle:nil];
     }
     return self;

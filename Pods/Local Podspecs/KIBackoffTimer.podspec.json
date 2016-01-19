@@ -1,0 +1,17 @@
+{
+  "name": "KIBackoffTimer",
+  "version": "0.1",
+  "license": {
+    "type": "MIT"
+  },
+  "homepage": "https://github.com/kimar/KIBackoffTimer/",
+  "summary": "Exponential Backoff Timer for Objective-C",
+  "source": {
+    "git": "https://github.com/kimar/KIBackoffTimer.git",
+    "tag": "v0.1"
+  },
+  "source_files": "KIBackoffTimer.{h,m}",
+  "platforms": {
+    "ios": "9.2"
+  }
+}

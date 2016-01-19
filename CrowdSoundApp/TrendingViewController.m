@@ -8,9 +8,11 @@
 
 #import "TrendingViewController.h"
 #import "HPLTagCloudGenerator.h"
+#import <GRPCClient/GRPCCall+Tests.h>
+#import <CrowdsoundService.pbrpc.h>
 
 @interface TrendingViewController ()
-
+@property(nonatomic) NSString * kHostAddress;
 @end
 
 @implementation TrendingViewController
@@ -18,7 +20,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    _kHostAddress = @"cs.ephyra.io:50051";
+    
+    // This only needs to be done once per host, before creating service objects for that host.
+    [GRPCCall useInsecureConnectionsForHost:_kHostAddress];
+    
+    CSCrowdSound *service = [[CSCrowdSound alloc] initWithHost:_kHostAddress];
+    
+    [service listSongsWithRequest:[[CSListSongsRequest alloc]init] eventHandler:^(BOOL done, CSListSongsResponse *response, NSError *error) {
+        if (error) {
+            NSLog(@"There was an error");
+        } else {
+            NSLog(@"Name: %@", response.name);
+        }
+        if (done) {
+            NSLog(@"Stream complete");
+        }
+    }];
+    
+    /*dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // This runs in a background thread
         
         // dictionary of tags
@@ -44,7 +64,7 @@
             }
             
         });
-    });
+    });*/
     // Do any additional setup after loading the view.
 }
 
