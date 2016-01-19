@@ -24,22 +24,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#pragma mark - CSListSongsRequest
+#pragma mark - CSGetQueueRequest
 
-@interface CSListSongsRequest : GPBMessage
+@interface CSGetQueueRequest : GPBMessage
 
 @end
 
-#pragma mark - CSListSongsResponse
+#pragma mark - CSGetQueueResponse
 
-typedef GPB_ENUM(CSListSongsResponse_FieldNumber) {
-  CSListSongsResponse_FieldNumber_Name = 1,
-  CSListSongsResponse_FieldNumber_IsPlaying = 2,
+typedef GPB_ENUM(CSGetQueueResponse_FieldNumber) {
+  CSGetQueueResponse_FieldNumber_Name = 1,
+  CSGetQueueResponse_FieldNumber_Artist = 2,
+  CSGetQueueResponse_FieldNumber_Genre = 3,
+  CSGetQueueResponse_FieldNumber_IsPlaying = 4,
 };
 
-@interface CSListSongsResponse : GPBMessage
+@interface CSGetQueueResponse : GPBMessage
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *name;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSString *artist;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSString *genre;
 
 @property(nonatomic, readwrite) BOOL isPlaying;
 

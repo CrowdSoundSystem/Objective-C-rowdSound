@@ -7,11 +7,11 @@
 
 @protocol CSCrowdSound <NSObject>
 
-#pragma mark ListSongs(ListSongsRequest) returns (stream ListSongsResponse)
+#pragma mark GetQueue(GetQueueRequest) returns (stream GetQueueResponse)
 
-- (void)listSongsWithRequest:(CSListSongsRequest *)request eventHandler:(void(^)(BOOL done, CSListSongsResponse *response, NSError *error))eventHandler;
+- (void)getQueueWithRequest:(CSGetQueueRequest *)request eventHandler:(void(^)(BOOL done, CSGetQueueResponse *response, NSError *error))eventHandler;
 
-- (ProtoRPC *)RPCToListSongsWithRequest:(CSListSongsRequest *)request eventHandler:(void(^)(BOOL done, CSListSongsResponse *response, NSError *error))eventHandler;
+- (ProtoRPC *)RPCToGetQueueWithRequest:(CSGetQueueRequest *)request eventHandler:(void(^)(BOOL done, CSGetQueueResponse *response, NSError *error))eventHandler;
 
 
 #pragma mark ListTrendingArtists(ListTrendingArtistsRequest) returns (stream ListTrendingArtistsResponse)

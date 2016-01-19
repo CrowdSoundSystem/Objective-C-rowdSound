@@ -25,14 +25,14 @@ static GPBFileDescriptor *CSCrowdsoundServiceRoot_FileDescriptor(void) {
   return descriptor;
 }
 
-#pragma mark - CSListSongsRequest
+#pragma mark - CSGetQueueRequest
 
-@implementation CSListSongsRequest
+@implementation CSGetQueueRequest
 
 
-typedef struct CSListSongsRequest__storage_ {
+typedef struct CSGetQueueRequest__storage_ {
   uint32_t _has_storage_[0];
-} CSListSongsRequest__storage_;
+} CSGetQueueRequest__storage_;
 
 // This method is threadsafe because it is initially called
 // in +initialize for each subclass.
@@ -40,7 +40,7 @@ typedef struct CSListSongsRequest__storage_ {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
     GPBDescriptor *localDescriptor =
-        [GPBDescriptor allocDescriptorForClass:[CSListSongsRequest class]
+        [GPBDescriptor allocDescriptorForClass:[CSGetQueueRequest class]
                                      rootClass:[CSCrowdsoundServiceRoot class]
                                           file:CSCrowdsoundServiceRoot_FileDescriptor()
                                         fields:NULL
@@ -51,7 +51,7 @@ typedef struct CSListSongsRequest__storage_ {
                                      enumCount:0
                                         ranges:NULL
                                     rangeCount:0
-                                   storageSize:sizeof(CSListSongsRequest__storage_)
+                                   storageSize:sizeof(CSGetQueueRequest__storage_)
                                     wireFormat:NO];
     NSAssert(descriptor == nil, @"Startup recursed!");
     descriptor = localDescriptor;
@@ -61,18 +61,22 @@ typedef struct CSListSongsRequest__storage_ {
 
 @end
 
-#pragma mark - CSListSongsResponse
+#pragma mark - CSGetQueueResponse
 
-@implementation CSListSongsResponse
+@implementation CSGetQueueResponse
 
 @dynamic name;
+@dynamic artist;
+@dynamic genre;
 @dynamic isPlaying;
 
-typedef struct CSListSongsResponse__storage_ {
+typedef struct CSGetQueueResponse__storage_ {
   uint32_t _has_storage_[1];
   BOOL isPlaying;
   NSString *name;
-} CSListSongsResponse__storage_;
+  NSString *artist;
+  NSString *genre;
+} CSGetQueueResponse__storage_;
 
 // This method is threadsafe because it is initially called
 // in +initialize for each subclass.
@@ -82,22 +86,44 @@ typedef struct CSListSongsResponse__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "name",
-        .number = CSListSongsResponse_FieldNumber_Name,
+        .number = CSGetQueueResponse_FieldNumber_Name,
         .hasIndex = 0,
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
-        .offset = offsetof(CSListSongsResponse__storage_, name),
+        .offset = offsetof(CSGetQueueResponse__storage_, name),
+        .defaultValue.valueString = nil,
+        .dataTypeSpecific.className = NULL,
+        .fieldOptions = NULL,
+      },
+      {
+        .name = "artist",
+        .number = CSGetQueueResponse_FieldNumber_Artist,
+        .hasIndex = 1,
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+        .offset = offsetof(CSGetQueueResponse__storage_, artist),
+        .defaultValue.valueString = nil,
+        .dataTypeSpecific.className = NULL,
+        .fieldOptions = NULL,
+      },
+      {
+        .name = "genre",
+        .number = CSGetQueueResponse_FieldNumber_Genre,
+        .hasIndex = 2,
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+        .offset = offsetof(CSGetQueueResponse__storage_, genre),
         .defaultValue.valueString = nil,
         .dataTypeSpecific.className = NULL,
         .fieldOptions = NULL,
       },
       {
         .name = "isPlaying",
-        .number = CSListSongsResponse_FieldNumber_IsPlaying,
-        .hasIndex = 1,
+        .number = CSGetQueueResponse_FieldNumber_IsPlaying,
+        .hasIndex = 3,
         .flags = GPBFieldOptional | GPBFieldTextFormatNameCustom,
         .dataType = GPBDataTypeBool,
-        .offset = offsetof(CSListSongsResponse__storage_, isPlaying),
+        .offset = offsetof(CSGetQueueResponse__storage_, isPlaying),
         .defaultValue.valueBool = NO,
         .dataTypeSpecific.className = NULL,
         .fieldOptions = NULL,
@@ -106,10 +132,10 @@ typedef struct CSListSongsResponse__storage_ {
 #if GPBOBJC_SKIP_MESSAGE_TEXTFORMAT_EXTRAS
     const char *extraTextFormatInfo = NULL;
 #else
-    static const char *extraTextFormatInfo = "\001\002\t\000";
+    static const char *extraTextFormatInfo = "\001\004\t\000";
 #endif  // GPBOBJC_SKIP_MESSAGE_TEXTFORMAT_EXTRAS
     GPBDescriptor *localDescriptor =
-        [GPBDescriptor allocDescriptorForClass:[CSListSongsResponse class]
+        [GPBDescriptor allocDescriptorForClass:[CSGetQueueResponse class]
                                      rootClass:[CSCrowdsoundServiceRoot class]
                                           file:CSCrowdsoundServiceRoot_FileDescriptor()
                                         fields:fields
@@ -120,7 +146,7 @@ typedef struct CSListSongsResponse__storage_ {
                                      enumCount:0
                                         ranges:NULL
                                     rangeCount:0
-                                   storageSize:sizeof(CSListSongsResponse__storage_)
+                                   storageSize:sizeof(CSGetQueueResponse__storage_)
                                     wireFormat:NO
                            extraTextFormatInfo:extraTextFormatInfo];
     NSAssert(descriptor == nil, @"Startup recursed!");

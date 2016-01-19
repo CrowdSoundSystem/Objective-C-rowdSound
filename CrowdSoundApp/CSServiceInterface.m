@@ -37,7 +37,7 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     
     NSMutableArray *queue = [[NSMutableArray alloc]init];
     
-    [_service listSongsWithRequest:[[CSListSongsRequest alloc]init] eventHandler:^(BOOL done, CSListSongsResponse *response, NSError *error) {
+    [_service getQueueWithRequest:[[CSGetQueueRequest alloc]init] eventHandler:^(BOOL done, CSGetQueueResponse *response, NSError *error) {
         if (error) {
             NSLog(@"There was an error");
             [task setError:error];
@@ -57,5 +57,7 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     
     return task.task;
 }
+
+
 
 @end

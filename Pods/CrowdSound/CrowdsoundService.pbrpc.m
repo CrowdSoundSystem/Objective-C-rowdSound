@@ -21,16 +21,16 @@ static NSString *const kServiceName = @"CrowdSound";
 }
 
 
-#pragma mark ListSongs(ListSongsRequest) returns (stream ListSongsResponse)
+#pragma mark GetQueue(GetQueueRequest) returns (stream GetQueueResponse)
 
-- (void)listSongsWithRequest:(CSListSongsRequest *)request eventHandler:(void(^)(BOOL done, CSListSongsResponse *response, NSError *error))eventHandler{
-  [[self RPCToListSongsWithRequest:request eventHandler:eventHandler] start];
+- (void)getQueueWithRequest:(CSGetQueueRequest *)request eventHandler:(void(^)(BOOL done, CSGetQueueResponse *response, NSError *error))eventHandler{
+  [[self RPCToGetQueueWithRequest:request eventHandler:eventHandler] start];
 }
 // Returns a not-yet-started RPC object.
-- (ProtoRPC *)RPCToListSongsWithRequest:(CSListSongsRequest *)request eventHandler:(void(^)(BOOL done, CSListSongsResponse *response, NSError *error))eventHandler{
-  return [self RPCToMethod:@"ListSongs"
+- (ProtoRPC *)RPCToGetQueueWithRequest:(CSGetQueueRequest *)request eventHandler:(void(^)(BOOL done, CSGetQueueResponse *response, NSError *error))eventHandler{
+  return [self RPCToMethod:@"GetQueue"
             requestsWriter:[GRXWriter writerWithValue:request]
-             responseClass:[CSListSongsResponse class]
+             responseClass:[CSGetQueueResponse class]
         responsesWriteable:[GRXWriteable writeableWithEventHandler:eventHandler]];
 }
 #pragma mark ListTrendingArtists(ListTrendingArtistsRequest) returns (stream ListTrendingArtistsResponse)
