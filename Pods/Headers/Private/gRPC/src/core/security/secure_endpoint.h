@@ -1,1 +1,0 @@
-../../../../../../../lib/grpc/src/core/security/secure_endpoint.h

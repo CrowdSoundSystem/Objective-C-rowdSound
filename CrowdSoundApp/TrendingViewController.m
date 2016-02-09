@@ -10,6 +10,7 @@
 #import "HPLTagCloudGenerator.h"
 #import <GRPCClient/GRPCCall+Tests.h>
 #import <CrowdsoundService.pbrpc.h>
+#import "MMMaterialDesignSpinner.h"
 
 @interface TrendingViewController ()
 @property(nonatomic) NSString * kHostAddress;
@@ -20,24 +21,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _kHostAddress = @"cs.ephyra.io:50051";
+    MMMaterialDesignSpinner *spinnerView = [[MMMaterialDesignSpinner alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/2, 40, 40)];
     
-    // This only needs to be done once per host, before creating service objects for that host.
-    [GRPCCall useInsecureConnectionsForHost:_kHostAddress];
+    spinnerView.lineWidth = 1.5f;
+    spinnerView.tintColor = [UIColor blueColor];
     
-    CSCrowdSound *service = [[CSCrowdSound alloc] initWithHost:_kHostAddress];
-    
-    [service listSongsWithRequest:[[CSListSongsRequest alloc]init] eventHandler:^(BOOL done, CSListSongsResponse *response, NSError *error) {
-        if (error) {
-            NSLog(@"There was an error");
-        } else {
-            NSLog(@"Name: %@", response.name);
-        }
-        if (done) {
-            NSLog(@"Stream complete");
-        }
-    }];
-    
+    [self.view addSubview:spinnerView];
+    [self.view bringSubviewToFront:spinnerView];
+    [spinnerView startAnimating];
     /*dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // This runs in a background thread
         

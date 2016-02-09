@@ -1,1 +1,0 @@
-../../../../../../../lib/grpc/src/core/transport/static_metadata.h

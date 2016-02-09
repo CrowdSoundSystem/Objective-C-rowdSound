@@ -13,6 +13,7 @@ target 'CrowdSoundApp' do
   
   #UI Controls
   pod 'CSStickyHeaderFlowLayout'
+  pod 'MMMaterialDesignSpinner'
   pod 'RESideMenu'
   pod 'HPLTagCloudGenerator'
 end

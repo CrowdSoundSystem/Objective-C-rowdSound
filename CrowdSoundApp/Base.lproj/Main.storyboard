@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
@@ -65,17 +66,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fuJ-tW-ZxQ" customClass="CSStickyHeaderFlowLayout">
-                            <size key="itemSize" width="253" height="30"/>
+                            <size key="itemSize" width="356.5" height="30"/>
                             <size key="headerReferenceSize" width="50" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="kLH-HT-yDs" customClass="CSCell">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="kLH-HT-yDs" customClass="NowPlayingCell">
                                 <rect key="frame" x="0.0" y="114" width="253" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="253" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="356.5" height="30"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyi-aB-E0k">
@@ -84,23 +85,49 @@
                                             <color key="textColor" red="0.73760003529999996" green="0.7241823973" blue="0.73237538120000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="widthClass=compact" fixedFrame="YES">
-                                                <rect key="frame" x="21" y="4" width="133" height="21"/>
+                                                <rect key="frame" x="8" y="4" width="204" height="21"/>
                                             </variation>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwK-lJ-h1c">
+                                            <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                            <state key="normal" title="Button" image="dislike"/>
+                                            <variation key="widthClass=compact" fixedFrame="YES">
+                                                <rect key="frame" x="319" y="2" width="29" height="28"/>
+                                            </variation>
+                                            <connections>
+                                                <action selector="dislikeButtonPressed:" destination="kLH-HT-yDs" eventType="touchUpInside" id="v0A-ib-FTu"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qV1-2K-Zle">
+                                            <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                            <state key="normal" title="Button" image="like"/>
+                                            <variation key="widthClass=compact" fixedFrame="YES">
+                                                <rect key="frame" x="277" y="0.0" width="29" height="26"/>
+                                            </variation>
+                                            <connections>
+                                                <action selector="likeButtonPressed:" destination="kLH-HT-yDs" eventType="touchUpInside" id="0yV-1W-Ahs"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <variation key="default">
                                     <mask key="subviews">
                                         <exclude reference="fyi-aB-E0k"/>
+                                        <exclude reference="hwK-lJ-h1c"/>
+                                        <exclude reference="qV1-2K-Zle"/>
                                     </mask>
                                 </variation>
                                 <variation key="widthClass=compact">
                                     <mask key="subviews">
                                         <include reference="fyi-aB-E0k"/>
+                                        <include reference="hwK-lJ-h1c"/>
+                                        <include reference="qV1-2K-Zle"/>
                                     </mask>
                                 </variation>
                                 <connections>
+                                    <outlet property="dislikeButton" destination="hwK-lJ-h1c" id="ez6-O8-q0t"/>
+                                    <outlet property="likeButton" destination="qV1-2K-Zle" id="Nxu-j5-rJU"/>
                                     <outlet property="textLabel" destination="fyi-aB-E0k" id="nMm-CO-PP6"/>
                                 </connections>
                             </collectionViewCell>
@@ -184,4 +211,8 @@
             <point key="canvasLocation" x="1113" y="209"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="dislike" width="128" height="128"/>
+        <image name="like" width="128" height="128"/>
+    </resources>
 </document>

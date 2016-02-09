@@ -1,1 +1,0 @@
-../../../../../../../lib/grpc/src/core/iomgr/socket_windows.h

@@ -1,1 +1,0 @@
-../../../../BoringSSL/ssl/test/scoped_types.h

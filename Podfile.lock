@@ -31,6 +31,7 @@ PODS:
     - Protobuf (~> 3.0.0-alpha-4)
   - gRPC/RxLibrary (0.12.0)
   - HPLTagCloudGenerator (0.0.3)
+  - MMMaterialDesignSpinner (0.2.0)
   - Protobuf (3.0.0-alpha-4)
   - RESideMenu (4.0.7)
 
@@ -41,6 +42,7 @@ DEPENDENCIES:
   - CSStickyHeaderFlowLayout
   - gRPC (from `lib/grpc`)
   - HPLTagCloudGenerator
+  - MMMaterialDesignSpinner
   - Protobuf (from `lib/grpc/third_party/protobuf`)
   - RESideMenu
 
@@ -61,6 +63,7 @@ SPEC CHECKSUMS:
   CSStickyHeaderFlowLayout: 5366582779d8b7c9ba9b9cc729c218cc23888776
   gRPC: 37f5d0891bed2ad5796ca35a034e6efb3e89a7ac
   HPLTagCloudGenerator: 2c3b973eabab214cb76126f084df31bf1b7a6adf
+  MMMaterialDesignSpinner: 8f1a50270b789c76ec500957e518fc3e05e55b9d
   Protobuf: b702b9d429e03afcd01aa86ac81e771bb472f18a
   RESideMenu: f24c508404b49c667344c54aba7e590883533958
 
