@@ -53,16 +53,15 @@
 #include <memory>
 #include <string>
 
-#include <grpc++/impl/sync.h>
+#include <grpc/compression.h>
+#include <grpc/grpc.h>
+#include <grpc/support/log.h>
+#include <grpc/support/time.h>
 #include <grpc++/security/auth_context.h>
 #include <grpc++/support/config.h>
 #include <grpc++/support/status.h>
 #include <grpc++/support/string_ref.h>
 #include <grpc++/support/time.h>
-#include <grpc/compression.h>
-#include <grpc/grpc.h>
-#include <grpc/support/log.h>
-#include <grpc/support/time.h>
 
 struct census_context;
 
@@ -70,7 +69,7 @@ namespace grpc {
 
 class Channel;
 class CompletionQueue;
-class CallCredentials;
+class Credentials;
 class RpcMethod;
 template <class R>
 class ClientReader;
@@ -245,7 +244,7 @@ class ClientContext {
   /// call.
   ///
   /// \see  https://github.com/grpc/grpc/blob/master/doc/grpc-auth-support.md
-  void set_credentials(const std::shared_ptr<CallCredentials>& creds) {
+  void set_credentials(const std::shared_ptr<Credentials>& creds) {
     creds_ = creds;
   }
 
@@ -268,7 +267,7 @@ class ClientContext {
   /// \return The call's peer URI.
   grpc::string peer() const;
 
-  /// Get and set census context.
+  /// Get and set census context
   void set_census_context(struct census_context* ccp) { census_context_ = ccp; }
   struct census_context* census_context() const {
     return census_context_;
@@ -279,17 +278,6 @@ class ClientContext {
   ///
   /// There is no guarantee the call will be cancelled.
   void TryCancel();
-
-  /// Global Callbacks
-  ///
-  /// Can be set exactly once per application to install hooks whenever
-  /// a client context is constructed and destructed.
-  class GlobalCallbacks {
-   public:
-    virtual void DefaultConstructor(ClientContext* context) = 0;
-    virtual void Destructor(ClientContext* context) = 0;
-  };
-  static void SetGlobalCallbacks(GlobalCallbacks* callbacks);
 
  private:
   // Disallow copy and assign.
@@ -327,12 +315,10 @@ class ClientContext {
 
   bool initial_metadata_received_;
   std::shared_ptr<Channel> channel_;
-  grpc::mutex mu_;
   grpc_call* call_;
-  bool call_canceled_;
   gpr_timespec deadline_;
   grpc::string authority_;
-  std::shared_ptr<CallCredentials> creds_;
+  std::shared_ptr<Credentials> creds_;
   mutable std::shared_ptr<const AuthContext> auth_context_;
   struct census_context* census_context_;
   std::multimap<grpc::string, grpc::string> send_initial_metadata_;

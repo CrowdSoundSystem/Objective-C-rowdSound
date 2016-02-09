@@ -35,7 +35,7 @@
 
 #include <string.h>
 
-#include "src/core/support/string.h"
+#include "src/core/support/grpc_string.h"
 #include <grpc/support/alloc.h>
 #include <grpc/support/log.h>
 #include <grpc/support/string_util.h>
@@ -79,7 +79,7 @@ int gpr_split_host_port(const char *name, char **host, char **port) {
     host_len = (size_t)(rbracket - host_start);
     if (memchr(host_start, ':', host_len) == NULL) {
       /* Require all bracketed hosts to contain a colon, because a hostname or
-         IPv4 address should never use brackets. */
+      IPv4 address should never use brackets. */
       return 0;
     }
   } else {

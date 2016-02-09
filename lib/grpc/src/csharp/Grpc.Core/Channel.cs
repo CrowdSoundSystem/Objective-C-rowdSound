@@ -32,6 +32,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Grpc.Core.Internal;
@@ -55,7 +57,7 @@ namespace Grpc.Core
         readonly string target;
         readonly GrpcEnvironment environment;
         readonly ChannelSafeHandle handle;
-        readonly Dictionary<string, ChannelOption> options;
+        readonly List<ChannelOption> options;
 
         bool shutdownRequested;
 
@@ -66,15 +68,15 @@ namespace Grpc.Core
         /// <param name="target">Target of the channel.</param>
         /// <param name="credentials">Credentials to secure the channel.</param>
         /// <param name="options">Channel options.</param>
-        public Channel(string target, ChannelCredentials credentials, IEnumerable<ChannelOption> options = null)
+        public Channel(string target, Credentials credentials, IEnumerable<ChannelOption> options = null)
         {
             this.target = Preconditions.CheckNotNull(target, "target");
-            this.options = CreateOptionsDictionary(options);
-            EnsureUserAgentChannelOption(this.options);
             this.environment = GrpcEnvironment.AddRef();
+            this.options = options != null ? new List<ChannelOption>(options) : new List<ChannelOption>();
 
-            using (var nativeCredentials = credentials.ToNativeCredentials())
-            using (var nativeChannelArgs = ChannelOptions.CreateChannelArgs(this.options.Values))
+            EnsureUserAgentChannelOption(this.options);
+            using (CredentialsSafeHandle nativeCredentials = credentials.ToNativeCredentials())
+            using (ChannelArgsSafeHandle nativeChannelArgs = ChannelOptions.CreateChannelArgs(this.options))
             {
                 if (nativeCredentials != null)
                 {
@@ -94,7 +96,7 @@ namespace Grpc.Core
         /// <param name="port">The port.</param>
         /// <param name="credentials">Credentials to secure the channel.</param>
         /// <param name="options">Channel options.</param>
-        public Channel(string host, int port, ChannelCredentials credentials, IEnumerable<ChannelOption> options = null) :
+        public Channel(string host, int port, Credentials credentials, IEnumerable<ChannelOption> options = null) :
             this(string.Format("{0}:{1}", host, port), credentials, options)
         {
         }
@@ -171,7 +173,7 @@ namespace Grpc.Core
                 {
                     throw new OperationCanceledException("Channel has reached FatalFailure state.");
                 }
-                await WaitForStateChangedAsync(currentState, deadline).ConfigureAwait(false);
+                await WaitForStateChangedAsync(currentState, deadline);
                 currentState = handle.CheckConnectivityState(false);
             }
         }
@@ -196,7 +198,7 @@ namespace Grpc.Core
 
             handle.Dispose();
 
-            await Task.Run(() => GrpcEnvironment.Release()).ConfigureAwait(false);
+            await Task.Run(() => GrpcEnvironment.Release());
         }
 
         internal ChannelSafeHandle Handle
@@ -231,36 +233,18 @@ namespace Grpc.Core
             activeCallCounter.Decrement();
         }
 
-        private static void EnsureUserAgentChannelOption(Dictionary<string, ChannelOption> options)
+        private static void EnsureUserAgentChannelOption(List<ChannelOption> options)
         {
-            var key = ChannelOptions.PrimaryUserAgentString;
-            var userAgentString = "";
-
-            ChannelOption option;
-            if (options.TryGetValue(key, out option))
+            if (!options.Any((option) => option.Name == ChannelOptions.PrimaryUserAgentString))
             {
-                // user-provided userAgentString needs to be at the beginning
-                userAgentString = option.StringValue + " ";
-            };
-
-            // TODO(jtattermusch): it would be useful to also provide .NET/mono version.
-            userAgentString += string.Format("grpc-csharp/{0}", VersionInfo.CurrentVersion);
-
-            options[ChannelOptions.PrimaryUserAgentString] = new ChannelOption(key, userAgentString);
+                options.Add(new ChannelOption(ChannelOptions.PrimaryUserAgentString, GetUserAgentString()));
+            }
         }
 
-        private static Dictionary<string, ChannelOption> CreateOptionsDictionary(IEnumerable<ChannelOption> options)
+        private static string GetUserAgentString()
         {
-            var dict = new Dictionary<string, ChannelOption>();
-            if (options == null)
-            {
-                return dict;
-            }
-            foreach (var option in options)
-            {
-                dict.Add(option.Name, option);
-            }
-            return dict;
+            // TODO(jtattermusch): it would be useful to also provide .NET/mono version.
+            return string.Format("grpc-csharp/{0}", VersionInfo.CurrentVersion);
         }
     }
 }

@@ -183,7 +183,7 @@ class RouteGuideImpl final : public RouteGuide::Service {
 
 void RunServer(const std::string& db_path) {
   std::string server_address("0.0.0.0:50051");
-  RouteGuideImpl service;
+  RouteGuideImpl service(db_path);
 
   ServerBuilder builder;
   builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());

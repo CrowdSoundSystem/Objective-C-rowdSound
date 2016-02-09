@@ -46,7 +46,7 @@
 #include <grpc/support/alloc.h>
 #include <grpc/support/log.h>
 #include <grpc/support/string_util.h>
-#include <grpc/support/time.h>
+#include <grpc/support/grpc_time.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -76,18 +76,16 @@ void gpr_default_log(gpr_log_func_args *args) {
   char *prefix;
   const char *display_file;
   char time_buffer[64];
-  time_t timer;
   gpr_timespec now = gpr_now(GPR_CLOCK_REALTIME);
   struct tm tm;
 
-  timer = (time_t)now.tv_sec;
   final_slash = strrchr(args->file, '/');
   if (final_slash == NULL)
     display_file = args->file;
   else
     display_file = final_slash + 1;
 
-  if (!localtime_r(&timer, &tm)) {
+  if (!localtime_r(&now.tv_sec, &tm)) {
     strcpy(time_buffer, "error:localtime");
   } else if (0 ==
              strftime(time_buffer, sizeof(time_buffer), "%m%d %H:%M:%S", &tm)) {

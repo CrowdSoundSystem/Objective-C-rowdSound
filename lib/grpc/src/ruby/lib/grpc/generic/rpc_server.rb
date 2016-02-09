@@ -48,8 +48,6 @@ module GRPC
         return false
       when 'TERM'
         return false
-      when nil
-        return true
       end
     end
     true
@@ -418,13 +416,11 @@ module GRPC
       until stopped?
         begin
           an_rpc = @server.request_call(@cq, loop_tag, INFINITE_FUTURE)
-          break if (!an_rpc.nil?) && an_rpc.call.nil?
-
-          active_call = new_active_server_call(an_rpc)
-          unless active_call.nil?
-            @pool.schedule(active_call) do |ac|
-              c, mth = ac
-              rpc_descs[mth].run_server_method(c, rpc_handlers[mth])
+          c = new_active_server_call(an_rpc)
+          unless c.nil?
+            mth = an_rpc.method.to_sym
+            @pool.schedule(c) do |call|
+              rpc_descs[mth].run_server_method(call, rpc_handlers[mth])
             end
           end
         rescue Core::CallError, RuntimeError => e
@@ -444,7 +440,6 @@ module GRPC
       # allow the metadata to be accessed from the call
       handle_call_tag = Object.new
       an_rpc.call.metadata = an_rpc.metadata  # attaches md to call for handlers
-      GRPC.logger.debug("call md is #{an_rpc.metadata}")
       connect_md = nil
       unless @connect_md_proc.nil?
         connect_md = @connect_md_proc.call(an_rpc.method, an_rpc.metadata)
@@ -457,11 +452,9 @@ module GRPC
       # Create the ActiveCall
       GRPC.logger.info("deadline is #{an_rpc.deadline}; (now=#{Time.now})")
       rpc_desc = rpc_descs[an_rpc.method.to_sym]
-      c = ActiveCall.new(an_rpc.call, @cq,
-                         rpc_desc.marshal_proc, rpc_desc.unmarshal_proc(:input),
-                         an_rpc.deadline)
-      mth = an_rpc.method.to_sym
-      [c, mth]
+      ActiveCall.new(an_rpc.call, @cq,
+                     rpc_desc.marshal_proc, rpc_desc.unmarshal_proc(:input),
+                     an_rpc.deadline)
     end
 
     protected

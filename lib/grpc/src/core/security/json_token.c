@@ -40,7 +40,7 @@
 #include <grpc/support/string_util.h>
 
 #include "src/core/security/base64.h"
-#include "src/core/support/string.h"
+#include "src/core/support/grpc_string.h"
 
 #include <openssl/bio.h>
 #include <openssl/evp.h>
@@ -215,8 +215,8 @@ static char *encoded_jwt_claim(const grpc_auth_json_key *json_key,
     gpr_log(GPR_INFO, "Cropping token lifetime to maximum allowed value.");
     expiration = gpr_time_add(now, grpc_max_auth_token_lifetime);
   }
-  gpr_int64toa(now.tv_sec, now_str);
-  gpr_int64toa(expiration.tv_sec, expiration_str);
+  gpr_ltoa(now.tv_sec, now_str);
+  gpr_ltoa(expiration.tv_sec, expiration_str);
 
   child =
       create_child(NULL, json, "iss", json_key->client_email, GRPC_JSON_STRING);

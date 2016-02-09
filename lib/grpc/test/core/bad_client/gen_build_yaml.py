@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # Copyright 2015, Google Inc.
 # All rights reserved.
 #
@@ -40,14 +40,8 @@ default_test_options = TestOptions(False)
 
 # maps test names to options
 BAD_CLIENT_TESTS = {
-    'badreq': default_test_options,
     'connection_prefix': default_test_options,
-    'headers': default_test_options,
     'initial_settings_frame': default_test_options,
-    'server_registered_method': default_test_options,
-    'simple_request': default_test_options,
-    'window_overflow': default_test_options,
-    'unknown_frame': default_test_options,
 }
 
 def main():
@@ -64,7 +58,7 @@ def main():
             'headers': [
               'test/core/bad_client/bad_client.h'
             ],
-            'vs_proj_dir': 'test/bad_client',
+            'vs_proj_dir': 'test',
             'deps': [
               'grpc_test_util_unsecure',
               'grpc_unsecure',

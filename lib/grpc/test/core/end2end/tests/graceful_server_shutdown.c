@@ -54,8 +54,8 @@ static grpc_end2end_test_fixture begin_test(grpc_end2end_test_config config,
   grpc_end2end_test_fixture f;
   gpr_log(GPR_INFO, "%s/%s", test_name, config.name);
   f = config.create_fixture(client_args, server_args);
-  config.init_server(&f, server_args);
   config.init_client(&f, client_args);
+  config.init_server(&f, server_args);
   return f;
 }
 
@@ -97,7 +97,7 @@ static void test_early_server_shutdown_finishes_inflight_calls(
     grpc_end2end_test_config config) {
   grpc_call *c;
   grpc_call *s;
-  gpr_timespec deadline = n_seconds_time(10);
+  gpr_timespec deadline = five_seconds_time();
   grpc_end2end_test_fixture f = begin_test(
       config, "test_early_server_shutdown_finishes_inflight_calls", NULL, NULL);
   cq_verifier *cqv = cq_verifier_create(f.cq);
@@ -146,7 +146,7 @@ static void test_early_server_shutdown_finishes_inflight_calls(
   op->flags = 0;
   op->reserved = NULL;
   op++;
-  error = grpc_call_start_batch(c, ops, (size_t)(op - ops), tag(1), NULL);
+  error = grpc_call_start_batch(c, ops, op - ops, tag(1), NULL);
   GPR_ASSERT(GRPC_CALL_OK == error);
 
   error =
@@ -178,7 +178,7 @@ static void test_early_server_shutdown_finishes_inflight_calls(
   op->flags = 0;
   op->reserved = NULL;
   op++;
-  error = grpc_call_start_batch(s, ops, (size_t)(op - ops), tag(102), NULL);
+  error = grpc_call_start_batch(s, ops, op - ops, tag(102), NULL);
   GPR_ASSERT(GRPC_CALL_OK == error);
 
   cq_expect_completion(cqv, tag(102), 1);
@@ -207,6 +207,6 @@ static void test_early_server_shutdown_finishes_inflight_calls(
   config.tear_down_data(&f);
 }
 
-void graceful_server_shutdown(grpc_end2end_test_config config) {
+void grpc_end2end_tests(grpc_end2end_test_config config) {
   test_early_server_shutdown_finishes_inflight_calls(config);
 }

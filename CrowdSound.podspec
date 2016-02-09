@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = "CrowdSound"
-  s.version  = "0.0.2"
+  s.version  = "0.0.3"
 
   s.ios.deployment_target = "9.2"
 
@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
     ss.source_files = "#{dir}/*.pbrpc.{h,m}", "#{dir}/**/*.pbrpc.{h,m}"
     ss.header_mappings_dir = dir
     ss.requires_arc = true
-    ss.dependency "gRPC", "~> 0.12"
+    ss.dependency "gRPC", "~> 0.11"
     ss.dependency "#{s.name}/Messages"
   end
 end

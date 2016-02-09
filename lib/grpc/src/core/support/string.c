@@ -31,7 +31,7 @@
  *
  */
 
-#include "src/core/support/string.h"
+#include "src/core/support/grpc_string.h"
 
 #include <ctype.h>
 #include <stddef.h>
@@ -101,7 +101,7 @@ static void asciidump(dump_out *out, const char *buf, size_t len) {
     dump_out_append(out, '\'');
   }
   for (cur = beg; cur != end; ++cur) {
-    dump_out_append(out, (char)(isprint(*cur) ? *(char *)cur : '.'));
+    dump_out_append(out, isprint(*cur) ? *(char *)cur : '.');
   }
   if (!out_was_empty) {
     dump_out_append(out, '\'');
@@ -153,8 +153,8 @@ void gpr_reverse_bytes(char *str, int len) {
 }
 
 int gpr_ltoa(long value, char *string) {
-  long sign;
   int i = 0;
+  int neg = value < 0;
 
   if (value == 0) {
     string[0] = '0';
@@ -162,33 +162,12 @@ int gpr_ltoa(long value, char *string) {
     return 1;
   }
 
-  sign = value < 0 ? -1 : 1;
+  if (neg) value = -value;
   while (value) {
-    string[i++] = (char)('0' + sign * (value % 10));
+    string[i++] = (char)('0' + value % 10);
     value /= 10;
   }
-  if (sign < 0) string[i++] = '-';
-  gpr_reverse_bytes(string, i);
-  string[i] = 0;
-  return i;
-}
-
-int gpr_int64toa(gpr_int64 value, char *string) {
-  gpr_int64 sign;
-  int i = 0;
-
-  if (value == 0) {
-    string[0] = '0';
-    string[1] = 0;
-    return 1;
-  }
-
-  sign = value < 0 ? -1 : 1;
-  while (value) {
-    string[i++] = (char)('0' + sign * (value % 10));
-    value /= 10;
-  }
-  if (sign < 0) string[i++] = '-';
+  if (neg) string[i++] = '-';
   gpr_reverse_bytes(string, i);
   string[i] = 0;
   return i;

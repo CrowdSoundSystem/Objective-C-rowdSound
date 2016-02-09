@@ -35,5 +35,17 @@
 }
 
 - (IBAction)dislikeButtonPressed:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    if (button) {
+        NSString *buttonId = button.accessibilityIdentifier;
+        NSString *like = @"dislike";
+        NSString *id = [buttonId substringFromIndex:like.length];
+        NSLog(@"ID: %d", [id intValue]);
+        
+        [[CSServiceInterface sharedInstance] voteForSong:self.textLabel.text withArtist:nil withValue:true];
+        
+        button.enabled = false;
+        
+    }
 }
 @end

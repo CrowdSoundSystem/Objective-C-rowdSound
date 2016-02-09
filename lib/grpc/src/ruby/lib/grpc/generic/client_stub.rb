@@ -51,10 +51,23 @@ module GRPC
       end
       kw['grpc.primary_user_agent'] = "grpc-ruby/#{VERSION}"
       return Core::Channel.new(host, kw) if creds.nil?
-      unless creds.is_a?(Core::ChannelCredentials)
-        fail(TypeError, '!ChannelCredentials')
-      end
+      fail(TypeError, '!Credentials') unless creds.is_a?(Core::Credentials)
       Core::Channel.new(host, kw, creds)
+    end
+
+    def self.update_with_jwt_aud_uri(a_hash, host, method)
+      last_slash_idx, res = method.rindex('/'), a_hash.clone
+      return res if last_slash_idx.nil?
+      service_name = method[0..(last_slash_idx - 1)]
+      res[:jwt_aud_uri] = "https://#{host}#{service_name}"
+      res
+    end
+
+    # check_update_metadata is used by #initialize verify that it's a Proc.
+    def self.check_update_metadata(update_metadata)
+      return update_metadata if update_metadata.nil?
+      fail(TypeError, '!is_a?Proc') unless update_metadata.is_a?(Proc)
+      update_metadata
     end
 
     # Allows users of the stub to modify the propagate mask.
@@ -84,21 +97,29 @@ module GRPC
     # - :timeout
     # when present, this is the default timeout used for calls
     #
+    # - :update_metadata
+    # when present, this a func that takes a hash and returns a hash
+    # it can be used to update metadata, i.e, remove, or amend
+    # metadata values.
+    #
     # @param host [String] the host the stub connects to
     # @param q [Core::CompletionQueue] used to wait for events
     # @param channel_override [Core::Channel] a pre-created channel
     # @param timeout [Number] the default timeout to use in requests
-    # @param creds [Core::ChannelCredentials] the channel credentials
+    # @param creds [Core::Credentials] the channel
+    # @param update_metadata a func that updates metadata as described above
     # @param kw [KeywordArgs]the channel arguments
     def initialize(host, q,
                    channel_override: nil,
                    timeout: nil,
                    creds: nil,
                    propagate_mask: nil,
+                   update_metadata: nil,
                    **kw)
       fail(TypeError, '!CompletionQueue') unless q.is_a?(Core::CompletionQueue)
       @queue = q
       @ch = ClientStub.setup_channel(channel_override, host, creds, **kw)
+      @update_metadata = ClientStub.check_update_metadata(update_metadata)
       alt_host = kw[Core::Channel::SSL_TARGET]
       @host = alt_host.nil? ? host : alt_host
       @propagate_mask = propagate_mask
@@ -143,29 +164,27 @@ module GRPC
     # @param deadline [Time] (optional) the time the request should complete
     # @param parent [Core::Call] a prior call whose reserved metadata
     #   will be propagated by this one.
-    # @param credentials [Core::CallCredentials] credentials to use when making
-    #   the call
     # @param return_op [true|false] return an Operation if true
     # @return [Object] the response received from the server
     def request_response(method, req, marshal, unmarshal,
                          deadline: nil,
                          timeout: nil,
                          return_op: false,
-                         parent: nil,
-                         credentials: nil,
+                         parent: parent,
                          **kw)
       c = new_active_call(method, marshal, unmarshal,
                           deadline: deadline,
                           timeout: timeout,
-                          parent: parent,
-                          credentials: credentials)
-      return c.request_response(req, **kw) unless return_op
+                          parent: parent)
+      kw_with_jwt_uri = self.class.update_with_jwt_aud_uri(kw, @host, method)
+      md = @update_metadata.nil? ? kw : @update_metadata.call(kw_with_jwt_uri)
+      return c.request_response(req, **md) unless return_op
 
       # return the operation view of the active_call; define #execute as a
       # new method for this instance that invokes #request_response.
       op = c.operation
       op.define_singleton_method(:execute) do
-        c.request_response(req, **kw)
+        c.request_response(req, **md)
       end
       op
     end
@@ -214,28 +233,26 @@ module GRPC
     # @param return_op [true|false] return an Operation if true
     # @param parent [Core::Call] a prior call whose reserved metadata
     #   will be propagated by this one.
-    # @param credentials [Core::CallCredentials] credentials to use when making
-    #   the call
     # @return [Object|Operation] the response received from the server
     def client_streamer(method, requests, marshal, unmarshal,
                         deadline: nil,
                         timeout: nil,
                         return_op: false,
                         parent: nil,
-                        credentials: nil,
                         **kw)
       c = new_active_call(method, marshal, unmarshal,
                           deadline: deadline,
                           timeout: timeout,
-                          parent: parent,
-                          credentials: credentials)
-      return c.client_streamer(requests, **kw) unless return_op
+                          parent: parent)
+      kw_with_jwt_uri = self.class.update_with_jwt_aud_uri(kw, @host, method)
+      md = @update_metadata.nil? ? kw : @update_metadata.call(kw_with_jwt_uri)
+      return c.client_streamer(requests, **md) unless return_op
 
       # return the operation view of the active_call; define #execute as a
       # new method for this instance that invokes #client_streamer.
       op = c.operation
       op.define_singleton_method(:execute) do
-        c.client_streamer(requests, **kw)
+        c.client_streamer(requests, **md)
       end
       op
     end
@@ -292,8 +309,6 @@ module GRPC
     # @param return_op [true|false]return an Operation if true
     # @param parent [Core::Call] a prior call whose reserved metadata
     #   will be propagated by this one.
-    # @param credentials [Core::CallCredentials] credentials to use when making
-    #   the call
     # @param blk [Block] when provided, is executed for each response
     # @return [Enumerator|Operation|nil] as discussed above
     def server_streamer(method, req, marshal, unmarshal,
@@ -301,21 +316,21 @@ module GRPC
                         timeout: nil,
                         return_op: false,
                         parent: nil,
-                        credentials: nil,
                         **kw,
                         &blk)
       c = new_active_call(method, marshal, unmarshal,
                           deadline: deadline,
                           timeout: timeout,
-                          parent: parent,
-                          credentials: credentials)
-      return c.server_streamer(req, **kw, &blk) unless return_op
+                          parent: parent)
+      kw_with_jwt_uri = self.class.update_with_jwt_aud_uri(kw, @host, method)
+      md = @update_metadata.nil? ? kw : @update_metadata.call(kw_with_jwt_uri)
+      return c.server_streamer(req, **md, &blk) unless return_op
 
       # return the operation view of the active_call; define #execute
       # as a new method for this instance that invokes #server_streamer
       op = c.operation
       op.define_singleton_method(:execute) do
-        c.server_streamer(req, **kw, &blk)
+        c.server_streamer(req, **md, &blk)
       end
       op
     end
@@ -410,8 +425,6 @@ module GRPC
     # @param deadline [Time] (optional) the time the request should complete
     # @param parent [Core::Call] a prior call whose reserved metadata
     #   will be propagated by this one.
-    # @param credentials [Core::CallCredentials] credentials to use when making
-    #   the call
     # @param return_op [true|false] return an Operation if true
     # @param blk [Block] when provided, is executed for each response
     # @return [Enumerator|nil|Operation] as discussed above
@@ -420,22 +433,21 @@ module GRPC
                       timeout: nil,
                       return_op: false,
                       parent: nil,
-                      credentials: nil,
                       **kw,
                       &blk)
       c = new_active_call(method, marshal, unmarshal,
                           deadline: deadline,
                           timeout: timeout,
-                          parent: parent,
-                          credentials: credentials)
-
-      return c.bidi_streamer(requests, **kw, &blk) unless return_op
+                          parent: parent)
+      kw_with_jwt_uri = self.class.update_with_jwt_aud_uri(kw, @host, method)
+      md = @update_metadata.nil? ? kw : @update_metadata.call(kw_with_jwt_uri)
+      return c.bidi_streamer(requests, **md, &blk) unless return_op
 
       # return the operation view of the active_call; define #execute
       # as a new method for this instance that invokes #bidi_streamer
       op = c.operation
       op.define_singleton_method(:execute) do
-        c.bidi_streamer(requests, **kw, &blk)
+        c.bidi_streamer(requests, **md, &blk)
       end
       op
     end
@@ -453,8 +465,7 @@ module GRPC
     def new_active_call(method, marshal, unmarshal,
                         deadline: nil,
                         timeout: nil,
-                        parent: nil,
-                        credentials: nil)
+                        parent: nil)
       if deadline.nil?
         deadline = from_relative_time(timeout.nil? ? @timeout : timeout)
       end
@@ -464,7 +475,6 @@ module GRPC
                              method,
                              nil, # host use nil,
                              deadline)
-      call.set_credentials credentials unless credentials.nil?
       ActiveCall.new(call, @queue, marshal, unmarshal, deadline, started: false)
     end
   end

@@ -34,7 +34,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Grpc.Core;
 using Grpc.Core.Utils;
-using Grpc.Core.Profiling;
 
 namespace Grpc.Core.Internal
 {
@@ -47,7 +46,6 @@ namespace Grpc.Core.Internal
 
         const uint GRPC_WRITE_BUFFER_HINT = 1;
         CompletionRegistry completionRegistry;
-        CompletionQueueSafeHandle completionQueue;
 
         [DllImport("grpc_csharp_ext.dll")]
         static extern GRPCCallError grpcsharp_call_cancel(CallSafeHandle call);
@@ -101,9 +99,6 @@ namespace Grpc.Core.Internal
             BatchContextSafeHandle ctx, MetadataArraySafeHandle metadataArray);
 
         [DllImport("grpc_csharp_ext.dll")]
-        static extern GRPCCallError grpcsharp_call_set_credentials(CallSafeHandle call, CallCredentialsSafeHandle credentials);
-
-        [DllImport("grpc_csharp_ext.dll")]
         static extern CStringSafeHandle grpcsharp_call_get_peer(CallSafeHandle call);
 
         [DllImport("grpc_csharp_ext.dll")]
@@ -113,135 +108,93 @@ namespace Grpc.Core.Internal
         {
         }
 
-        public void Initialize(CompletionRegistry completionRegistry, CompletionQueueSafeHandle completionQueue)
+        public void SetCompletionRegistry(CompletionRegistry completionRegistry)
         {
             this.completionRegistry = completionRegistry;
-            this.completionQueue = completionQueue;
-        }
-
-        public void SetCredentials(CallCredentialsSafeHandle credentials)
-        {
-            grpcsharp_call_set_credentials(this, credentials).CheckOk();
         }
 
         public void StartUnary(UnaryResponseClientHandler callback, byte[] payload, MetadataArraySafeHandle metadataArray, WriteFlags writeFlags)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedStatusOnClient(), context.GetReceivedMessage(), context.GetReceivedInitialMetadata()));
-                grpcsharp_call_start_unary(this, ctx, payload, new UIntPtr((ulong)payload.Length), metadataArray, writeFlags)
-                    .CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedStatusOnClient(), context.GetReceivedMessage(), context.GetReceivedInitialMetadata()));
+            grpcsharp_call_start_unary(this, ctx, payload, new UIntPtr((ulong)payload.Length), metadataArray, writeFlags)
+                .CheckOk();
         }
 
         public void StartUnary(BatchContextSafeHandle ctx, byte[] payload, MetadataArraySafeHandle metadataArray, WriteFlags writeFlags)
         {
-            using (Profilers.ForCurrentThread().NewScope("CallSafeHandle.StartUnary"))
-            {
-                grpcsharp_call_start_unary(this, ctx, payload, new UIntPtr((ulong)payload.Length), metadataArray, writeFlags)
-                    .CheckOk();
-            }
+            grpcsharp_call_start_unary(this, ctx, payload, new UIntPtr((ulong)payload.Length), metadataArray, writeFlags)
+                .CheckOk();
         }
 
         public void StartClientStreaming(UnaryResponseClientHandler callback, MetadataArraySafeHandle metadataArray)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedStatusOnClient(), context.GetReceivedMessage(), context.GetReceivedInitialMetadata()));
-                grpcsharp_call_start_client_streaming(this, ctx, metadataArray).CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedStatusOnClient(), context.GetReceivedMessage(), context.GetReceivedInitialMetadata()));
+            grpcsharp_call_start_client_streaming(this, ctx, metadataArray).CheckOk();
         }
 
         public void StartServerStreaming(ReceivedStatusOnClientHandler callback, byte[] payload, MetadataArraySafeHandle metadataArray, WriteFlags writeFlags)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedStatusOnClient()));
-                grpcsharp_call_start_server_streaming(this, ctx, payload, new UIntPtr((ulong)payload.Length), metadataArray, writeFlags).CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedStatusOnClient()));
+            grpcsharp_call_start_server_streaming(this, ctx, payload, new UIntPtr((ulong)payload.Length), metadataArray, writeFlags).CheckOk();
         }
 
         public void StartDuplexStreaming(ReceivedStatusOnClientHandler callback, MetadataArraySafeHandle metadataArray)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedStatusOnClient()));
-                grpcsharp_call_start_duplex_streaming(this, ctx, metadataArray).CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedStatusOnClient()));
+            grpcsharp_call_start_duplex_streaming(this, ctx, metadataArray).CheckOk();
         }
 
         public void StartSendMessage(SendCompletionHandler callback, byte[] payload, WriteFlags writeFlags, bool sendEmptyInitialMetadata)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success));
-                grpcsharp_call_send_message(this, ctx, payload, new UIntPtr((ulong)payload.Length), writeFlags, sendEmptyInitialMetadata).CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success));
+            grpcsharp_call_send_message(this, ctx, payload, new UIntPtr((ulong)payload.Length), writeFlags, sendEmptyInitialMetadata).CheckOk();
         }
 
         public void StartSendCloseFromClient(SendCompletionHandler callback)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success));
-                grpcsharp_call_send_close_from_client(this, ctx).CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success));
+            grpcsharp_call_send_close_from_client(this, ctx).CheckOk();
         }
 
         public void StartSendStatusFromServer(SendCompletionHandler callback, Status status, MetadataArraySafeHandle metadataArray, bool sendEmptyInitialMetadata)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success));
-                grpcsharp_call_send_status_from_server(this, ctx, status.StatusCode, status.Detail, metadataArray, sendEmptyInitialMetadata).CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success));
+            grpcsharp_call_send_status_from_server(this, ctx, status.StatusCode, status.Detail, metadataArray, sendEmptyInitialMetadata).CheckOk();
         }
 
         public void StartReceiveMessage(ReceivedMessageHandler callback)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedMessage()));
-                grpcsharp_call_recv_message(this, ctx).CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedMessage()));
+            grpcsharp_call_recv_message(this, ctx).CheckOk();
         }
 
         public void StartReceiveInitialMetadata(ReceivedResponseHeadersHandler callback)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedInitialMetadata()));
-                grpcsharp_call_recv_initial_metadata(this, ctx).CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedInitialMetadata()));
+            grpcsharp_call_recv_initial_metadata(this, ctx).CheckOk();
         }
 
         public void StartServerSide(ReceivedCloseOnServerHandler callback)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedCloseOnServerCancelled()));
-                grpcsharp_call_start_serverside(this, ctx).CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success, context.GetReceivedCloseOnServerCancelled()));
+            grpcsharp_call_start_serverside(this, ctx).CheckOk();
         }
 
         public void StartSendInitialMetadata(SendCompletionHandler callback, MetadataArraySafeHandle metadataArray)
         {
-            using (completionQueue.NewScope())
-            {
-                var ctx = BatchContextSafeHandle.Create();
-                completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success));
-                grpcsharp_call_send_initial_metadata(this, ctx, metadataArray).CheckOk();
-            }
+            var ctx = BatchContextSafeHandle.Create();
+            completionRegistry.RegisterBatchCompletion(ctx, (success, context) => callback(success));
+            grpcsharp_call_send_initial_metadata(this, ctx, metadataArray).CheckOk();
         }
 
         public void Cancel()

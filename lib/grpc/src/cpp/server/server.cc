@@ -51,22 +51,6 @@
 
 namespace grpc {
 
-class DefaultGlobalCallbacks GRPC_FINAL : public Server::GlobalCallbacks {
- public:
-  void PreSynchronousRequest(ServerContext* context) GRPC_OVERRIDE {}
-  void PostSynchronousRequest(ServerContext* context) GRPC_OVERRIDE {}
-};
-
-static Server::GlobalCallbacks* g_callbacks = nullptr;
-static gpr_once g_once_init_callbacks = GPR_ONCE_INIT;
-
-static void InitGlobalCallbacks() {
-  if (g_callbacks == nullptr) {
-    static DefaultGlobalCallbacks default_global_callbacks;
-    g_callbacks = &default_global_callbacks;
-  }
-}
-
 class Server::UnimplementedAsyncRequestContext {
  protected:
   UnimplementedAsyncRequestContext() : generic_stream_(&server_context_) {}
@@ -169,7 +153,8 @@ class Server::SyncRequest GRPC_FINAL : public CompletionQueueTag {
         GPR_ASSERT((*req)->in_flight_);
         return true;
     }
-    GPR_UNREACHABLE_CODE(return false);
+    gpr_log(GPR_ERROR, "Should never reach here");
+    abort();
   }
 
   void SetupRequest() { cq_ = grpc_completion_queue_create(nullptr); }
@@ -236,10 +221,8 @@ class Server::SyncRequest GRPC_FINAL : public CompletionQueueTag {
 
     void Run() {
       ctx_.BeginCompletionOp(&call_);
-      g_callbacks->PreSynchronousRequest(&ctx_);
       method_->handler()->RunHandler(MethodHandler::HandlerParameter(
           &call_, &ctx_, request_payload_, call_.max_message_size()));
-      g_callbacks->PostSynchronousRequest(&ctx_);
       request_payload_ = nullptr;
       void* ignored_tag;
       bool ignored_ok;
@@ -269,24 +252,30 @@ class Server::SyncRequest GRPC_FINAL : public CompletionQueueTag {
   grpc_completion_queue* cq_;
 };
 
-static grpc_server* CreateServer(const ChannelArguments& args) {
-  grpc_channel_args channel_args;
-  args.SetChannelArgs(&channel_args);
-  return grpc_server_create(&channel_args, nullptr);
+static grpc_server* CreateServer(int max_message_size) {
+  if (max_message_size > 0) {
+    grpc_arg arg;
+    arg.type = GRPC_ARG_INTEGER;
+    arg.key = const_cast<char*>(GRPC_ARG_MAX_MESSAGE_LENGTH);
+    arg.value.integer = max_message_size;
+    grpc_channel_args args = {1, &arg};
+    return grpc_server_create(&args, nullptr);
+  } else {
+    return grpc_server_create(nullptr, nullptr);
+  }
 }
 
 Server::Server(ThreadPoolInterface* thread_pool, bool thread_pool_owned,
-               int max_message_size, const ChannelArguments& args)
+               int max_message_size)
     : max_message_size_(max_message_size),
       started_(false),
       shutdown_(false),
       num_running_cb_(0),
       sync_methods_(new std::list<SyncRequest>),
       has_generic_service_(false),
-      server_(CreateServer(args)),
+      server_(CreateServer(max_message_size)),
       thread_pool_(thread_pool),
       thread_pool_owned_(thread_pool_owned) {
-  gpr_once_init(&g_once_init_callbacks, InitGlobalCallbacks);
   grpc_server_register_completion_queue(server_, cq_.cq(), nullptr);
 }
 
@@ -306,12 +295,6 @@ Server::~Server() {
     delete thread_pool_;
   }
   delete sync_methods_;
-}
-
-void Server::SetGlobalCallbacks(GlobalCallbacks* callbacks) {
-  GPR_ASSERT(g_callbacks == nullptr);
-  GPR_ASSERT(callbacks != nullptr);
-  g_callbacks = callbacks;
 }
 
 bool Server::RegisterService(const grpc::string* host, RpcService* service) {
@@ -334,7 +317,7 @@ bool Server::RegisterAsyncService(const grpc::string* host,
   GPR_ASSERT(service->server_ == nullptr &&
              "Can only register an asynchronous service against one server.");
   service->server_ = this;
-  service->request_args_ = new void* [service->method_count_];
+  service->request_args_ = new void*[service->method_count_];
   for (size_t i = 0; i < service->method_count_; ++i) {
     void* tag = grpc_server_register_method(server_, service->method_names_[i],
                                             host ? host->c_str() : nullptr);
@@ -398,7 +381,6 @@ void Server::ShutdownInternal(gpr_timespec deadline) {
     shutdown_ = true;
     grpc_server_shutdown_and_notify(server_, cq_.cq(), new ShutdownRequest());
     cq_.Shutdown();
-    lock.unlock();
     // Spin, eating requests until the completion queue is completely shutdown.
     // If the deadline expires then cancel anything that's pending and keep
     // spinning forever until the work is actually drained.
@@ -414,7 +396,6 @@ void Server::ShutdownInternal(gpr_timespec deadline) {
         SyncRequest::CallData call_data(this, request);
       }
     }
-    lock.lock();
 
     // Wait for running callbacks to finish.
     while (num_running_cb_ != 0) {
@@ -552,7 +533,6 @@ void Server::ScheduleCallback() {
 void Server::RunRpc() {
   // Wait for one more incoming rpc.
   bool ok;
-  GPR_TIMER_SCOPE("Server::RunRpc", 0);
   auto* mrd = SyncRequest::Wait(&cq_, &ok);
   if (mrd) {
     ScheduleCallback();
@@ -568,7 +548,6 @@ void Server::RunRpc() {
           mrd->TeardownRequest();
         }
       }
-      GPR_TIMER_SCOPE("cd.Run()", 0);
       cd.Run();
     }
   }

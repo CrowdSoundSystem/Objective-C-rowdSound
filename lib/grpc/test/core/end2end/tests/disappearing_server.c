@@ -131,7 +131,7 @@ static void do_request_and_shutdown_server(grpc_end2end_test_fixture *f,
   op->flags = 0;
   op->reserved = NULL;
   op++;
-  error = grpc_call_start_batch(c, ops, (size_t)(op - ops), tag(1), NULL);
+  error = grpc_call_start_batch(c, ops, op - ops, tag(1), NULL);
   GPR_ASSERT(GRPC_CALL_OK == error);
 
   error =
@@ -163,7 +163,7 @@ static void do_request_and_shutdown_server(grpc_end2end_test_fixture *f,
   op->flags = 0;
   op->reserved = NULL;
   op++;
-  error = grpc_call_start_batch(s, ops, (size_t)(op - ops), tag(102), NULL);
+  error = grpc_call_start_batch(s, ops, op - ops, tag(102), NULL);
   GPR_ASSERT(GRPC_CALL_OK == error);
 
   cq_expect_completion(cqv, tag(102), 1);
@@ -209,7 +209,7 @@ static void disappearing_server_test(grpc_end2end_test_config config) {
   config.tear_down_data(&f);
 }
 
-void disappearing_server(grpc_end2end_test_config config) {
+void grpc_end2end_tests(grpc_end2end_test_config config) {
   GPR_ASSERT(config.feature_mask & FEATURE_MASK_SUPPORTS_DELAYED_CONNECTION);
   disappearing_server_test(config);
 }

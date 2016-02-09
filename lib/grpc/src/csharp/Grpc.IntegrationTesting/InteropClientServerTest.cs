@@ -59,7 +59,7 @@ namespace Grpc.IntegrationTesting
             server = new Server
             {
                 Services = { TestService.BindService(new TestServiceImpl()) },
-                Ports = { { Host, ServerPort.PickUnused, TestCredentials.CreateSslServerCredentials() } }
+                Ports = { { Host, ServerPort.PickUnused, TestCredentials.CreateTestServerCredentials() } }
             };
             server.Start();
 
@@ -68,7 +68,7 @@ namespace Grpc.IntegrationTesting
                 new ChannelOption(ChannelOptions.SslTargetNameOverride, TestCredentials.DefaultHostOverride)
             };
             int port = server.Ports.Single().BoundPort;
-            channel = new Channel(Host, port, TestCredentials.CreateSslCredentials(), options);
+            channel = new Channel(Host, port, TestCredentials.CreateTestClientCredentials(true), options);
             client = TestService.NewClient(channel);
         }
 
@@ -128,29 +128,9 @@ namespace Grpc.IntegrationTesting
         }
 
         [Test]
-        public async Task TimeoutOnSleepingServer()
+        public async Task TimeoutOnSleepingServerAsync()
         {
             await InteropClient.RunTimeoutOnSleepingServerAsync(client);
-        }
-
-        [Test]
-        public async Task CustomMetadata()
-        {
-            await InteropClient.RunCustomMetadataAsync(client);
-        }
-
-        [Test]
-        [Ignore("TODO: see #4427")]
-        public async Task StatusCodeAndMessage()
-        {
-            await InteropClient.RunStatusCodeAndMessageAsync(client);
-        }
-
-        [Test]
-        [Ignore("TODO: see #4427")]
-        public void UnimplementedMethod()
-        {
-            InteropClient.RunUnimplementedMethod(UnimplementedService.NewClient(channel));
         }
     }
 }

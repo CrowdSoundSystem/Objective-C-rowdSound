@@ -70,6 +70,7 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
         request.name = ((Song *)songs[i]).name;
         request.artist = ((Song *)songs[i]).artist;
         request.genre = ((Song *)songs[i]).genre;
+        request.userId = @"nish";
         [postSongRequests addObject:request];
     }
     
@@ -79,6 +80,7 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     
     [_service postSongWithRequestsWriter:songsWriter handler:^(CSPostSongResponse *response, NSError *error) {
         if (error) {
+            NSLog(@"There was an error: %@", error);
             [task setError:error];
         } else {
             [task setResult:response];
@@ -94,6 +96,7 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     request.name = songName;
     request.artist = artist;
     request.like = like;
+    request.userId = @"nish";
     
     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
     

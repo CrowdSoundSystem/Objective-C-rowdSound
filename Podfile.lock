@@ -5,39 +5,38 @@ PODS:
   - Bolts/AppLinks (1.6.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.6.0)
-  - BoringSSL (1.0)
-  - CrowdSound (0.0.2):
-    - CrowdSound/Messages (= 0.0.2)
-    - CrowdSound/Services (= 0.0.2)
-  - CrowdSound/Messages (0.0.2):
+  - CrowdSound (0.0.3):
+    - CrowdSound/Messages (= 0.0.3)
+    - CrowdSound/Services (= 0.0.3)
+  - CrowdSound/Messages (0.0.3):
     - Protobuf (~> 3.0.0-alpha-4)
-  - CrowdSound/Services (0.0.2):
+  - CrowdSound/Services (0.0.3):
     - CrowdSound/Messages
-    - gRPC (~> 0.12)
+    - gRPC (~> 0.11)
   - CSStickyHeaderFlowLayout (0.2.10)
-  - gRPC (0.12.0):
-    - gRPC/C-Core (= 0.12.0)
-    - gRPC/GRPCClient (= 0.12.0)
-    - gRPC/ProtoRPC (= 0.12.0)
-    - gRPC/RxLibrary (= 0.12.0)
-  - gRPC/C-Core (0.12.0):
-    - BoringSSL (~> 1.0)
-  - gRPC/GRPCClient (0.12.0):
+  - gRPC (0.11.0):
+    - gRPC/C-Core (= 0.11.0)
+    - gRPC/GRPCClient (= 0.11.0)
+    - gRPC/ProtoRPC (= 0.11.0)
+    - gRPC/RxLibrary (= 0.11.0)
+  - gRPC/C-Core (0.11.0):
+    - OpenSSL (~> 1.0.200)
+  - gRPC/GRPCClient (0.11.0):
     - gRPC/C-Core
     - gRPC/RxLibrary
-  - gRPC/ProtoRPC (0.12.0):
+  - gRPC/ProtoRPC (0.11.0):
     - gRPC/GRPCClient
     - gRPC/RxLibrary
     - Protobuf (~> 3.0.0-alpha-4)
-  - gRPC/RxLibrary (0.12.0)
+  - gRPC/RxLibrary (0.11.0)
   - HPLTagCloudGenerator (0.0.3)
-  - MMMaterialDesignSpinner (0.2.0)
+  - MMMaterialDesignSpinner (0.2.3)
+  - OpenSSL (1.0.206)
   - Protobuf (3.0.0-alpha-4)
   - RESideMenu (4.0.7)
 
 DEPENDENCIES:
   - Bolts
-  - BoringSSL (from `lib/grpc/src/objective-c`)
   - CrowdSound (from `.`)
   - CSStickyHeaderFlowLayout
   - gRPC (from `lib/grpc`)
@@ -47,8 +46,6 @@ DEPENDENCIES:
   - RESideMenu
 
 EXTERNAL SOURCES:
-  BoringSSL:
-    :podspec: lib/grpc/src/objective-c
   CrowdSound:
     :path: .
   gRPC:
@@ -58,12 +55,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Bolts: f52a250053bb517ca874523c3913776359ab3def
-  BoringSSL: 2f8ab6b55f82b0ae2dabb9796add3a46e27db336
-  CrowdSound: da8f68b209efa7f388b43115cc3865b8da41f4c2
+  CrowdSound: 45fdf2bafc66eb52ea946ac6edda8bd5ae70b38c
   CSStickyHeaderFlowLayout: 5366582779d8b7c9ba9b9cc729c218cc23888776
-  gRPC: 37f5d0891bed2ad5796ca35a034e6efb3e89a7ac
+  gRPC: 62a6e6d10f1ecea1b2ee4827494b8438ad97e6a5
   HPLTagCloudGenerator: 2c3b973eabab214cb76126f084df31bf1b7a6adf
-  MMMaterialDesignSpinner: 8f1a50270b789c76ec500957e518fc3e05e55b9d
+  MMMaterialDesignSpinner: 55c80b454f7928d0ed789cc3c456fa06bd6a2f16
+  OpenSSL: 0de82ee7d57a219bcc22a3e2cce78ae159c8fbea
   Protobuf: b702b9d429e03afcd01aa86ac81e771bb472f18a
   RESideMenu: f24c508404b49c667344c54aba7e590883533958
 
