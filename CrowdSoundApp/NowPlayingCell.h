@@ -7,11 +7,14 @@
 //
 
 #import "CSCell.h"
+#import "NowPlayingViewController.h"
 
 @interface NowPlayingCell : CSCell
 
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UIButton *dislikeButton;
+@property (weak, nonatomic) IBOutlet UILabel *artistLabel;
+@property (weak, nonatomic) NowPlayingViewController *nowPlayingViewController;
 
 - (IBAction)likeButtonPressed:(id)sender;
 - (IBAction)dislikeButtonPressed:(id)sender;

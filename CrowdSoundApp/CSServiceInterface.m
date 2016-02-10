@@ -33,6 +33,27 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     return self;
 }
 
+-(BFTask *) getSessionData {
+    
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    
+    [_service getSessionDataWithRequest:[CSGetSessionDataRequest message] handler:^(CSGetSessionDataResponse *response, NSError *error) {
+        
+        if (error) {
+            NSLog(@"There was an error: %@", error);
+            [task setError:error];
+        } else {
+            SessionData *data = [[SessionData alloc]init];
+            data.numberOfUsers = response.numUsers;
+            data.sessionName = response.sessionName;
+            [task setResult:data];
+        }
+    }];
+    
+    return task.task;
+}
+
 -(BFTask *) getSongQueue {
     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
     
@@ -53,6 +74,7 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
                 NowPlayingSongItem *item = [[NowPlayingSongItem alloc]init];
                 Song *song = [[Song alloc]init];
                 [song setName:response.name];
+                [song setArtist:response.artist];
                 [item setSong:song];
                 [item setIsPlaying:response.isPlaying];
                 [queue addObject:item];

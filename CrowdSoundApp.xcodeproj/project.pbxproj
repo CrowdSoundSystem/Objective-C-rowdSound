@@ -33,6 +33,7 @@
 		C7C6A15E1C4DE93500A2486F /* NativeDataScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A15D1C4DE93500A2486F /* NativeDataScraper.m */; };
 		C7C6A1601C4DF62A00A2486F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C6A15F1C4DF62A00A2486F /* CoreGraphics.framework */; };
 		C7C6A17E1C69578E00A2486F /* NowPlayingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A17D1C69578E00A2486F /* NowPlayingCell.m */; };
+		C7C6A1811C6A9D8A00A2486F /* SessionData.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A1801C6A9D8A00A2486F /* SessionData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,8 @@
 		C7C6A15F1C4DF62A00A2486F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		C7C6A17C1C69578E00A2486F /* NowPlayingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NowPlayingCell.h; sourceTree = "<group>"; };
 		C7C6A17D1C69578E00A2486F /* NowPlayingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NowPlayingCell.m; sourceTree = "<group>"; };
+		C7C6A17F1C6A9D8A00A2486F /* SessionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionData.h; sourceTree = "<group>"; };
+		C7C6A1801C6A9D8A00A2486F /* SessionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionData.m; sourceTree = "<group>"; };
 		E07753255B1AA292E356898F /* libPods-CrowdSoundApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CrowdSoundApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3B58CD71DBDCDE8B9450133 /* Pods-CrowdSoundApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrowdSoundApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-CrowdSoundApp/Pods-CrowdSoundApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -168,7 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				C719482A1C30851A0075FEF8 /* Assets.xcassets */,
-				C71948141C2FA1470075FEF8 /* UI */,
+				C71948141C2FA1470075FEF8 /* NowPlayingView UI */,
 				C71947D51C2EFB610075FEF8 /* AppDelegate.h */,
 				C71947D61C2EFB610075FEF8 /* AppDelegate.m */,
 				C71947DB1C2EFB610075FEF8 /* Main.storyboard */,
@@ -181,14 +184,9 @@
 				C7C6A14D1C4D946700A2486F /* CSServiceInterface.m */,
 				C7C6A15C1C4DE93500A2486F /* NativeDataScraper.h */,
 				C7C6A15D1C4DE93500A2486F /* NativeDataScraper.m */,
-				C7C6A14F1C4D98A400A2486F /* NowPlayingSongItem.h */,
-				C7C6A1501C4D98A400A2486F /* NowPlayingSongItem.m */,
-				C7C6A1591C4DE6F600A2486F /* Song.h */,
-				C7C6A15A1C4DE6F600A2486F /* Song.m */,
+				C7C6A1821C6AC5C900A2486F /* Models */,
 				C7C6A1521C4DA6D000A2486F /* ExpBackOffTimer.h */,
 				C7C6A1531C4DA6D000A2486F /* ExpBackOffTimer.m */,
-				C7C6A17C1C69578E00A2486F /* NowPlayingCell.h */,
-				C7C6A17D1C69578E00A2486F /* NowPlayingCell.m */,
 			);
 			path = CrowdSoundApp;
 			sourceTree = "<group>";
@@ -219,7 +217,7 @@
 			path = CrowdSoundAppUITests;
 			sourceTree = "<group>";
 		};
-		C71948141C2FA1470075FEF8 /* UI */ = {
+		C71948141C2FA1470075FEF8 /* NowPlayingView UI */ = {
 			isa = PBXGroup;
 			children = (
 				C71948081C2F8BC00075FEF8 /* CSStickyParallaxHeaderViewController.h */,
@@ -232,7 +230,7 @@
 				C719480C1C2F8BEB0075FEF8 /* CSAlwaysOnTopHeader.m */,
 				C71948061C2F8B770075FEF8 /* CSAlwaysOnTopHeader.xib */,
 			);
-			name = UI;
+			name = "NowPlayingView UI";
 			sourceTree = "<group>";
 		};
 		C7C6A1451C4D8FDB00A2486F /* Nav Menu View Controllers */ = {
@@ -259,6 +257,21 @@
 				C719482D1C3090CE0075FEF8 /* TrendingViewController.m */,
 			);
 			name = "Main View Controllers";
+			sourceTree = "<group>";
+		};
+		C7C6A1821C6AC5C900A2486F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C7C6A17F1C6A9D8A00A2486F /* SessionData.h */,
+				C7C6A1801C6A9D8A00A2486F /* SessionData.m */,
+				C7C6A14F1C4D98A400A2486F /* NowPlayingSongItem.h */,
+				C7C6A1501C4D98A400A2486F /* NowPlayingSongItem.m */,
+				C7C6A1591C4DE6F600A2486F /* Song.h */,
+				C7C6A15A1C4DE6F600A2486F /* Song.m */,
+				C7C6A17C1C69578E00A2486F /* NowPlayingCell.h */,
+				C7C6A17D1C69578E00A2486F /* NowPlayingCell.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		E9440B0D88F8703F2EB87BF7 /* Frameworks */ = {
@@ -461,6 +474,7 @@
 				C7C6A1541C4DA6D000A2486F /* ExpBackOffTimer.m in Sources */,
 				C719480A1C2F8BC00075FEF8 /* CSStickyParallaxHeaderViewController.m in Sources */,
 				C719480D1C2F8BEB0075FEF8 /* CSAlwaysOnTopHeader.m in Sources */,
+				C7C6A1811C6A9D8A00A2486F /* SessionData.m in Sources */,
 				C71948291C30771D0075FEF8 /* MenuViewController.m in Sources */,
 				C71948131C2F8C600075FEF8 /* CSSectionHeader.m in Sources */,
 				C7C6A1511C4D98A400A2486F /* NowPlayingSongItem.m in Sources */,

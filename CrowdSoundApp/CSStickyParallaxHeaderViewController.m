@@ -68,34 +68,11 @@
     return [self.sections[section] count];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-
-    NSString *obj = self.sections[indexPath.section][indexPath.row];
-
-    CSCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell"
-                                                             forIndexPath:indexPath];
-
-    cell.textLabel.text = obj;
-
-    return cell;
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {    
+    return nil;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-
-        CSSectionHeader *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                          withReuseIdentifier:@"sectionHeader"
-                                                                 forIndexPath:indexPath];
-
-        return cell;
-
-    } else if ([kind isEqualToString:CSStickyHeaderParallaxHeader]) {
-        UICollectionReusableView *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                                            withReuseIdentifier:@"header"
-                                                                                   forIndexPath:indexPath];
-
-        return cell;
-    }
     return nil;
 }
 

@@ -102,6 +102,7 @@
             </constraints>
             <size key="customSize" width="320" height="426"/>
             <connections>
+                <outlet property="numUsers" destination="3Zp-qf-qfV" id="7RN-qC-N23"/>
                 <outlet property="searchBar" destination="SPW-Vr-XZC" id="oe8-LI-0bL"/>
                 <outlet property="titleLabel" destination="5dP-Im-gAY" id="yHn-A1-cjO"/>
             </connections>

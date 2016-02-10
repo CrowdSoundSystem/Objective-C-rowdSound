@@ -12,4 +12,10 @@
 
 @interface NowPlayingViewController : CSStickyParallaxHeaderViewController
 
+@property (strong, nonatomic) NSString *sessionName;
+@property (strong, nonatomic) NSNumber *numberOfUsersInSession;
+@property (strong, nonatomic) NSMutableDictionary *songsWithVotes;
+
+- (void) voteOccurredOnSong: (NSString *)songName andArtist: (NSString *)artist withValue: (BOOL)value;
+
 @end
