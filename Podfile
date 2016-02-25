@@ -12,6 +12,10 @@ target 'CrowdSoundApp' do
   pod 'Bolts'
   
   #UI Controls
+  pod 'CZPicker'
+  pod 'UICKeyChainStore'
+  pod 'TWMessageBarManager'
+  pod 'RNActivityView'
   pod 'CSStickyHeaderFlowLayout'
   pod 'MMMaterialDesignSpinner'
   pod 'RESideMenu'

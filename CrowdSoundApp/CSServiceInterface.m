@@ -118,7 +118,7 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     request.name = songName;
     request.artist = artist;
     request.like = like;
-    request.userId = @"nish";
+    request.userId = @"nish"; //TODO: change this shit
     
     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
     

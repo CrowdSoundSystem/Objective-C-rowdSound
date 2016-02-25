@@ -10,12 +10,16 @@
 #import "CSServiceInterface.h"
 #import "MMMaterialDesignSpinner.h"
 #import "NativeDataScraper.h"
+#import "SpotifyDataScraper.h"
 #import "NowPlayingCell.h"
 #import "CSAlwaysOnTopHeader.h"
+#import "UIView+RNActivityView.h"
+#import "TWMessageBarManager.h"
 
 @interface NowPlayingViewController ()
 
 @property (strong) CSServiceInterface *csInterface;
+@property (strong) NSArray* typesOfScrapers;
 @end
 
 @implementation NowPlayingViewController
@@ -23,35 +27,39 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    /*MMMaterialDesignSpinner *spinnerView = [[MMMaterialDesignSpinner alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2 - 20, self.view.frame.size.height, 40, 40)];
-    
-    spinnerView.lineWidth = 3.0f;
-    spinnerView.tintColor = [UIColor whiteColor];
-    
-    [self.view addSubview:spinnerView];
-    [self.view bringSubviewToFront:spinnerView];
-    [spinnerView startAnimating];*/
+    _typesOfScrapers = @[@"Phone Music App", @"Spotify Favourites"];
     
     _csInterface = [CSServiceInterface sharedInstance];
     
     [_csInterface getSessionData];
     
-    NativeDataScraper *scraper = [[NativeDataScraper alloc]init];
-    
-    NSArray *songs = [scraper scrapeMusicData:YES];
-    
-    [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(updateQueueAndSessionData) userInfo:nil repeats:YES];
-    
-    [_csInterface sendSongs:songs]; /* continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
-        if (!task.error) {
-            return [self getQueuePeriodically];
-        }
-        return nil;
-    }];*/
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrapeAndSendSpotifyData) name:@"AuthenticatedSpotify" object:nil];
     
     
+    // Set up scraper types view
     
-    // Do any additional setup after loading the view.
+    CZPickerView *picker = [[CZPickerView alloc] initWithHeaderTitle:@"Send Music Data From..."
+                                                   cancelButtonTitle:@"Cancel"
+                                                  confirmButtonTitle:@"Confirm"];
+    picker.needFooterView = YES;
+    picker.tapBackgroundToDismiss = NO;
+    picker.allowMultipleSelection = YES;
+    picker.headerBackgroundColor = [UIColor grayColor];
+    picker.confirmButtonBackgroundColor = [UIColor grayColor];
+    
+    picker.delegate = self;
+    picker.dataSource = self;
+    
+    [NSTimer scheduledTimerWithTimeInterval:1.0f target:picker selector:@selector(show) userInfo:nil repeats:NO];
+    
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    _timer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(updateQueueAndSessionData) userInfo:nil repeats:YES];
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+    [_timer invalidate];
 }
 
 - (void) updateQueueAndSessionData {
@@ -78,6 +86,56 @@
     }];
     
 }
+
+#pragma mark Scraping Methods
+
+- (void) scrapeAndSendNativeMusicData {
+    NativeDataScraper *scraper = [[NativeDataScraper alloc]init];
+    NSArray *songs = [scraper scrapeMusicDataWithRealData:YES];
+    
+    [[_csInterface sendSongs:songs] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+        if (task.error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Error" description:@"Error sending phone music data" type:TWMessageBarMessageTypeError];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Success" description:@"Sent phone music data" type:TWMessageBarMessageTypeSuccess];
+            });
+        }
+        return nil;
+    }];
+}
+
+- (void) authenticateWithSpotify {
+    SpotifyDataScraper *scraper = [[SpotifyDataScraper alloc]init];
+    [self.view showActivityViewWithLabel:@"Loading"];
+    [scraper authenticateSpotify];
+    [self.view hideActivityView];
+}
+
+- (void) scrapeAndSendSpotifyData {
+    SpotifyDataScraper *scraper = [[SpotifyDataScraper alloc]init];
+    [[[scraper scrapeAllSpotifyFavourites] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+        if (!task.error) {
+            return [_csInterface sendSongs:task.result];
+        }
+        return task;
+    }] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+        if (task.error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Error" description:@"Error sending spotify music data" type:TWMessageBarMessageTypeError];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Success" description:@"Sent spotify music data" type:TWMessageBarMessageTypeSuccess];
+            });
+        }
+        return nil;
+    }];
+}
+
+#pragma mark Voting Methods
 
 - (void) addSongsToVotesList: (NSArray *)currentSongList {
     //Initialize songsWithVotes array with all songs voting abilities set to visible
@@ -192,6 +250,69 @@
     }
     return nil;
 }
+
+#pragma mark CZPickerViewSource
+
+/* number of items for picker */
+- (NSInteger)numberOfRowsInPickerView:(CZPickerView *)pickerView {
+    return _typesOfScrapers.count;
+}
+
+
+/* picker item title for each row */
+- (NSString *)czpickerView:(CZPickerView *)pickerView
+               titleForRow:(NSInteger)row {
+    return [_typesOfScrapers objectAtIndex:row];
+}
+
+#pragma mark CZPickerViewDelegate
+
+- (void)czpickerView:(CZPickerView *)pickerView
+didConfirmWithItemsAtRows:(NSArray *)rows {
+    
+    for (int i = 0; i < rows.count; i++) {
+        int currentRow = [(NSNumber*)[rows objectAtIndex:i] intValue];
+        
+        switch (currentRow) {
+            case 0:
+                [self scrapeAndSendNativeMusicData];
+                break;
+            case 1:
+                [self authenticateWithSpotify];
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+/** delegate method for canceling */
+- (void)czpickerViewDidClickCancelButton:(CZPickerView *)pickerView {
+    
+}
+
+- (UIImage *)czpickerView:(CZPickerView *)pickerView imageForRow:(NSInteger)row {
+    UIImage* image;
+    
+    switch (row) {
+        case 0:
+            image = [UIImage imageNamed:@"ipod"];
+            break;
+        case 1:
+            image = [UIImage imageNamed:@"spotify"];
+            break;
+        default:
+            break;
+    }
+    
+    return image;
+}
+
+
+
+
+
+
 
 
 @end

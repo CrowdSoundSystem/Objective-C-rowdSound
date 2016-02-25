@@ -25,6 +25,7 @@
 		C71948291C30771D0075FEF8 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C71948281C30771D0075FEF8 /* MenuViewController.m */; };
 		C719482B1C30851A0075FEF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C719482A1C30851A0075FEF8 /* Assets.xcassets */; };
 		C719482E1C3090CE0075FEF8 /* TrendingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C719482D1C3090CE0075FEF8 /* TrendingViewController.m */; };
+		C74E5A701C7E78B000216A22 /* SpotifyDataScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = C74E5A6F1C7E78B000216A22 /* SpotifyDataScraper.m */; };
 		C7C6A1481C4D908C00A2486F /* NowPlayingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A1471C4D908C00A2486F /* NowPlayingViewController.m */; };
 		C7C6A14E1C4D946700A2486F /* CSServiceInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A14D1C4D946700A2486F /* CSServiceInterface.m */; };
 		C7C6A1511C4D98A400A2486F /* NowPlayingSongItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A1501C4D98A400A2486F /* NowPlayingSongItem.m */; };
@@ -34,6 +35,9 @@
 		C7C6A1601C4DF62A00A2486F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C6A15F1C4DF62A00A2486F /* CoreGraphics.framework */; };
 		C7C6A17E1C69578E00A2486F /* NowPlayingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A17D1C69578E00A2486F /* NowPlayingCell.m */; };
 		C7C6A1811C6A9D8A00A2486F /* SessionData.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A1801C6A9D8A00A2486F /* SessionData.m */; };
+		C7C6A1881C6AD50E00A2486F /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C6A1871C6AD50E00A2486F /* Spotify.framework */; };
+		C7C6A18A1C6AD53C00A2486F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C6A1891C6AD53C00A2486F /* AVFoundation.framework */; };
+		C7C6A18C1C6AD54C00A2486F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C6A18B1C6AD54C00A2486F /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +92,8 @@
 		C719482A1C30851A0075FEF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C719482C1C3090CE0075FEF8 /* TrendingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrendingViewController.h; sourceTree = "<group>"; };
 		C719482D1C3090CE0075FEF8 /* TrendingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrendingViewController.m; sourceTree = "<group>"; };
+		C74E5A6E1C7E78B000216A22 /* SpotifyDataScraper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifyDataScraper.h; sourceTree = "<group>"; };
+		C74E5A6F1C7E78B000216A22 /* SpotifyDataScraper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifyDataScraper.m; sourceTree = "<group>"; };
 		C7C6A1461C4D908C00A2486F /* NowPlayingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NowPlayingViewController.h; sourceTree = "<group>"; };
 		C7C6A1471C4D908C00A2486F /* NowPlayingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NowPlayingViewController.m; sourceTree = "<group>"; };
 		C7C6A14C1C4D946700A2486F /* CSServiceInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSServiceInterface.h; sourceTree = "<group>"; };
@@ -105,6 +111,9 @@
 		C7C6A17D1C69578E00A2486F /* NowPlayingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NowPlayingCell.m; sourceTree = "<group>"; };
 		C7C6A17F1C6A9D8A00A2486F /* SessionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionData.h; sourceTree = "<group>"; };
 		C7C6A1801C6A9D8A00A2486F /* SessionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionData.m; sourceTree = "<group>"; };
+		C7C6A1871C6AD50E00A2486F /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spotify.framework; path = lib/Spotify.framework; sourceTree = "<group>"; };
+		C7C6A1891C6AD53C00A2486F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		C7C6A18B1C6AD54C00A2486F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E07753255B1AA292E356898F /* libPods-CrowdSoundApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CrowdSoundApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3B58CD71DBDCDE8B9450133 /* Pods-CrowdSoundApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrowdSoundApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-CrowdSoundApp/Pods-CrowdSoundApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,7 +123,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7C6A18C1C6AD54C00A2486F /* SystemConfiguration.framework in Frameworks */,
+				C7C6A18A1C6AD53C00A2486F /* AVFoundation.framework in Frameworks */,
 				C7C6A1601C4DF62A00A2486F /* CoreGraphics.framework in Frameworks */,
+				C7C6A1881C6AD50E00A2486F /* Spotify.framework in Frameworks */,
 				45223CEE7798F6F9A5701AD4 /* libPods-CrowdSoundApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -184,6 +196,8 @@
 				C7C6A14D1C4D946700A2486F /* CSServiceInterface.m */,
 				C7C6A15C1C4DE93500A2486F /* NativeDataScraper.h */,
 				C7C6A15D1C4DE93500A2486F /* NativeDataScraper.m */,
+				C74E5A6E1C7E78B000216A22 /* SpotifyDataScraper.h */,
+				C74E5A6F1C7E78B000216A22 /* SpotifyDataScraper.m */,
 				C7C6A1821C6AC5C900A2486F /* Models */,
 				C7C6A1521C4DA6D000A2486F /* ExpBackOffTimer.h */,
 				C7C6A1531C4DA6D000A2486F /* ExpBackOffTimer.m */,
@@ -277,6 +291,9 @@
 		E9440B0D88F8703F2EB87BF7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C7C6A18B1C6AD54C00A2486F /* SystemConfiguration.framework */,
+				C7C6A1891C6AD53C00A2486F /* AVFoundation.framework */,
+				C7C6A1871C6AD50E00A2486F /* Spotify.framework */,
 				C7C6A15F1C4DF62A00A2486F /* CoreGraphics.framework */,
 				E07753255B1AA292E356898F /* libPods-CrowdSoundApp.a */,
 			);
@@ -353,6 +370,7 @@
 				TargetAttributes = {
 					C71947CE1C2EFB610075FEF8 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 54BWCG4U6D;
 					};
 					C71947E71C2EFB610075FEF8 = {
 						CreatedOnToolsVersion = 7.2;
@@ -476,6 +494,7 @@
 				C719480D1C2F8BEB0075FEF8 /* CSAlwaysOnTopHeader.m in Sources */,
 				C7C6A1811C6A9D8A00A2486F /* SessionData.m in Sources */,
 				C71948291C30771D0075FEF8 /* MenuViewController.m in Sources */,
+				C74E5A701C7E78B000216A22 /* SpotifyDataScraper.m in Sources */,
 				C71948131C2F8C600075FEF8 /* CSSectionHeader.m in Sources */,
 				C7C6A1511C4D98A400A2486F /* NowPlayingSongItem.m in Sources */,
 				C719482E1C3090CE0075FEF8 /* TrendingViewController.m in Sources */,
@@ -623,10 +642,18 @@
 			baseConfigurationReference = 31E7222DBCF9EAB08264F5AB /* Pods-CrowdSoundApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/lib",
+				);
 				INFOPLIST_FILE = CrowdSoundApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = CrowdSound.CrowdSoundApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -635,10 +662,18 @@
 			baseConfigurationReference = E3B58CD71DBDCDE8B9450133 /* Pods-CrowdSoundApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/lib",
+				);
 				INFOPLIST_FILE = CrowdSoundApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = CrowdSound.CrowdSoundApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

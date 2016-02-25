@@ -1,6 +1,7 @@
 
 
 #import "AppDelegate.h"
+#import "SpotifyDataScraper.h"
 
 @interface AppDelegate ()
 
@@ -11,7 +12,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
     return YES;
+}
+
+// Handle auth callback
+-(BOOL)application:(UIApplication *)application
+           openURL:(NSURL *)url
+ sourceApplication:(NSString *)sourceApplication
+        annotation:(id)annotation {
+    
+    return [SpotifyDataScraper openSpotifyURL:url];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

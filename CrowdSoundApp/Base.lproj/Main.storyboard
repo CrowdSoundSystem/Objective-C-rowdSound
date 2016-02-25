@@ -16,7 +16,78 @@
                     <view key="view" contentMode="scaleToFill" id="GZa-Gu-OO4">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ekK-jo-w9V">
+                                <rect key="frame" x="0.0" y="0.0" width="200" height="110"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login With Spotify" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T8g-05-kzJ">
+                                        <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="176" id="Zpf-n3-hor"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="Zpf-n3-hor"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="Zpf-n3-hor"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgc-D1-AmK">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="67" id="8vs-g5-hju"/>
+                                            <constraint firstAttribute="width" constant="66" id="f7L-Jb-Gsx"/>
+                                        </constraints>
+                                        <state key="normal" title="Button" image="spotify"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="8vs-g5-hju"/>
+                                                <exclude reference="f7L-Jb-Gsx"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="8vs-g5-hju"/>
+                                                <include reference="f7L-Jb-Gsx"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="loginWithSpotifyPressed:" destination="bdz-kD-uLj" eventType="touchUpInside" id="SEx-VX-36C"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ekK-jo-w9V" firstAttribute="centerX" secondItem="GZa-Gu-OO4" secondAttribute="centerX" id="gTj-e8-P5V"/>
+                            <constraint firstItem="ekK-jo-w9V" firstAttribute="top" secondItem="ivf-zB-we3" secondAttribute="bottom" constant="155" id="pag-D3-c3M"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="ekK-jo-w9V"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="gTj-e8-P5V"/>
+                                <exclude reference="pag-D3-c3M"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="ekK-jo-w9V"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="gTj-e8-P5V"/>
+                                <include reference="pag-D3-c3M"/>
+                            </mask>
+                        </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0p2-fl-19c" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -66,7 +137,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fuJ-tW-ZxQ" customClass="CSStickyHeaderFlowLayout">
-                            <size key="itemSize" width="356.5" height="30"/>
+                            <size key="itemSize" width="319.5" height="30"/>
                             <size key="headerReferenceSize" width="50" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -76,7 +147,7 @@
                                 <rect key="frame" x="0.0" y="114" width="253" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="357" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="319.5" height="30"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyi-aB-E0k">
@@ -92,7 +163,7 @@
                                             <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                             <state key="normal" title="Button" image="like"/>
                                             <variation key="widthClass=compact" fixedFrame="YES">
-                                                <rect key="frame" x="277" y="0.0" width="29" height="26"/>
+                                                <rect key="frame" x="237" y="0.0" width="29" height="26"/>
                                             </variation>
                                             <connections>
                                                 <action selector="likeButtonPressed:" destination="kLH-HT-yDs" eventType="touchUpInside" id="0yV-1W-Ahs"/>
@@ -102,7 +173,7 @@
                                             <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                             <state key="normal" title="Button" image="dislike"/>
                                             <variation key="widthClass=compact" fixedFrame="YES">
-                                                <rect key="frame" x="319" y="2" width="29" height="28"/>
+                                                <rect key="frame" x="279" y="2" width="29" height="28"/>
                                             </variation>
                                             <connections>
                                                 <action selector="dislikeButtonPressed:" destination="kLH-HT-yDs" eventType="touchUpInside" id="v0A-ib-FTu"/>
@@ -226,5 +297,6 @@
     <resources>
         <image name="dislike" width="128" height="128"/>
         <image name="like" width="128" height="128"/>
+        <image name="spotify" width="360" height="360"/>
     </resources>
 </document>

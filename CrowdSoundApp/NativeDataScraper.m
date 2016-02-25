@@ -1,27 +1,26 @@
-//
-//  NativeDataScraper.m
-//  CrowdSoundApp
-//
-//  Created by Nishad Krishnan on 2016-01-18.
-//  Copyright © 2016 CrowdSound. All rights reserved.
-//
+
 
 #import "NativeDataScraper.h"
 #import "Song.h"
 
 @implementation NativeDataScraper
 
--(NSArray *)scrapeMusicData:(BOOL)sendFakeData {
+-(NSArray *)scrapeMusicDataWithRealData:(BOOL)useRealData {
     NSLog(@"Scraping");
     
     NSMutableArray* songObjectList = [[NSMutableArray alloc]init];
     
-    if (!sendFakeData) {
+    if (useRealData) {
+        NSDate *methodStart = [NSDate date];
         MPMediaQuery *everything = [[MPMediaQuery alloc] init];
         
         NSArray *itemsFromGenericQuery = [everything items];
         
         NSArray *songsList = [NSMutableArray arrayWithArray:itemsFromGenericQuery];
+        
+        NSDate *methodFinish = [NSDate date];
+        NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
+        NSLog(@"executionTime = %f", executionTime);
         
         for (int i = 0; i < songsList.count; i++) {
             
@@ -96,10 +95,6 @@
         [songObjectList addObject:song];
 
     }
-    
-    
-    
-    
     return songObjectList;
 }
 
