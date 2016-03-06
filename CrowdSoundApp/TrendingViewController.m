@@ -1,19 +1,20 @@
-//
-//  TrendingViewController.m
-//  CrowdSoundApp
-//
-//  Created by Nishad Krishnan on 2015-12-27.
-//  Copyright © 2015 CrowdSound. All rights reserved.
-//
 
 #import "TrendingViewController.h"
 #import "HPLTagCloudGenerator.h"
 #import <GRPCClient/GRPCCall+Tests.h>
 #import <CrowdsoundService.pbrpc.h>
 #import "MMMaterialDesignSpinner.h"
+#import "BubbleScene.h"
+#import "CSServiceInterface.h"
 
 @interface TrendingViewController ()
 @property(nonatomic) NSString * kHostAddress;
+@end
+
+@interface TrendingViewController()
+
+@property (strong) CSServiceInterface *csInterface;
+
 @end
 
 @implementation TrendingViewController
@@ -21,14 +22,51 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    MMMaterialDesignSpinner *spinnerView = [[MMMaterialDesignSpinner alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/2, 40, 40)];
+    _csInterface = [CSServiceInterface sharedInstance];
+    
+    CGFloat navBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
+    CGFloat statusBarHeight = CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]);
+    
+    NSArray *artists = @[@"Adele", @"Armin Van Burren", @"Drake", @"Martin Garrix", @"Jay Z", @"Rihanna",
+                         @"Wiz Khalifa", @"Beyonce", @"Schoolboy Q", @"Kygo", @"David Guetta", @"Autograf",
+                         @"Kendrink Lamar", @"Taylor Swift", @"Kanye West"];
+    NSMutableArray *weights = [[NSMutableArray alloc]init];
+    
+    for (int i = 0; i < artists.count; i++) {
+        weights[i] = [NSNumber numberWithFloat:[Helper randomBetweenMin:0.0 AndMax:1.0]];
+    }
+    
+    SKView *skView = [[SKView alloc]initWithFrame:self.view.bounds];
+    skView.backgroundColor = [SKColor blackColor];
+    [self.view addSubview:skView];
+    
+    
+    BubbleScene *scene = [[BubbleScene alloc]initWithSize:skView.bounds.size];
+    scene.topOffset = navBarHeight + statusBarHeight;
+    scene.bottomOffset = 200;
+    [skView presentScene:scene];
+    
+    [[_csInterface getTrendingArtists] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+        if (!task.error) {
+            NSArray* artists = task.result;
+            NSNumber *highestWeight = [(TrendingArtist*)artists[1] weight];
+            
+            for (int i = 0; i < artists.count; i++) {
+                BubbleNode *node = [BubbleNode instantiateWithText:[(TrendingArtist*)artists[1] name]andRadius:([[(TrendingArtist*)artists[i] weight] intValue]/[highestWeight intValue] * (60 - 30) + 30)];
+                [scene addChild:node];
+            }
+        }
+        return nil;
+    }];
+    
+    /*MMMaterialDesignSpinner *spinnerView = [[MMMaterialDesignSpinner alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/2, 40, 40)];
     
     spinnerView.lineWidth = 1.5f;
     spinnerView.tintColor = [UIColor blueColor];
     
     [self.view addSubview:spinnerView];
     [self.view bringSubviewToFront:spinnerView];
-    [spinnerView startAnimating];
+    [spinnerView startAnimating];*/
     /*dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // This runs in a background thread
         

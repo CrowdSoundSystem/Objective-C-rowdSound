@@ -14,7 +14,7 @@
 
 @implementation CSServiceInterface
 
-static NSString * const kHostAddress = @"cs.ephyra.io:50051";
+static NSString * const kHostAddress = @"192.168.43.118:50051";
 
 + (id)sharedInstance {
     static CSServiceInterface *sharedServiceInterface = nil;
@@ -118,7 +118,22 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     request.name = songName;
     request.artist = artist;
     request.like = like;
-    request.userId = @"nish"; //TODO: change this shit
+    
+    
+    
+    NSString *UUID = [[NSUUID UUID] UUIDString];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString* uid = [defaults objectForKey:@"id"];
+    
+    if (uid) {
+        request.userId = uid;
+    } else {
+        NSString *UUID = [[NSUUID UUID] UUIDString];
+        request.userId = UUID;
+        [defaults setObject:UUID forKey:@"id"];
+    }
     
     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
     
@@ -135,6 +150,39 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     return task.task;
     
     return nil;
+}
+
+- (BFTask *) getTrendingArtists {
+    
+    CSListTrendingArtistsRequest *request = [CSListTrendingArtistsRequest message];
+    
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    NSMutableArray *trendingArtists = [[NSMutableArray alloc]init];
+    
+    __block int count = 0;
+    
+    [_service listTrendingArtistsWithRequest:request eventHandler:^(BOOL done, CSListTrendingArtistsResponse *response, NSError *error) {
+        if (done) {
+            [task setResult:trendingArtists];
+        } else {
+            if (error) {
+                NSLog(@"There was an error: %@", error);
+                [task setError:error];
+            } else {
+                TrendingArtist *artist = [[TrendingArtist alloc]init];
+                artist.name = response.name;
+                artist.weight = [[NSNumber alloc]initWithInt:response.score];
+                count++;
+                [trendingArtists addObject:artist];
+                
+                if (count <= 20) {
+                }
+            }
+        }
+    }];
+    
+    return task.task;
 }
 
 

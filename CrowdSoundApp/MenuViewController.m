@@ -35,8 +35,8 @@
     });
     [self.view addSubview:self.tableView];
     
-    _menuTitles = @[@"Now Playing", @"Trending", @"Settings", @"Leave Session"];
-    _menuImages = @[@"dj", @"trending", @"settings", @"leave"];
+    _menuTitles = @[@"Now Playing", @"Trending", @"Settings"];
+    _menuImages = @[@"dj", @"trending", @"settings"];
 
 }
 
