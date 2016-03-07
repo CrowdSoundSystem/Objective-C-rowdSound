@@ -269,9 +269,9 @@
 			children = (
 				C7C6A17F1C6A9D8A00A2486F /* SessionData.h */,
 				C7C6A1801C6A9D8A00A2486F /* SessionData.m */,
-				C7C6A14F1C4D98A400A2486F /* NowPlayingSongItem.h */,
 				C77E4F541C8792D700E2DA88 /* TrendingArtist.h */,
 				C77E4F551C8792D700E2DA88 /* TrendingArtist.m */,
+				C7C6A14F1C4D98A400A2486F /* NowPlayingSongItem.h */,
 				C7C6A1501C4D98A400A2486F /* NowPlayingSongItem.m */,
 				C7C6A1591C4DE6F600A2486F /* Song.h */,
 				C7C6A15A1C4DE6F600A2486F /* Song.m */,

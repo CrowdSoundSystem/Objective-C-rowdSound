@@ -7,4 +7,5 @@
 
 + (CGFloat) random;
 + (CGFloat) randomBetweenMin:(CGFloat)min AndMax:(CGFloat)max;
++ (NSString *) getUserId;
 @end

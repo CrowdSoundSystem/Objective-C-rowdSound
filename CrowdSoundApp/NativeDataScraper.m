@@ -30,7 +30,12 @@
             
             Song *song = [[Song alloc]init];
             [song setName:[mediaItem valueForProperty:MPMediaItemPropertyTitle]];
-            [song setArtist:[mediaItem valueForProperty:MPMediaItemPropertyArtist]];
+            
+            if (![mediaItem valueForProperty:MPMediaItemPropertyArtist]) {
+                [song setArtists:nil];
+            } else {
+                [song setArtists:[[NSMutableArray alloc]initWithArray:@[[mediaItem valueForProperty:MPMediaItemPropertyArtist]]]];
+            }
             [song setGenre:[mediaItem valueForProperty:MPMediaItemPropertyGenre]];
             
             [songObjectList addObject:song];
@@ -38,50 +43,49 @@
     } else {
         Song *song = [[Song alloc]init];
         [song setName:@"Jumpman"];
-        [song setArtist:@"Drake"];
+        [song setArtists:[[NSMutableArray alloc]initWithArray:@[@"Drake"]]];
         [song setGenre:@"Rap"];
         
         [songObjectList addObject:song];
         
         song = [[Song alloc]init];
         [song setName:@"From Time"];
-        [song setArtist:@"Drake"];
+        [song setArtists:[[NSMutableArray alloc]initWithArray:@[@"Drake"]]];
         [song setGenre:@"Rap"];
         
         [songObjectList addObject:song];
         
         song = [[Song alloc]init];
         [song setName:@"Started From the Bottom"];
-        [song setArtist:@"Drake"];
+        [song setArtists:[[NSMutableArray alloc]initWithArray:@[@"Drake"]]];
         [song setGenre:@"Rap"];
         
         [songObjectList addObject:song];
         
         song = [[Song alloc]init];
         [song setName:@"Take Care"];
-        [song setArtist:@"Drake"];
+        [song setArtists:[[NSMutableArray alloc]initWithArray:@[@"Drake"]]];
         [song setGenre:@"Rap"];
         
         [songObjectList addObject:song];
         
         song = [[Song alloc]init];
         [song setName:@"Pour it Up"];
-        [song setArtist:@"Rihanna"];
+        [song setArtists:[[NSMutableArray alloc]initWithArray:@[@"Rihanna"]]];
         [song setGenre:@"HipHop"];
         
         [songObjectList addObject:song];
         
         song = [[Song alloc]init];
         [song setName:@"Unfaithful"];
-        [song setArtist:@"Rihanna"];
+        [song setArtists:[[NSMutableArray alloc]initWithArray:@[@"Rihanna"]]];
         [song setGenre:@"Stupid"];
         
         [songObjectList addObject:song];
-
         
         song = [[Song alloc]init];
         [song setName:@"House Party"];
-        [song setArtist:@"Meek Mill"];
+        [song setArtists:[[NSMutableArray alloc]initWithArray:@[@"Meek Mill"]]];
         [song setGenre:@"Rap"];
         
         [songObjectList addObject:song];
@@ -89,7 +93,7 @@
         
         song = [[Song alloc]init];
         [song setName:@"Jesus Walks"];
-        [song setArtist:@"Kanye West"];
+        [song setArtists:[[NSMutableArray alloc]initWithArray:@[@"Kanye West"]]];
         [song setGenre:@"Rap"];
         
         [songObjectList addObject:song];

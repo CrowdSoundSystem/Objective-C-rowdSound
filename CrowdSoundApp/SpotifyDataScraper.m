@@ -60,17 +60,20 @@
             NSMutableArray* songObjectList = [[NSMutableArray alloc]init];
             
             for (int i = 0; i < count; i++) {
-                NSMutableString *artists = [[NSMutableString alloc]init];
-                
                 NSArray *artistsArray = [[savedTracks objectAtIndex:i] artists];
-                
-                for (int j = 0; j < [artistsArray count]; j++) {
-                    [artists appendString:[[[artistsArray objectAtIndex:j] name] stringByAppendingString:@","]];
-                }
+                NSMutableArray *artistsNames = [[NSMutableArray alloc]init];
                 
                 Song *song = [[Song alloc]init];
                 [song setName:[[savedTracks objectAtIndex:i] name]];
-                [song setArtist:artists];
+                
+                for (int j = 0; j < [artistsArray count]; j++) {
+                    [artistsNames addObject:[[artistsArray objectAtIndex:j] name]];
+                }
+                if (!artistsArray) {
+                    [song setArtists:nil];
+                } else {
+                    [song setArtists:[[NSMutableArray alloc]initWithArray:artistsNames]];
+                }
                 [song setGenre:nil];
                 
                 [songObjectList addObject:song];

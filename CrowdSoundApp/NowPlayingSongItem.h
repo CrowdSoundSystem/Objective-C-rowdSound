@@ -6,5 +6,6 @@
 
 @property Song *song;
 @property BOOL isPlaying;
+@property BOOL isBuffered;
 
 @end

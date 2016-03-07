@@ -3,7 +3,7 @@
 
 @interface Song : NSObject
 @property NSString *name;
-@property NSString *artist;
+@property NSMutableArray *artists;
 @property NSString *genre;
 
 @end

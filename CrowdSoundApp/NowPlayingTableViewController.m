@@ -166,7 +166,7 @@
         NSMutableArray *keysArray = [[NSMutableArray alloc]init];
         for (int i = 0; i < currentSongList.count; i ++) {
             NowPlayingSongItem *item = [currentSongList objectAtIndex:i];
-            NSString *key = [self createKeyForSongsWithVotesWithSong:item.song.name andArtist:item.song.artist];
+            NSString *key = [self createKeyForSongsWithVotesWithSong:item.song.name andArtist:(NSString *)item.song.artists[0]];
             [keysArray addObject:key];
             [valueArray addObject:[NSNumber numberWithBool:YES]];
         }
@@ -180,7 +180,7 @@
     
     for (int i = 0; i < currentSongList.count; i++) {
         NowPlayingSongItem *item = [currentSongList objectAtIndex:i];
-        NSString *key = [self createKeyForSongsWithVotesWithSong:item.song.name andArtist:item.song.artist];
+        NSString *key = [self createKeyForSongsWithVotesWithSong:item.song.name andArtist:(NSString *)item.song.artists[0]];
         [songSet addObject:key];
         if (![_songsWithVotes objectForKey:key]) {
             [_songsWithVotes setObject:[NSNumber numberWithBool:YES] forKey:key];
@@ -237,13 +237,13 @@
     DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
     
     DRCellSlideAction *upVoteAction = [DRCellSlideAction actionForFraction:0.25];
-    upVoteAction.icon = [UIImage imageNamed:@"Thumb Up-50"];
+    upVoteAction.icon = [UIImage imageNamed:@"Thumb Up-30"];
     upVoteAction.activeBackgroundColor = [UIColor greenColor];
     upVoteAction.inactiveBackgroundColor = [UIColor blackColor];
     upVoteAction.elasticity = 40;
     
     DRCellSlideAction *downVoteAction = [DRCellSlideAction actionForFraction:0.5];
-    downVoteAction.icon = [UIImage imageNamed:@"Thumbs Down-50"];
+    downVoteAction.icon = [UIImage imageNamed:@"Thumbs Down-30"];
     downVoteAction.activeBackgroundColor = [UIColor redColor];
     downVoteAction.inactiveBackgroundColor = [UIColor blackColor];
     downVoteAction.elasticity = 40;
@@ -261,7 +261,7 @@
     NowPlayingSongItem *item = _currentQueue[indexPath.row];
     
     cell.textLabel.text = item.song.name;
-    cell.detailTextLabel.text = item.song.artist;
+    cell.detailTextLabel.text = item.song.artists[0];
     cell.backgroundColor = [UIColor blackColor];
     
     cell.textLabel.textColor = [UIColor whiteColor];
@@ -335,14 +335,14 @@ didConfirmWithItemsAtRows:(NSArray *)rows {
 - (DRCellSlideActionBlock)upVoteCallback {
     return ^(UITableView *tableView, NSIndexPath *indexPath) {
         NowPlayingSongItem *item = _currentQueue[indexPath.row];
-        [self voteOccurredOnSong:item.song.name andArtist:item.song.artist withValue:true];
+        [self voteOccurredOnSong:item.song.name andArtist:item.song.artists[0] withValue:true];
     };
 }
 
 - (DRCellSlideActionBlock)downVoteCallback {
     return ^(UITableView *tableView, NSIndexPath *indexPath) {
         NowPlayingSongItem *item = _currentQueue[indexPath.row];
-        [self voteOccurredOnSong:item.song.name andArtist:item.song.artist withValue:false];
+        [self voteOccurredOnSong:item.song.name andArtist:item.song.artists[0] withValue:false];
     };
 }
 

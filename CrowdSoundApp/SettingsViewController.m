@@ -76,7 +76,6 @@
                         
                         Song *song = [[Song alloc]init];
                         [song setName:[[savedTracks objectAtIndex:i] name]];
-                        [song setArtist:artists];
                         [song setGenre:nil];
                         
                         [songObjectList addObject:song];

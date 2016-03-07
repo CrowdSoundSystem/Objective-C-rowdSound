@@ -3,6 +3,7 @@
 #import <GRPCClient/GRPCCall+Tests.h>
 #import <CrowdsoundService.pbrpc.h>
 #import <RxLibrary/GRXWriter+Immediate.h>
+#import "Helper.h"
 
 @interface CSServiceInterface ()
 
@@ -74,7 +75,7 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
                 NowPlayingSongItem *item = [[NowPlayingSongItem alloc]init];
                 Song *song = [[Song alloc]init];
                 [song setName:response.name];
-                [song setArtist:response.artist];
+                [song setArtists:[[NSMutableArray alloc]initWithArray:@[response.artist]]];
                 [item setSong:song];
                 [item setIsPlaying:response.isPlaying];
                 [queue addObject:item];
@@ -90,9 +91,9 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     for (int i = 0; i < songs.count; i++) {
         CSPostSongRequest *request = [CSPostSongRequest message];
         request.name = ((Song *)songs[i]).name;
-        request.artist = ((Song *)songs[i]).artist;
+        request.artistArray = ((Song *)songs[i]).artists;
         request.genre = ((Song *)songs[i]).genre;
-        request.userId = @"nish";
+        request.userId = [Helper getUserId];
         [postSongRequests addObject:request];
     }
     
@@ -117,23 +118,8 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     CSVoteSongRequest *request = [CSVoteSongRequest message];
     request.name = songName;
     request.artist = artist;
+    request.userId = [Helper getUserId];
     request.like = like;
-    
-    
-    
-    NSString *UUID = [[NSUUID UUID] UUIDString];
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    NSString* uid = [defaults objectForKey:@"id"];
-    
-    if (uid) {
-        request.userId = uid;
-    } else {
-        NSString *UUID = [[NSUUID UUID] UUIDString];
-        request.userId = UUID;
-        [defaults setObject:UUID forKey:@"id"];
-    }
     
     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
     

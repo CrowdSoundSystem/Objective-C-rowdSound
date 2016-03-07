@@ -5,12 +5,12 @@ PODS:
   - Bolts/AppLinks (1.6.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.6.0)
-  - CrowdSound (0.0.3):
-    - CrowdSound/Messages (= 0.0.3)
-    - CrowdSound/Services (= 0.0.3)
-  - CrowdSound/Messages (0.0.3):
+  - CrowdSound (0.0.4):
+    - CrowdSound/Messages (= 0.0.4)
+    - CrowdSound/Services (= 0.0.4)
+  - CrowdSound/Messages (0.0.4):
     - Protobuf (~> 3.0.0-alpha-4)
-  - CrowdSound/Services (0.0.3):
+  - CrowdSound/Services (0.0.4):
     - CrowdSound/Messages
     - gRPC (~> 0.11)
   - CSStickyHeaderFlowLayout (0.2.10)
@@ -59,7 +59,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Bolts: f52a250053bb517ca874523c3913776359ab3def
-  CrowdSound: 45fdf2bafc66eb52ea946ac6edda8bd5ae70b38c
+  CrowdSound: a85aaf8ee291aec58c0954e649cee897142d387e
   CSStickyHeaderFlowLayout: 5366582779d8b7c9ba9b9cc729c218cc23888776
   CZPicker: c5dc1f70c4fe48e1a5a06c0f45a468295c47e3a3
   DRCellSlideGestureRecognizer: c7213100aa8b1a54b3388c2e73894039058c7795
