@@ -54,3 +54,24 @@
 }
 
 @end
+
+@interface BaseTableViewController()
+
+@end
+
+@implementation BaseTableViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenuViewController)];
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+    // Do any additional setup after loading the view.
+}
+
+- (void) showMenuViewController {
+    [self presentLeftMenuViewController:@"MenuTableViewController"];
+    
+}
+
+@end

@@ -15,3 +15,7 @@
 @interface BaseCollectionViewController : UICollectionViewController
 
 @end
+
+@interface BaseTableViewController : UITableViewController
+
+@end

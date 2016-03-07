@@ -13,11 +13,9 @@ target 'CrowdSoundApp' do
   
   #UI Controls
   pod 'CZPicker'
-  pod 'UICKeyChainStore'
+  pod 'DRCellSlideGestureRecognizer'
   pod 'TWMessageBarManager'
   pod 'RNActivityView'
   pod 'CSStickyHeaderFlowLayout'
-  pod 'MMMaterialDesignSpinner'
   pod 'RESideMenu'
-  pod 'HPLTagCloudGenerator'
 end

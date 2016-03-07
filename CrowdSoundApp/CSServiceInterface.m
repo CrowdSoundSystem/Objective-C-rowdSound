@@ -14,7 +14,7 @@
 
 @implementation CSServiceInterface
 
-static NSString * const kHostAddress = @"192.168.43.118:50051";
+static NSString * const kHostAddress = @"cs.ephyra.io:50051";
 
 + (id)sharedInstance {
     static CSServiceInterface *sharedServiceInterface = nil;

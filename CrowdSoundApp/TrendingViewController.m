@@ -1,9 +1,7 @@
 
 #import "TrendingViewController.h"
-#import "HPLTagCloudGenerator.h"
 #import <GRPCClient/GRPCCall+Tests.h>
 #import <CrowdsoundService.pbrpc.h>
-#import "MMMaterialDesignSpinner.h"
 #import "BubbleScene.h"
 #import "CSServiceInterface.h"
 

@@ -1,39 +1,38 @@
-//
-//  CurrentQueueViewController.m
-//  CrowdSoundApp
-//
-//  Created by Nishad Krishnan on 2016-01-18.
-//  Copyright © 2016 CrowdSound. All rights reserved.
-//
 
-#import "NowPlayingViewController.h"
+
+#import "NowPlayingTableViewController.h"
 #import "CSServiceInterface.h"
-#import "MMMaterialDesignSpinner.h"
 #import "NativeDataScraper.h"
 #import "SpotifyDataScraper.h"
-#import "NowPlayingCell.h"
-#import "CSAlwaysOnTopHeader.h"
 #import "UIView+RNActivityView.h"
 #import "TWMessageBarManager.h"
+#import "DRCellSlideGestureRecognizer.h"
 
-@interface NowPlayingViewController ()
-
+@interface NowPlayingTableViewController ()
 @property (strong) CSServiceInterface *csInterface;
 @property (strong) NSArray* typesOfScrapers;
+@property (strong) NSArray* currentQueue;
 @end
 
-@implementation NowPlayingViewController
+@implementation NowPlayingTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor blackColor];
     
     _typesOfScrapers = @[@"Phone Music App", @"Spotify Favourites"];
     
     _csInterface = [CSServiceInterface sharedInstance];
     
-    [_csInterface getSessionData];
+    [self updateQueueData];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrapeAndSendSpotifyData) name:@"AuthenticatedSpotify" object:nil];
+    
+    self.refreshControl = [[UIRefreshControl alloc]init];
+    self.refreshControl.backgroundColor = [UIColor blackColor];
+    self.refreshControl.tintColor = [UIColor whiteColor];
+    [self.refreshControl addTarget:self action:@selector(refreshQueueData) forControlEvents:UIControlEventValueChanged];
     
     
     // Set up scraper types view
@@ -52,31 +51,55 @@
     
     [NSTimer scheduledTimerWithTimeInterval:1.0f target:picker selector:@selector(show) userInfo:nil repeats:NO];
     
+    self.tableView.rowHeight = 80;
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated {
-    _timer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(updateQueueAndSessionData) userInfo:nil repeats:YES];
+    //_timer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(updateQueueAndSessionData) userInfo:nil repeats:YES];
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
     [_timer invalidate];
 }
 
-- (void) updateQueueAndSessionData {
-    [[_csInterface getSongQueue] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+- (BFTask *) updateQueueData {
+    return [[_csInterface getSongQueue] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         if (!task.error) {
-            self.sections = @[task.result];
+            self.currentQueue = task.result;
             [self addSongsToVotesList:task.result];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.collectionView reloadData];
-            });
-            
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
         return nil;
     }];
     
-    [[_csInterface getSessionData] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+}
+
+- (void) refreshQueueData {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MMM d, h:mm a"];
+    NSString *title = [NSString stringWithFormat:@"Last update: %@", [formatter stringFromDate:[NSDate date]]];
+    NSDictionary *attrsDictionary = [NSDictionary dictionaryWithObject:[UIColor whiteColor]
+                                                                forKey:NSForegroundColorAttributeName];
+    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attrsDictionary];
+    self.refreshControl.attributedTitle = attributedTitle;
+    
+    [[self updateQueueData] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.refreshControl.isRefreshing) {
+                [self.refreshControl endRefreshing];
+            }
+        });
+        return nil;
+    }];
+    
+}
+
+- (BFTask *) updateSessionData {
+    return [[_csInterface getSessionData] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         if (!task.error) {
             SessionData *data =(SessionData *)task.result;
             _sessionName = data.sessionName;
@@ -84,7 +107,6 @@
         }
         return nil;
     }];
-    
 }
 
 #pragma mark Scraping Methods
@@ -187,69 +209,69 @@
 
 - (void) voteOccurredOnSong: (NSString *)songName andArtist: (NSString *)artist withValue: (BOOL)value {
     [[_csInterface voteForSong:songName withArtist:artist withValue:value] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
-        
         if (!task.error) {
             [_songsWithVotes setObject:[NSNumber numberWithBool:NO] forKey:[self createKeyForSongsWithVotesWithSong:songName andArtist:artist]];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.collectionView reloadData];
-            });
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
         return nil;
     }];
 }
 
 
-#pragma mark UICollectionViewDataSource
+#pragma mark - Table view data source
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _currentQueue.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"queueCell" forIndexPath:indexPath];
     
-    NowPlayingSongItem *item = self.sections[indexPath.section][indexPath.row];
+    DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
     
-    NowPlayingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell"
-                                                             forIndexPath:indexPath];
-    if (!cell.nowPlayingViewController)
-        cell.nowPlayingViewController = self;
+    DRCellSlideAction *upVoteAction = [DRCellSlideAction actionForFraction:0.25];
+    upVoteAction.icon = [UIImage imageNamed:@"Thumb Up-50"];
+    upVoteAction.activeBackgroundColor = [UIColor greenColor];
+    upVoteAction.inactiveBackgroundColor = [UIColor blackColor];
+    upVoteAction.elasticity = 40;
+    
+    DRCellSlideAction *downVoteAction = [DRCellSlideAction actionForFraction:0.5];
+    downVoteAction.icon = [UIImage imageNamed:@"Thumbs Down-50"];
+    downVoteAction.activeBackgroundColor = [UIColor redColor];
+    downVoteAction.inactiveBackgroundColor = [UIColor blackColor];
+    downVoteAction.elasticity = 40;
+    
+    upVoteAction.behavior = DRCellSlideActionPushBehavior;
+    upVoteAction.didTriggerBlock = [self upVoteCallback];
+    
+    downVoteAction.behavior = DRCellSlideActionPushBehavior;
+    downVoteAction.didTriggerBlock = [self downVoteCallback];
+    
+    [slideGestureRecognizer addActions:@[upVoteAction, downVoteAction]];
+    
+    [cell addGestureRecognizer:slideGestureRecognizer];
+    
+    NowPlayingSongItem *item = _currentQueue[indexPath.row];
     
     cell.textLabel.text = item.song.name;
-    cell.artistLabel.text = item.song.artist;
+    cell.detailTextLabel.text = item.song.artist;
+    cell.backgroundColor = [UIColor blackColor];
     
-    BOOL shouldBeEnabled = [(NSNumber *)[_songsWithVotes objectForKey:[self createKeyForSongsWithVotesWithSong:item.song.name andArtist:item.song.artist]] boolValue];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.detailTextLabel.textColor = [UIColor whiteColor];
     
-    cell.likeButton.enabled = shouldBeEnabled;
-    cell.dislikeButton.enabled = shouldBeEnabled;
+    // Configure the cell...
     
     return cell;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    
-    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        
-        CSSectionHeader *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                                   withReuseIdentifier:@"sectionHeader"
-                                                                          forIndexPath:indexPath];
-        return cell;
-        
-    } else if ([kind isEqualToString:CSStickyHeaderParallaxHeader]) {
-        UICollectionReusableView *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                                            withReuseIdentifier:@"header"
-                                                                                   forIndexPath:indexPath];
-        CSAlwaysOnTopHeader *headerCell = (CSAlwaysOnTopHeader *)cell;
-        
-        headerCell.titleLabel.text = _sessionName;
-        
-        if ([_numberOfUsersInSession intValue] == 1) {
-            headerCell.numUsers.text = [[_numberOfUsersInSession stringValue] stringByAppendingString:@" user in session"];
-        } else {
-            headerCell.numUsers.text = [[_numberOfUsersInSession stringValue] stringByAppendingString:@" users in session"];
-        }
-        
-        
-        return cell;
-    }
-    return nil;
-}
 
 #pragma mark CZPickerViewSource
 
@@ -308,11 +330,21 @@ didConfirmWithItemsAtRows:(NSArray *)rows {
     return image;
 }
 
+#pragma mark YMTableView Delegates
 
+- (DRCellSlideActionBlock)upVoteCallback {
+    return ^(UITableView *tableView, NSIndexPath *indexPath) {
+        NowPlayingSongItem *item = _currentQueue[indexPath.row];
+        [self voteOccurredOnSong:item.song.name andArtist:item.song.artist withValue:true];
+    };
+}
 
-
-
-
+- (DRCellSlideActionBlock)downVoteCallback {
+    return ^(UITableView *tableView, NSIndexPath *indexPath) {
+        NowPlayingSongItem *item = _currentQueue[indexPath.row];
+        [self voteOccurredOnSong:item.song.name andArtist:item.song.artist withValue:false];
+    };
+}
 
 
 @end

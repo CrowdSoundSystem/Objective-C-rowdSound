@@ -1,17 +1,9 @@
-//
-//  CurrentQueueViewController.h
-//  CrowdSoundApp
-//
-//  Created by Nishad Krishnan on 2016-01-18.
-//  Copyright © 2016 CrowdSound. All rights reserved.
-//
 
 #import <UIKit/UIKit.h>
-#import "CSStickyParallaxHeaderViewController.h"
 #import "cZPickerView.h"
+#import "BaseViewController.h"
 
-
-@interface NowPlayingViewController : CSStickyParallaxHeaderViewController<CZPickerViewDataSource, CZPickerViewDelegate>
+@interface NowPlayingTableViewController : BaseTableViewController<CZPickerViewDelegate, CZPickerViewDataSource>
 
 @property (strong, nonatomic) NSString *sessionName;
 @property (strong, nonatomic) NSNumber *numberOfUsersInSession;
