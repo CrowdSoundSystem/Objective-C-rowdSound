@@ -22,6 +22,8 @@
     
     _csInterface = [CSServiceInterface sharedInstance];
     
+    [self setTitle:@"Trending Artists"];
+    
     CGFloat navBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
     CGFloat statusBarHeight = CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]);
     
@@ -47,52 +49,33 @@
     [[_csInterface getTrendingArtists] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         if (!task.error) {
             NSArray* artists = task.result;
-            NSNumber *highestWeight = [(TrendingArtist*)artists[1] weight];
+            
+            int highestWeight = -1;
             
             for (int i = 0; i < artists.count; i++) {
-                BubbleNode *node = [BubbleNode instantiateWithText:[(TrendingArtist*)artists[1] name]andRadius:([[(TrendingArtist*)artists[i] weight] intValue]/[highestWeight intValue] * (60 - 30) + 30)];
-                [scene addChild:node];
+                if (highestWeight < [[(TrendingArtist*)artists[i] weight] intValue]) {
+                    highestWeight = [[(TrendingArtist*)artists[i] weight] intValue];
+                }
+            }
+            
+            if (highestWeight == 0) {
+                for (int i = 0; i < artists.count; i++) {
+                    BubbleNode *node = [BubbleNode instantiateWithText:[(TrendingArtist*)artists[i] name]andRadius:(highestWeight * (60 - 30) + 30)];
+                    [scene addChild:node];
+                }
+            } else if (highestWeight > 0){
+                for (int i = 0; i < artists.count; i++) {
+                    double multFactor = [[(TrendingArtist*)artists[i] weight] intValue]/highestWeight;
+                    BubbleNode *node = [BubbleNode instantiateWithText:[(TrendingArtist*)artists[i] name]andRadius:(multFactor * (60 - 30) + 30)];
+                    [scene addChild:node];
+                }
+            } else {
+                NSLog(@"Error: The highest weight in artist array was -1");
             }
         }
         return nil;
     }];
     
-    /*MMMaterialDesignSpinner *spinnerView = [[MMMaterialDesignSpinner alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/2, 40, 40)];
-    
-    spinnerView.lineWidth = 1.5f;
-    spinnerView.tintColor = [UIColor blueColor];
-    
-    [self.view addSubview:spinnerView];
-    [self.view bringSubviewToFront:spinnerView];
-    [spinnerView startAnimating];*/
-    /*dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // This runs in a background thread
-        
-        // dictionary of tags
-        NSDictionary *tagDict = @{@"tag1": @3,
-                                  @"tag2": @5,
-                                  @"tag3": @7,
-                                  @"tag4": @2};
-        
-        
-        HPLTagCloudGenerator *tagGenerator = [[HPLTagCloudGenerator alloc] init];
-        tagGenerator.size = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
-        tagGenerator.tagDict = tagDict;
-        
-        NSArray *views = [tagGenerator generateTagViews];
-        
-        dispatch_async( dispatch_get_main_queue(), ^{
-            // This runs in the UI Thread
-            
-            for(UIView *v in views) {
-                // Add tags to the view we created it for
-                [self.view addSubview:v];
-                [self.view bringSubviewToFront:v];
-            }
-            
-        });
-    });*/
-    // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning {

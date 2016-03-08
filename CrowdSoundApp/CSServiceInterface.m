@@ -60,7 +60,10 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     
     NSMutableArray *queue = [[NSMutableArray alloc]init];
     
-    [_service getQueueWithRequest:[CSGetQueueRequest message] eventHandler:^(BOOL done, CSGetQueueResponse *response, NSError *error) {
+    CSGetQueueRequest *request = [CSGetQueueRequest message];
+    request.userId = [Helper getUserId];
+    
+    [_service getQueueWithRequest:request eventHandler:^(BOOL done, CSGetQueueResponse *response, NSError *error) {
         if (done) {
             NSLog(@"Stream complete");
             if (!error)

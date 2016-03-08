@@ -20,7 +20,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor blackColor];
-    
+    [self setTitle:@"Current Playlist"];
     _typesOfScrapers = @[@"Phone Music App", @"Spotify Favourites"];
     
     _csInterface = [CSServiceInterface sharedInstance];
