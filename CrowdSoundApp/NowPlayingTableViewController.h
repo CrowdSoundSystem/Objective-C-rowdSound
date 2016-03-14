@@ -7,7 +7,6 @@
 
 @property (strong, nonatomic) NSString *sessionName;
 @property (strong, nonatomic) NSNumber *numberOfUsersInSession;
-@property (strong, nonatomic) NSMutableDictionary *songsWithVotes;
 @property (strong, nonatomic) NSTimer *timer;
 
 - (void) voteOccurredOnSong: (NSString *)songName andArtist: (NSString *)artist withValue: (BOOL)value;

@@ -18,4 +18,7 @@ target 'CrowdSoundApp' do
   pod 'RNActivityView'
   pod 'CSStickyHeaderFlowLayout'
   pod 'RESideMenu'
+  pod 'TSValidatedTextField'
+  pod 'KBRoundedButton'
+  pod 'BEMCheckBox'
 end

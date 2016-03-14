@@ -20,7 +20,7 @@
     node.labelNode.text = text;
     node.labelNode.position = CGPointZero;
     node.labelNode.fontColor = [SKColor blackColor];
-    node.labelNode.fontSize = 12;
+    node.labelNode.fontSize = 10;
     node.labelNode.userInteractionEnabled = false;
     node.labelNode.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     node.labelNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;

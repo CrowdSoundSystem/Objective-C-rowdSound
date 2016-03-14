@@ -15,21 +15,27 @@
 
 @implementation CSServiceInterface
 
-static NSString * const kHostAddress = @"cs.ephyra.io:50051";
+static NSString * const defaultHostAddress = @"cs.ephyra.io:50051";
+static CSServiceInterface *sharedServiceInterface;
 
 + (id)sharedInstance {
-    static CSServiceInterface *sharedServiceInterface = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedServiceInterface = [[self alloc] init];
-    });
+    if (sharedServiceInterface == nil) {
+        sharedServiceInterface = [[CSServiceInterface alloc]initWithHostAddress:defaultHostAddress];
+    }
     return sharedServiceInterface;
 }
 
-- (id)init {
++ (id)sharedInstanceWithDynamicHostAddr: (NSString *) hostAddr {
+    if (sharedServiceInterface == nil) {
+        sharedServiceInterface = [[CSServiceInterface alloc]initWithHostAddress:hostAddr];
+    }
+    return sharedServiceInterface;
+}
+
+- (id)initWithHostAddress: (NSString *)hostAddr {
     if (self = [super init]) {
-        [GRPCCall useInsecureConnectionsForHost:kHostAddress];
-        _service = [[CSCrowdSound alloc] initWithHost:kHostAddress];
+        [GRPCCall useInsecureConnectionsForHost:hostAddr];
+        _service = [[CSCrowdSound alloc] initWithHost:hostAddr];
     }
     return self;
 }
@@ -37,7 +43,6 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
 -(BFTask *) getSessionData {
     
     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
-    
     
     [_service getSessionDataWithRequest:[CSGetSessionDataRequest message] handler:^(CSGetSessionDataResponse *response, NSError *error) {
         
@@ -83,6 +88,26 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
                 [item setIsPlaying:response.isPlaying];
                 [queue addObject:item];
             }
+        }
+    }];
+    
+    return task.task;
+}
+
+- (BFTask *) getIsPlaying {
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    [_service getPlayingWithRequest:[CSGetPlayingRequest message] handler:^(CSGetPlayingResponse *response, NSError *error) {
+        if (!error) {
+            NowPlayingSongItem *item = [[NowPlayingSongItem alloc]init];
+            Song *song = [[Song alloc]init];
+            [song setName:response.name];
+            [song setArtists:[[NSMutableArray alloc]initWithArray:@[response.artist]]];
+            [item setSong:song];
+            [task setResult:item];
+        } else {
+            [task setError:error];
+            NSLog(@"There was an error: %@", error);
         }
     }];
     
@@ -137,8 +162,23 @@ static NSString * const kHostAddress = @"cs.ephyra.io:50051";
     }];
     
     return task.task;
+}
+
+- (BFTask *)voteToSkip {
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
     
-    return nil;
+    CSVoteSkipRequest *request = [CSVoteSkipRequest message];
+    request.userId = [Helper getUserId];
+    
+    [_service voteSkipWithRequest:request handler:^(CSVoteSkipResponse *response, NSError *error) {
+        if (error) {
+            [task setError:error];
+            NSLog(@"Error with vote skip, %@", error);
+        } else {
+            [task setResult:response];
+        }
+    }];
+    return task.task;
 }
 
 - (BFTask *) getTrendingArtists {

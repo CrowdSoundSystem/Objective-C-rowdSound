@@ -23,6 +23,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(showMenuViewController)];
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
     [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     // Do any additional setup after loading the view.
 }
 
@@ -64,6 +65,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenuViewController)];
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
     [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     // Do any additional setup after loading the view.
 }
 
@@ -103,6 +105,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenuViewController)];
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
     [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     // Do any additional setup after loading the view.
 }
 

@@ -1,16 +1,17 @@
 PODS:
+  - BEMCheckBox (1.2.0)
   - Bolts (1.6.0):
     - Bolts/AppLinks (= 1.6.0)
     - Bolts/Tasks (= 1.6.0)
   - Bolts/AppLinks (1.6.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.6.0)
-  - CrowdSound (0.0.5):
-    - CrowdSound/Messages (= 0.0.5)
-    - CrowdSound/Services (= 0.0.5)
-  - CrowdSound/Messages (0.0.5):
+  - CrowdSound (0.0.6):
+    - CrowdSound/Messages (= 0.0.6)
+    - CrowdSound/Services (= 0.0.6)
+  - CrowdSound/Messages (0.0.6):
     - Protobuf (~> 3.0.0-alpha-4)
-  - CrowdSound/Services (0.0.5):
+  - CrowdSound/Services (0.0.6):
     - CrowdSound/Messages
     - gRPC (~> 0.11)
   - CSStickyHeaderFlowLayout (0.2.10)
@@ -31,22 +32,27 @@ PODS:
     - gRPC/RxLibrary
     - Protobuf (~> 3.0.0-alpha-4)
   - gRPC/RxLibrary (0.11.0)
+  - KBRoundedButton (1.0.4)
   - OpenSSL (1.0.207)
   - Protobuf (3.0.0-alpha-4)
   - RESideMenu (4.0.7)
   - RNActivityView (0.0.6)
+  - TSValidatedTextField (1.0.0)
   - TWMessageBarManager (1.8.1)
 
 DEPENDENCIES:
+  - BEMCheckBox
   - Bolts
   - CrowdSound (from `.`)
   - CSStickyHeaderFlowLayout
   - CZPicker
   - DRCellSlideGestureRecognizer
   - gRPC (from `lib/grpc`)
+  - KBRoundedButton
   - Protobuf (from `lib/grpc/third_party/protobuf`)
   - RESideMenu
   - RNActivityView
+  - TSValidatedTextField
   - TWMessageBarManager
 
 EXTERNAL SOURCES:
@@ -58,16 +64,19 @@ EXTERNAL SOURCES:
     :path: lib/grpc/third_party/protobuf
 
 SPEC CHECKSUMS:
+  BEMCheckBox: fcfbbf42cf23d38fbb605c72f63db9ae82d6acd3
   Bolts: f52a250053bb517ca874523c3913776359ab3def
-  CrowdSound: 072d125cd9275af942837540eb5bb63557fb6e8a
+  CrowdSound: 4e9f59a0c0dbd798d78945b36587897cc3dcb76f
   CSStickyHeaderFlowLayout: 5366582779d8b7c9ba9b9cc729c218cc23888776
   CZPicker: c5dc1f70c4fe48e1a5a06c0f45a468295c47e3a3
   DRCellSlideGestureRecognizer: c7213100aa8b1a54b3388c2e73894039058c7795
   gRPC: 62a6e6d10f1ecea1b2ee4827494b8438ad97e6a5
+  KBRoundedButton: 8fde755b8f1df3ddd3c3c280d9b27ce04ab55d00
   OpenSSL: 26eb46b2836c0dade24fa53276b552f14c6eece1
   Protobuf: b702b9d429e03afcd01aa86ac81e771bb472f18a
   RESideMenu: f24c508404b49c667344c54aba7e590883533958
   RNActivityView: 889126dc047fc6fa10aac88a13ebff677c53bf82
+  TSValidatedTextField: c6ce2cba5ee58b3b9d39faa71e9ddb72fe09a3df
   TWMessageBarManager: fd84e7948ba7968a2b5d9454859135761214ec56
 
 COCOAPODS: 0.39.0

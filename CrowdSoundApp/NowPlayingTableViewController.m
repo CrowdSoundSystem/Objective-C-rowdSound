@@ -1,7 +1,6 @@
 
 
 #import "NowPlayingTableViewController.h"
-#import "CSServiceInterface.h"
 #import "NativeDataScraper.h"
 #import "SpotifyDataScraper.h"
 #import "UIView+RNActivityView.h"
@@ -9,9 +8,7 @@
 #import "DRCellSlideGestureRecognizer.h"
 
 @interface NowPlayingTableViewController ()
-@property (strong) CSServiceInterface *csInterface;
 @property (strong) NSArray* typesOfScrapers;
-@property (strong) NSArray* currentQueue;
 @end
 
 @implementation NowPlayingTableViewController
@@ -19,11 +16,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.cellId = @"queueCell";
+    
     self.view.backgroundColor = [UIColor blackColor];
     [self setTitle:@"Current Playlist"];
     _typesOfScrapers = @[@"Phone Music App", @"Spotify Favourites"];
-    
-    _csInterface = [CSServiceInterface sharedInstance];
     
     [self updateQueueData];
     
@@ -35,7 +32,7 @@
     [self.refreshControl addTarget:self action:@selector(refreshQueueData) forControlEvents:UIControlEventValueChanged];
     
     
-    // Set up scraper types view
+    /*// Set up scraper types view
     
     CZPickerView *picker = [[CZPickerView alloc] initWithHeaderTitle:@"Send Music Data From..."
                                                    cancelButtonTitle:@"Cancel"
@@ -49,7 +46,7 @@
     picker.delegate = self;
     picker.dataSource = self;
     
-    [NSTimer scheduledTimerWithTimeInterval:1.0f target:picker selector:@selector(show) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:1.0f target:picker selector:@selector(show) userInfo:nil repeats:NO];*/
     
     self.tableView.rowHeight = 80;
     
@@ -64,10 +61,23 @@
 }
 
 - (BFTask *) updateQueueData {
-    return [[_csInterface getSongQueue] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+    return [[self.csInterface getSongQueue] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         if (!task.error) {
-            self.currentQueue = task.result;
-            [self addSongsToVotesList:task.result];
+            NSMutableArray *queueWithPlaying = task.result;
+            int index = -1;
+            
+            for (int i = 0; i < queueWithPlaying.count; i++) {
+                if ([(NowPlayingSongItem*)queueWithPlaying[i] isPlaying]) {
+                    index = i;
+                }
+            }
+            
+            // Remove song that is currently playing
+            if (index != -1) {
+                [queueWithPlaying removeObjectAtIndex:(NSUInteger)index];
+            }
+            self.songsForTableView = queueWithPlaying;
+            //[self.votesCache SyncVotesCacheWithCurrentQueue:self.songsForTableView];
             
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -99,7 +109,7 @@
 }
 
 - (BFTask *) updateSessionData {
-    return [[_csInterface getSessionData] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+    return [[self.csInterface getSessionData] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         if (!task.error) {
             SessionData *data =(SessionData *)task.result;
             _sessionName = data.sessionName;
@@ -115,7 +125,7 @@
     NativeDataScraper *scraper = [[NativeDataScraper alloc]init];
     NSArray *songs = [scraper scrapeMusicDataWithRealData:YES];
     
-    [[_csInterface sendSongs:songs] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+    [[self.csInterface sendSongs:songs] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         if (task.error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Error" description:@"Error sending phone music data" type:TWMessageBarMessageTypeError];
@@ -129,7 +139,7 @@
     }];
 }
 
-- (void) authenticateWithSpotify {
+/*- (void) authenticateWithSpotify {
     SpotifyDataScraper *scraper = [[SpotifyDataScraper alloc]init];
     [self.view showActivityViewWithLabel:@"Loading"];
     [scraper authenticateSpotify];
@@ -140,7 +150,7 @@
     SpotifyDataScraper *scraper = [[SpotifyDataScraper alloc]init];
     [[[scraper scrapeAllSpotifyFavourites] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         if (!task.error) {
-            return [_csInterface sendSongs:task.result];
+            return [self.csInterface sendSongs:task.result];
         }
         return task;
     }] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
@@ -155,70 +165,7 @@
         }
         return nil;
     }];
-}
-
-#pragma mark Voting Methods
-
-- (void) addSongsToVotesList: (NSArray *)currentSongList {
-    //Initialize songsWithVotes array with all songs voting abilities set to visible
-    if (!_songsWithVotes) {
-        NSMutableArray *valueArray = [[NSMutableArray alloc]init];
-        NSMutableArray *keysArray = [[NSMutableArray alloc]init];
-        for (int i = 0; i < currentSongList.count; i ++) {
-            NowPlayingSongItem *item = [currentSongList objectAtIndex:i];
-            NSString *key = [self createKeyForSongsWithVotesWithSong:item.song.name andArtist:(NSString *)item.song.artists[0]];
-            [keysArray addObject:key];
-            [valueArray addObject:[NSNumber numberWithBool:YES]];
-        }
-        _songsWithVotes = [[NSMutableDictionary alloc]initWithObjects:valueArray forKeys:keysArray];
-        
-        return;
-    }
-    
-    // First add the songs that aren't in the songsWithVotes list
-    NSMutableSet *songSet = [[NSMutableSet alloc]init];
-    
-    for (int i = 0; i < currentSongList.count; i++) {
-        NowPlayingSongItem *item = [currentSongList objectAtIndex:i];
-        NSString *key = [self createKeyForSongsWithVotesWithSong:item.song.name andArtist:(NSString *)item.song.artists[0]];
-        [songSet addObject:key];
-        if (![_songsWithVotes objectForKey:key]) {
-            [_songsWithVotes setObject:[NSNumber numberWithBool:YES] forKey:key];
-        }
-    }
-    
-    // Second delete the songs that are in the songsWithVotes list but not in the current queue anymore.
-    
-    NSArray *keysArray = _songsWithVotes.allKeys;
-    NSString *keyToDelete;
-    
-    for (int i = 0; i < keysArray.count; i++) {
-        if (![songSet containsObject:[keysArray objectAtIndex:i]]) {
-            keyToDelete = [keysArray objectAtIndex:i];
-            break;
-        }
-    }
-    [_songsWithVotes removeObjectForKey:keyToDelete];
-}
-
-- (NSString *) createKeyForSongsWithVotesWithSong: (NSString *)songName andArtist: (NSString *) artist {
-    //Comma is the current delimiter clearly
-    return [songName stringByAppendingString:[@"," stringByAppendingString:artist]];
-}
-
-
-- (void) voteOccurredOnSong: (NSString *)songName andArtist: (NSString *)artist withValue: (BOOL)value {
-    [[_csInterface voteForSong:songName withArtist:artist withValue:value] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
-        if (!task.error) {
-            [_songsWithVotes setObject:[NSNumber numberWithBool:NO] forKey:[self createKeyForSongsWithVotesWithSong:songName andArtist:artist]];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
-        return nil;
-    }];
-}
-
+}*/
 
 #pragma mark - Table view data source
 
@@ -227,38 +174,15 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _currentQueue.count;
+    return self.songsForTableView.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"queueCell" forIndexPath:indexPath];
     
-    DRCellSlideGestureRecognizer *slideGestureRecognizer = [DRCellSlideGestureRecognizer new];
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    DRCellSlideAction *upVoteAction = [DRCellSlideAction actionForFraction:0.25];
-    upVoteAction.icon = [UIImage imageNamed:@"Thumb Up-30"];
-    upVoteAction.activeBackgroundColor = [UIColor greenColor];
-    upVoteAction.inactiveBackgroundColor = [UIColor blackColor];
-    upVoteAction.elasticity = 40;
-    
-    DRCellSlideAction *downVoteAction = [DRCellSlideAction actionForFraction:0.5];
-    downVoteAction.icon = [UIImage imageNamed:@"Thumbs Down-30"];
-    downVoteAction.activeBackgroundColor = [UIColor redColor];
-    downVoteAction.inactiveBackgroundColor = [UIColor blackColor];
-    downVoteAction.elasticity = 40;
-    
-    upVoteAction.behavior = DRCellSlideActionPushBehavior;
-    upVoteAction.didTriggerBlock = [self upVoteCallback];
-    
-    downVoteAction.behavior = DRCellSlideActionPushBehavior;
-    downVoteAction.didTriggerBlock = [self downVoteCallback];
-    
-    [slideGestureRecognizer addActions:@[upVoteAction, downVoteAction]];
-    
-    [cell addGestureRecognizer:slideGestureRecognizer];
-    
-    NowPlayingSongItem *item = _currentQueue[indexPath.row];
+    NowPlayingSongItem *item = self.songsForTableView[indexPath.row];
     
     cell.textLabel.text = item.song.name;
     cell.detailTextLabel.text = item.song.artists[0];
@@ -266,8 +190,6 @@
     
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.detailTextLabel.textColor = [UIColor whiteColor];
-    
-    // Configure the cell...
     
     return cell;
 }
@@ -300,7 +222,7 @@ didConfirmWithItemsAtRows:(NSArray *)rows {
                 [self scrapeAndSendNativeMusicData];
                 break;
             case 1:
-                [self authenticateWithSpotify];
+                //[self authenticateWithSpotify];
                 break;
             default:
                 break;
@@ -330,18 +252,18 @@ didConfirmWithItemsAtRows:(NSArray *)rows {
     return image;
 }
 
-#pragma mark YMTableView Delegates
+#pragma mark DRCell Callbacks
 
 - (DRCellSlideActionBlock)upVoteCallback {
     return ^(UITableView *tableView, NSIndexPath *indexPath) {
-        NowPlayingSongItem *item = _currentQueue[indexPath.row];
+        NowPlayingSongItem *item = self.songsForTableView[indexPath.row];
         [self voteOccurredOnSong:item.song.name andArtist:item.song.artists[0] withValue:true];
     };
 }
 
 - (DRCellSlideActionBlock)downVoteCallback {
     return ^(UITableView *tableView, NSIndexPath *indexPath) {
-        NowPlayingSongItem *item = _currentQueue[indexPath.row];
+        NowPlayingSongItem *item = self.songsForTableView[indexPath.row];
         [self voteOccurredOnSong:item.song.name andArtist:item.song.artists[0] withValue:false];
     };
 }

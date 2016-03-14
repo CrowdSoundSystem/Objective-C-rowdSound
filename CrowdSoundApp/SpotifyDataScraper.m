@@ -28,9 +28,9 @@
         [[SPTAuth defaultInstance] handleAuthCallbackWithTriggeredAuthURL:url callback:^(NSError *error, SPTSession *session) {
             if (error != nil) {
                 NSLog(@"*** Auth error: %@", error);
-                return;
+            } else {
+                NSLog(@"Successfully authenticated, access Token is: %@", session.accessToken);
             }
-            NSLog(@"Successfully authenticated, access Token is: %@", session.accessToken);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticatedSpotify" object:nil];
         }];
         return YES;
@@ -46,7 +46,8 @@
     
     if (!session) {
         NSLog(@"Session is nil and need to authenticate again");
-        return nil;
+        [task setError:[[NSError alloc] initWithDomain:@"Spotify-Auth" code:1 userInfo:nil]];
+        return task.task;
     }
     
     [self fetchAllSavedTracksWithSession:session callback:^(NSError * error, NSArray * savedTracks) {

@@ -19,6 +19,11 @@
 		C71948261C3047AB0075FEF8 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C71948251C3047AB0075FEF8 /* SettingsViewController.m */; };
 		C71948291C30771D0075FEF8 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C71948281C30771D0075FEF8 /* MenuViewController.m */; };
 		C719482E1C3090CE0075FEF8 /* TrendingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C719482D1C3090CE0075FEF8 /* TrendingViewController.m */; };
+		C73C94C61C8E771C00402228 /* NowPlayingBarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C73C94C51C8E771C00402228 /* NowPlayingBarTableViewController.m */; };
+		C73C94C91C8E83F400402228 /* BasePlayingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C73C94C81C8E83F400402228 /* BasePlayingTableViewController.m */; };
+		C73C94CC1C8FCE0C00402228 /* VotesCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C73C94CB1C8FCE0B00402228 /* VotesCache.m */; };
+		C73C94D21C963C3200402228 /* IPAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C73C94D11C963C3200402228 /* IPAddressViewController.m */; };
+		C73C94D51C965E0300402228 /* SendMusicDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C73C94D41C965E0300402228 /* SendMusicDataViewController.m */; };
 		C74E5A701C7E78B000216A22 /* SpotifyDataScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = C74E5A6F1C7E78B000216A22 /* SpotifyDataScraper.m */; };
 		C77E4F531C868E4200E2DA88 /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = C77E4F521C868E4200E2DA88 /* Helper.m */; };
 		C77E4F561C8792D700E2DA88 /* TrendingArtist.m in Sources */ = {isa = PBXBuildFile; fileRef = C77E4F551C8792D700E2DA88 /* TrendingArtist.m */; };
@@ -26,7 +31,6 @@
 		C77E4F611C8CDC1D00E2DA88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C77E4F601C8CDC1D00E2DA88 /* Assets.xcassets */; };
 		C7C6A14E1C4D946700A2486F /* CSServiceInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A14D1C4D946700A2486F /* CSServiceInterface.m */; };
 		C7C6A1511C4D98A400A2486F /* NowPlayingSongItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A1501C4D98A400A2486F /* NowPlayingSongItem.m */; };
-		C7C6A1541C4DA6D000A2486F /* ExpBackOffTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A1531C4DA6D000A2486F /* ExpBackOffTimer.m */; };
 		C7C6A15B1C4DE6F600A2486F /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A15A1C4DE6F600A2486F /* Song.m */; };
 		C7C6A15E1C4DE93500A2486F /* NativeDataScraper.m in Sources */ = {isa = PBXBuildFile; fileRef = C7C6A15D1C4DE93500A2486F /* NativeDataScraper.m */; };
 		C7C6A1601C4DF62A00A2486F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C6A15F1C4DF62A00A2486F /* CoreGraphics.framework */; };
@@ -82,6 +86,16 @@
 		C71948281C30771D0075FEF8 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		C719482C1C3090CE0075FEF8 /* TrendingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrendingViewController.h; sourceTree = "<group>"; };
 		C719482D1C3090CE0075FEF8 /* TrendingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrendingViewController.m; sourceTree = "<group>"; };
+		C73C94C41C8E771C00402228 /* NowPlayingBarTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NowPlayingBarTableViewController.h; sourceTree = "<group>"; };
+		C73C94C51C8E771C00402228 /* NowPlayingBarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NowPlayingBarTableViewController.m; sourceTree = "<group>"; };
+		C73C94C71C8E83F400402228 /* BasePlayingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasePlayingTableViewController.h; sourceTree = "<group>"; };
+		C73C94C81C8E83F400402228 /* BasePlayingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasePlayingTableViewController.m; sourceTree = "<group>"; };
+		C73C94CA1C8FCE0B00402228 /* VotesCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotesCache.h; sourceTree = "<group>"; };
+		C73C94CB1C8FCE0B00402228 /* VotesCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VotesCache.m; sourceTree = "<group>"; };
+		C73C94D01C963C3200402228 /* IPAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPAddressViewController.h; sourceTree = "<group>"; };
+		C73C94D11C963C3200402228 /* IPAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPAddressViewController.m; sourceTree = "<group>"; };
+		C73C94D31C965E0300402228 /* SendMusicDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendMusicDataViewController.h; sourceTree = "<group>"; };
+		C73C94D41C965E0300402228 /* SendMusicDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMusicDataViewController.m; sourceTree = "<group>"; };
 		C74E5A6E1C7E78B000216A22 /* SpotifyDataScraper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifyDataScraper.h; sourceTree = "<group>"; };
 		C74E5A6F1C7E78B000216A22 /* SpotifyDataScraper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifyDataScraper.m; sourceTree = "<group>"; };
 		C77E4F511C868E4200E2DA88 /* Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helper.h; sourceTree = "<group>"; };
@@ -95,8 +109,6 @@
 		C7C6A14D1C4D946700A2486F /* CSServiceInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSServiceInterface.m; sourceTree = "<group>"; };
 		C7C6A14F1C4D98A400A2486F /* NowPlayingSongItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NowPlayingSongItem.h; sourceTree = "<group>"; };
 		C7C6A1501C4D98A400A2486F /* NowPlayingSongItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NowPlayingSongItem.m; sourceTree = "<group>"; };
-		C7C6A1521C4DA6D000A2486F /* ExpBackOffTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpBackOffTimer.h; sourceTree = "<group>"; };
-		C7C6A1531C4DA6D000A2486F /* ExpBackOffTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpBackOffTimer.m; sourceTree = "<group>"; };
 		C7C6A1591C4DE6F600A2486F /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
 		C7C6A15A1C4DE6F600A2486F /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
 		C7C6A15C1C4DE93500A2486F /* NativeDataScraper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeDataScraper.h; sourceTree = "<group>"; };
@@ -185,29 +197,23 @@
 			isa = PBXGroup;
 			children = (
 				C71947D51C2EFB610075FEF8 /* AppDelegate.h */,
-				C7E9CE911C83FBB800BBF152 /* BubbleScene.h */,
-				C7E9CE921C83FBB800BBF152 /* BubbleScene.m */,
+				C71947D61C2EFB610075FEF8 /* AppDelegate.m */,
 				C77E4F511C868E4200E2DA88 /* Helper.h */,
 				C77E4F521C868E4200E2DA88 /* Helper.m */,
-				C7E9CE871C821BD400BBF152 /* SIFloatingNode.h */,
-				C7E9CE881C821BD400BBF152 /* SIFloatingNode.m */,
-				C7E9CE8A1C827B7000BBF152 /* SIFloatingCollectionScene.h */,
-				C7E9CE8B1C827B7000BBF152 /* SIFloatingCollectionScene.m */,
-				C7E9CE8E1C837ACF00BBF152 /* BubbleNode.h */,
-				C7E9CE8F1C837AD000BBF152 /* BubbleNode.m */,
-				C71947D61C2EFB610075FEF8 /* AppDelegate.m */,
+				C73C94CA1C8FCE0B00402228 /* VotesCache.h */,
+				C73C94CB1C8FCE0B00402228 /* VotesCache.m */,
+				C7C6A14C1C4D946700A2486F /* CSServiceInterface.h */,
+				C7C6A14D1C4D946700A2486F /* CSServiceInterface.m */,
 				C71947DB1C2EFB610075FEF8 /* Main.storyboard */,
 				C71947E01C2EFB610075FEF8 /* LaunchScreen.storyboard */,
 				C71947E31C2EFB610075FEF8 /* Info.plist */,
+				C73C94D61C9675DA00402228 /* Intro View Controllers */,
+				C73C94D71C9675EC00402228 /* WordCloud */,
 				C71947D21C2EFB610075FEF8 /* Supporting Files */,
 				C7C6A1451C4D8FDB00A2486F /* Nav Menu View Controllers */,
-				C7C6A1491C4D93DA00A2486F /* Nav Menu Item View Controllers */,
-				C7C6A14C1C4D946700A2486F /* CSServiceInterface.h */,
-				C7C6A14D1C4D946700A2486F /* CSServiceInterface.m */,
+				C7C6A1491C4D93DA00A2486F /* Main View Controllers */,
 				C7E9CE8D1C82956D00BBF152 /* Scrapers */,
 				C7C6A1821C6AC5C900A2486F /* Models */,
-				C7C6A1521C4DA6D000A2486F /* ExpBackOffTimer.h */,
-				C7C6A1531C4DA6D000A2486F /* ExpBackOffTimer.m */,
 			);
 			path = CrowdSoundApp;
 			sourceTree = "<group>";
@@ -238,6 +244,32 @@
 			path = CrowdSoundAppUITests;
 			sourceTree = "<group>";
 		};
+		C73C94D61C9675DA00402228 /* Intro View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C73C94D31C965E0300402228 /* SendMusicDataViewController.h */,
+				C73C94D41C965E0300402228 /* SendMusicDataViewController.m */,
+				C73C94D01C963C3200402228 /* IPAddressViewController.h */,
+				C73C94D11C963C3200402228 /* IPAddressViewController.m */,
+			);
+			name = "Intro View Controllers";
+			sourceTree = "<group>";
+		};
+		C73C94D71C9675EC00402228 /* WordCloud */ = {
+			isa = PBXGroup;
+			children = (
+				C7E9CE911C83FBB800BBF152 /* BubbleScene.h */,
+				C7E9CE921C83FBB800BBF152 /* BubbleScene.m */,
+				C7E9CE871C821BD400BBF152 /* SIFloatingNode.h */,
+				C7E9CE881C821BD400BBF152 /* SIFloatingNode.m */,
+				C7E9CE8A1C827B7000BBF152 /* SIFloatingCollectionScene.h */,
+				C7E9CE8B1C827B7000BBF152 /* SIFloatingCollectionScene.m */,
+				C7E9CE8E1C837ACF00BBF152 /* BubbleNode.h */,
+				C7E9CE8F1C837AD000BBF152 /* BubbleNode.m */,
+			);
+			name = WordCloud;
+			sourceTree = "<group>";
+		};
 		C7C6A1451C4D8FDB00A2486F /* Nav Menu View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,7 +281,7 @@
 			name = "Nav Menu View Controllers";
 			sourceTree = "<group>";
 		};
-		C7C6A1491C4D93DA00A2486F /* Nav Menu Item View Controllers */ = {
+		C7C6A1491C4D93DA00A2486F /* Main View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				C77E4F5A1C8CC4D900E2DA88 /* NowPlayingTableViewController.h */,
@@ -258,10 +290,14 @@
 				C71948221C3043E40075FEF8 /* BaseViewController.m */,
 				C71948241C3047AB0075FEF8 /* SettingsViewController.h */,
 				C71948251C3047AB0075FEF8 /* SettingsViewController.m */,
+				C73C94C41C8E771C00402228 /* NowPlayingBarTableViewController.h */,
+				C73C94C51C8E771C00402228 /* NowPlayingBarTableViewController.m */,
+				C73C94C71C8E83F400402228 /* BasePlayingTableViewController.h */,
+				C73C94C81C8E83F400402228 /* BasePlayingTableViewController.m */,
 				C719482C1C3090CE0075FEF8 /* TrendingViewController.h */,
 				C719482D1C3090CE0075FEF8 /* TrendingViewController.m */,
 			);
-			name = "Nav Menu Item View Controllers";
+			name = "Main View Controllers";
 			sourceTree = "<group>";
 		};
 		C7C6A1821C6AC5C900A2486F /* Models */ = {
@@ -488,19 +524,23 @@
 				C71947D71C2EFB610075FEF8 /* AppDelegate.m in Sources */,
 				C7E9CE931C83FBB800BBF152 /* BubbleScene.m in Sources */,
 				C77E4F561C8792D700E2DA88 /* TrendingArtist.m in Sources */,
+				C73C94CC1C8FCE0C00402228 /* VotesCache.m in Sources */,
 				C7C6A15E1C4DE93500A2486F /* NativeDataScraper.m in Sources */,
+				C73C94D51C965E0300402228 /* SendMusicDataViewController.m in Sources */,
 				C719481D1C303B450075FEF8 /* RootViewController.m in Sources */,
+				C73C94C91C8E83F400402228 /* BasePlayingTableViewController.m in Sources */,
 				C71947D41C2EFB610075FEF8 /* main.m in Sources */,
-				C7C6A1541C4DA6D000A2486F /* ExpBackOffTimer.m in Sources */,
 				C7E9CE901C837AD000BBF152 /* BubbleNode.m in Sources */,
 				C77E4F531C868E4200E2DA88 /* Helper.m in Sources */,
 				C77E4F5C1C8CC4D900E2DA88 /* NowPlayingTableViewController.m in Sources */,
 				C7C6A1811C6A9D8A00A2486F /* SessionData.m in Sources */,
+				C73C94D21C963C3200402228 /* IPAddressViewController.m in Sources */,
 				C71948291C30771D0075FEF8 /* MenuViewController.m in Sources */,
 				C74E5A701C7E78B000216A22 /* SpotifyDataScraper.m in Sources */,
 				C7E9CE891C821BD400BBF152 /* SIFloatingNode.m in Sources */,
 				C7C6A1511C4D98A400A2486F /* NowPlayingSongItem.m in Sources */,
 				C719482E1C3090CE0075FEF8 /* TrendingViewController.m in Sources */,
+				C73C94C61C8E771C00402228 /* NowPlayingBarTableViewController.m in Sources */,
 				C7E9CE8C1C827B7000BBF152 /* SIFloatingCollectionScene.m in Sources */,
 				C7C6A14E1C4D946700A2486F /* CSServiceInterface.m in Sources */,
 				C71948261C3047AB0075FEF8 /* SettingsViewController.m in Sources */,
