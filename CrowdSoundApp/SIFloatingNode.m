@@ -9,7 +9,7 @@
         _state = SIFloatingNodeStateNormal;
         _previousState = SIFloatingNodeStateNormal;
         _removingKey = @"action.removing";
-        _selectingKey = @"action.selecting";
+        _tappingKey = @"action.tapped";
         _normalizeKey = @"action.normalize";
     }
     return self;
@@ -33,9 +33,9 @@
             action = [self normalizeAnimation];
             actionKey = _normalizeKey;
             break;
-        case SIFloatingNodeStateSelected:
-            action = [self selectingAnimation];
-            actionKey = _selectingKey;
+        case SIFloatingNodeStateTapped:
+            action = [self tappingAnimation];
+            actionKey = _tappingKey;
             break;
         case SIFloatingNodeStateRemoving:
             action = [self removingAnimation];
@@ -61,7 +61,8 @@
     }
 }
 
--(SKAction*) selectingAnimation { return nil; }
+-(SKAction*) tappingAnimation { return nil; }
+-(SKAction*) longPressingAnimation { return nil; }
 -(SKAction*) normalizeAnimation { return nil; }
 -(SKAction*) removeAnimation { return nil; }
 -(SKAction*) removingAnimation { return nil; }

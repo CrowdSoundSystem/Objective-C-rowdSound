@@ -4,6 +4,8 @@
 
 @implementation BubbleNode
 
+static int const maxTextLength = 8;
+
 + (BubbleNode *) instantiateWithText: (NSString*)text andRadius: (int)radius {
     BubbleNode *node = [BubbleNode shapeNodeWithCircleOfRadius:radius];
     [self configureNode:node withText:text];
@@ -16,10 +18,17 @@
     node.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:radius + 1.5];
     node.fillColor = [SKColor whiteColor];
     node.strokeColor = node.fillColor;
+    NSMutableString *shortenedString  = [[NSMutableString alloc]initWithString:text];
     
-    node.labelNode.text = text;
+    if (text.length > maxTextLength) {
+        shortenedString = [[NSMutableString alloc]initWithString:[text substringToIndex:maxTextLength]];
+        [shortenedString appendString:@"..."];
+    }
+    
+    node.labelNode.text = shortenedString;
     node.labelNode.position = CGPointZero;
     node.labelNode.fontColor = [SKColor blackColor];
+    node.labelNode.fontName = @"AvenirNext-Bold";
     node.labelNode.fontSize = 10;
     node.labelNode.userInteractionEnabled = false;
     node.labelNode.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
@@ -34,7 +43,7 @@
     return self;
 }
 
-- (SKAction *) selectingAnimation {
+- (SKAction *) tappingAnimation {
     [self removeActionForKey:self.removingKey];
     return [SKAction scaleTo:1.3 duration:0.2];
 }

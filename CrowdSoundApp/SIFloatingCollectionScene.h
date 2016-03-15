@@ -34,6 +34,8 @@ typedef enum SIFloatingCollectionSceneMode {SIFloatingCollectionSceneModeNormal,
 
 - (CGFloat)distanceBetweenFirstPoint: (CGPoint) firstPoint andSecondPoint: (CGPoint)secondPoint;
 - (void) removeFloatingNodeAtIndex: (int)index;
+- (NSArray*) indexOfSelectedNodes;
+- (SIFloatingNode *) floatingNodeAtIndex: (int)index;
 
 @end
 

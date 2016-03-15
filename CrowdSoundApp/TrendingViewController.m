@@ -12,6 +12,7 @@
 @interface TrendingViewController()
 
 @property (strong) CSServiceInterface *csInterface;
+@property (strong) BubbleScene *scene;
 
 @end
 
@@ -23,6 +24,8 @@
     _csInterface = [CSServiceInterface sharedInstance];
     
     [self setTitle:@"Trending Artists"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Vote" style:UIBarButtonItemStylePlain target:self action:@selector(performVote)];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
     
     CGFloat navBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
     CGFloat statusBarHeight = CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]);
@@ -41,10 +44,10 @@
     [self.view addSubview:skView];
     
     
-    BubbleScene *scene = [[BubbleScene alloc]initWithSize:skView.bounds.size];
-    scene.topOffset = navBarHeight + statusBarHeight;
-    scene.bottomOffset = 200;
-    [skView presentScene:scene];
+    _scene = [[BubbleScene alloc]initWithSize:skView.bounds.size];
+    _scene.topOffset = navBarHeight + statusBarHeight;
+    _scene.bottomOffset = 200;
+    [skView presentScene:_scene];
     
     [[_csInterface getTrendingArtists] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         if (!task.error) {
@@ -61,13 +64,13 @@
             if (highestWeight == 0) {
                 for (int i = 0; i < artists.count; i++) {
                     BubbleNode *node = [BubbleNode instantiateWithText:[(TrendingArtist*)artists[i] name]andRadius:(highestWeight * (60 - 30) + 30)];
-                    [scene addChild:node];
+                    [_scene addChild:node];
                 }
             } else if (highestWeight > 0){
                 for (int i = 0; i < artists.count; i++) {
                     double multFactor = [[(TrendingArtist*)artists[i] weight] intValue]/highestWeight;
                     BubbleNode *node = [BubbleNode instantiateWithText:[(TrendingArtist*)artists[i] name]andRadius:(multFactor * (60 - 30) + 30)];
-                    [scene addChild:node];
+                    [_scene addChild:node];
                 }
             } else {
                 NSLog(@"Error: The highest weight in artist array was -1");
@@ -76,6 +79,17 @@
         return nil;
     }];
     
+}
+
+- (void) performVote {
+    NSArray * indexArray = [_scene indexOfSelectedNodes];
+    NSMutableArray *artistNameArray = [[NSMutableArray alloc]init];
+    
+    //[[_csInterface voteForSong:<#(NSString *)#> withArtist:<#(NSString *)#> withValue:<#(BOOL)#>]]
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Sorry" description:@"Shit hasn't been implemented yet." type:TWMessageBarMessageTypeInfo];
+    });
 }
 
 - (void)didReceiveMemoryWarning {

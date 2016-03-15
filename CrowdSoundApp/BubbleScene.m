@@ -13,7 +13,7 @@
 - (void) configure {
     self.backgroundColor = [SKColor blackColor];
     self.scaleMode = SKSceneScaleModeAspectFill;
-    self.allowMultipleSelection = false;
+    self.allowMultipleSelection = true;
     CGRect bodyFrame = self.frame;
     bodyFrame.size.width = (CGFloat)self.magneticField.minimumRadius;
     bodyFrame.origin.x -= bodyFrame.size.width/2;
@@ -62,7 +62,7 @@
     NSArray *sortedNodes = [self.floatingNodes sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         CGFloat distance1 = [self distanceBetweenFirstPoint:((SIFloatingNode *)obj1).position andSecondPoint:self.magneticField.position];
         CGFloat distance2 = [self distanceBetweenFirstPoint:((SIFloatingNode *)obj2).position andSecondPoint:self.magneticField.position];
-        return (distance1 < distance2 && ((SIFloatingNode *)obj1).state != SIFloatingNodeStateSelected);
+        return (distance1 < distance2 && ((SIFloatingNode *)obj1).state != SIFloatingNodeStateTapped);
     }];
     
     return sortedNodes;
@@ -72,7 +72,7 @@
     SKAction *action = [SKAction runBlock:^{
         int index = (int)[self.floatingNodes indexOfObject:node];
         [self removeFloatingNodeAtIndex:index];
-        if (node.state == SIFloatingNodeStateSelected) {
+        if (node.state == SIFloatingNodeStateTapped) {
             [self throwNode:node toPoint:CGPointMake(self.size.width/2, self.size.height + 40) withCompletionBlock:^{
                 [node removeFromParent];
             }];

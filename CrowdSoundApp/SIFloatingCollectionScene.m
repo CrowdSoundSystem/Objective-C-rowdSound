@@ -7,6 +7,7 @@
 @property CGPoint touchPoint;
 @property NSTimeInterval touchStartedTime;
 @property NSTimeInterval removingStartedTIme;
+@property (strong) UILongPressGestureRecognizer* lpgr;
 
 @end
 
@@ -26,6 +27,12 @@
         _touchStartedTime = -1;
         _removingStartedTIme = -1;
         _floatingNodes = [[NSMutableArray alloc]init];
+        
+        _lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGestures:)];
+        _lpgr.minimumPressDuration = 1.0f;
+        _lpgr.allowableMovement = 100.0f;
+        
+        [self.view addGestureRecognizer:_lpgr];
     }
     return self;
 }
@@ -126,6 +133,18 @@
     _mode = SIFloatingCollectionSceneModeNormal;
 }
 
+- (void)handleLongPressGestures:(UILongPressGestureRecognizer *)sender
+{
+    if ([sender isEqual:self.lpgr]) {
+        if (sender.state == UIGestureRecognizerStateBegan)
+        {
+            _touchPoint = [sender locationInView:self.view];
+            
+        }
+    }
+}
+
+
 - (void) touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     _mode = SIFloatingCollectionSceneModeNormal;
 }
@@ -160,7 +179,7 @@
 - (int) indexOfSelectedNode {
     int index = -1;
     for (int i = 0; i < _floatingNodes.count; i++) {
-        if (((SIFloatingNode*)_floatingNodes[i]).state == SIFloatingNodeStateSelected) {
+        if (((SIFloatingNode*)_floatingNodes[i]).state == SIFloatingNodeStateTapped) {
             index = i;
             break;
         }
@@ -171,7 +190,7 @@
 - (NSArray*) indexOfSelectedNodes {
     NSMutableArray *indexes = [[NSMutableArray alloc]init];
     for (int i = 0; i < _floatingNodes.count; i++) {
-        if (((SIFloatingNode*)_floatingNodes[i]).state == SIFloatingNodeStateSelected) {
+        if (((SIFloatingNode*)_floatingNodes[i]).state == SIFloatingNodeStateTapped) {
             [indexes addObject:[NSNumber numberWithInt:i]];
             break;
         }
@@ -218,13 +237,13 @@
                 if (!_allowMultipleSelection && selectedIndex != -1) {
                     [self updateNodeState:_floatingNodes[selectedIndex]];
                 }
-                node.state = SIFloatingNodeStateSelected;
+                node.state = SIFloatingNodeStateTapped;
                 if (_floatingDelegate) {
                     [_floatingDelegate floatingScene:self didSelectFloatingNodeAtIndex:index];
                 }
             }
             break;
-        case SIFloatingNodeStateSelected:
+        case SIFloatingNodeStateTapped:
             if ([self shouldDeselectNodeAtIndex:index]) {
                 node.state = SIFloatingNodeStateNormal;
                 if (_floatingDelegate) {
