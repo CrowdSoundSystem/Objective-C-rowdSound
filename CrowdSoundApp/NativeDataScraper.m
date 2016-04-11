@@ -12,7 +12,7 @@
     
     if (useRealData) {
         NSDate *methodStart = [NSDate date];
-        MPMediaQuery *everything = [[MPMediaQuery alloc] init];
+        MPMediaQuery *everything = [MPMediaQuery songsQuery];
         
         NSArray *itemsFromGenericQuery = [everything items];
         

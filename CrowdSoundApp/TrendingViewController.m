@@ -2,7 +2,6 @@
 #import "TrendingViewController.h"
 #import <GRPCClient/GRPCCall+Tests.h>
 #import <CrowdsoundService.pbrpc.h>
-#import "BubbleScene.h"
 #import "CSServiceInterface.h"
 
 @interface TrendingViewController ()
@@ -24,20 +23,11 @@
     _csInterface = [CSServiceInterface sharedInstance];
     
     [self setTitle:@"Trending Artists"];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Vote" style:UIBarButtonItemStylePlain target:self action:@selector(performVote)];
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
     
     CGFloat navBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
     CGFloat statusBarHeight = CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]);
     
-    NSArray *artists = @[@"Adele", @"Armin Van Burren", @"Drake", @"Martin Garrix", @"Jay Z", @"Rihanna",
-                         @"Wiz Khalifa", @"Beyonce", @"Schoolboy Q", @"Kygo", @"David Guetta", @"Autograf",
-                         @"Kendrink Lamar", @"Taylor Swift", @"Kanye West"];
-    NSMutableArray *weights = [[NSMutableArray alloc]init];
-    
-    for (int i = 0; i < artists.count; i++) {
-        weights[i] = [NSNumber numberWithFloat:[Helper randomBetweenMin:0.0 AndMax:1.0]];
-    }
+    self.view.backgroundColor = [Helper getCloudGrey];
     
     SKView *skView = [[SKView alloc]initWithFrame:self.view.bounds];
     skView.backgroundColor = [SKColor blackColor];
@@ -45,6 +35,7 @@
     
     
     _scene = [[BubbleScene alloc]initWithSize:skView.bounds.size];
+    _scene.floatingDelegate = self;
     _scene.topOffset = navBarHeight + statusBarHeight;
     _scene.bottomOffset = 200;
     [skView presentScene:_scene];
@@ -69,6 +60,8 @@
             } else if (highestWeight > 0){
                 for (int i = 0; i < artists.count; i++) {
                     double multFactor = [[(TrendingArtist*)artists[i] weight] intValue]/highestWeight;
+                    if (multFactor < 0)
+                        continue;
                     BubbleNode *node = [BubbleNode instantiateWithText:[(TrendingArtist*)artists[i] name]andRadius:(multFactor * (60 - 30) + 30)];
                     [_scene addChild:node];
                 }
@@ -81,15 +74,26 @@
     
 }
 
-- (void) performVote {
-    NSArray * indexArray = [_scene indexOfSelectedNodes];
-    NSMutableArray *artistNameArray = [[NSMutableArray alloc]init];
+- (void) viewDidDisappear:(BOOL)animated {
+    [_scene removeAllChildren];
+    _scene = nil;
+}
+
+- (void) performVoteForNodeAtIndex: (int)index withValue: (BOOL)value {
     
-    //[[_csInterface voteForSong:<#(NSString *)#> withArtist:<#(NSString *)#> withValue:<#(BOOL)#>]]
+    BubbleNode *node = (BubbleNode *)_scene.floatingNodes[index];
+    NSString *artist = node.labelNode.text;
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Sorry" description:@"Shit hasn't been implemented yet." type:TWMessageBarMessageTypeInfo];
-    });
+    if (node.cachedLabel) {
+        artist = node.cachedLabel;
+    }
+    
+    [[_csInterface voteForArtist:artist withValue:value] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+        if (task.error) {
+            [[TWMessageBarManager sharedInstance]showMessageWithTitle:@"Error" description:@"Vote could not be sent" type:TWMessageBarMessageTypeError];
+        }
+        return nil;
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -97,14 +101,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene didTapFloatingNodeAtIndex: (int)index {
+    [self performVoteForNodeAtIndex:index withValue:true];
+    return true;
 }
-*/
 
+- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene didLongPressFloatingNodeAtIndex: (int)index {
+    [self performVoteForNodeAtIndex:index withValue:false];
+    return true;
+}
 @end

@@ -1,5 +1,6 @@
 
 #import "BubbleScene.h"
+#import "Helper.h"
 
 
 
@@ -11,7 +12,7 @@
 }
 
 - (void) configure {
-    self.backgroundColor = [SKColor blackColor];
+    self.backgroundColor = [Helper getCloudGrey];
     self.scaleMode = SKSceneScaleModeAspectFill;
     self.allowMultipleSelection = true;
     CGRect bodyFrame = self.frame;

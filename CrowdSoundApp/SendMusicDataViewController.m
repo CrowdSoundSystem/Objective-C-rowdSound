@@ -18,11 +18,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrapeAndSendSpotifyData) name:@"AuthenticatedSpotify" object:nil];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (IBAction)nextButtonHandler:(id)sender {
     [self performSegueWithIdentifier:@"dataNextSegue" sender:self];
 }

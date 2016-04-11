@@ -11,6 +11,7 @@
         _removingKey = @"action.removing";
         _tappingKey = @"action.tapped";
         _normalizeKey = @"action.normalize";
+        _longPressingKey = @"action.longPress";
     }
     return self;
 }
@@ -32,6 +33,10 @@
         case SIFloatingNodeStateNormal:
             action = [self normalizeAnimation];
             actionKey = _normalizeKey;
+            break;
+        case SIFloatingNodeStateLongPressed:
+            action = [self longPressingAnimation];
+            actionKey = _longPressingKey;
             break;
         case SIFloatingNodeStateTapped:
             action = [self tappingAnimation];

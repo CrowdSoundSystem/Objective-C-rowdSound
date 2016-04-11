@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = "CrowdSound"
-  s.version  = "0.0.6"
+  s.version  = "0.0.8"
 
   s.ios.deployment_target = "9.2"
 

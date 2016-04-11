@@ -12,6 +12,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     _ipField.regexpPattern = @"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
     _ipField.regexpValidColor = [UIColor blackColor];
     _ipField.regexpInvalidColor = [UIColor redColor];
@@ -42,23 +43,23 @@
         
         NSString *fullString = [_ipField.text stringByAppendingString:[@":" stringByAppendingString:_portField.text]];
         
-        //Using default for now
-        [CSServiceInterface sharedInstance];
-        //[CSServiceInterface sharedInstanceWithDynamicHostAddr:fullString];
+        [CSServiceInterface sharedInstanceWithDynamicHostAddr:fullString];
         [self performSegueWithIdentifier:@"nextSegue" sender:self];
     } else {
         [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Error" description:@"One or more fields are not valid." type:TWMessageBarMessageTypeError];
     }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [[event allTouches] anyObject];
+    if ([_ipField isFirstResponder] && [touch view] != _ipField) {
+        [_ipField resignFirstResponder];
+    } else if ([_portField isFirstResponder] && [touch view] != _portField) {
+        [_portField resignFirstResponder];
+    }
+    [super touchesBegan:touches withEvent:event];
 }
-*/
+
+
 
 @end

@@ -9,10 +9,12 @@ typedef enum SIFloatingCollectionSceneMode {SIFloatingCollectionSceneModeNormal,
 
 @protocol SIFloatingCollectionSceneDelegate <NSObject>
 @optional
-- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene shouldSelectFloatingNodeAtIndex: (int)index;
-- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene didSelectFloatingNodeAtIndex: (int)index;
-- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene shouldDeselectFloatingNodeAtIndex: (int)index;
-- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene didDeselectFloatingNodeAtIndex: (int)index;
+- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene shouldTapFloatingNodeAtIndex: (int)index;
+- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene didTapFloatingNodeAtIndex: (int)index;
+- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene shouldLongPressFloatingNodeAtIndex: (int)index;
+- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene didLongPressFloatingNodeAtIndex: (int)index;
+- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene shouldNormalizeFloatingNodeAtIndex: (int)index;
+- (BOOL) floatingScene: (SIFloatingCollectionScene *)scene didNormalizeFloatingNodeAtIndex: (int)index;
 - (BOOL) floatingScene: (SIFloatingCollectionScene *)scene startedRemovingOfFloatingNodeAtIndex: (int)index;
 - (BOOL) floatingScene: (SIFloatingCollectionScene *)scene canceledRemovingOfFloatingNodeAtIndex: (int)index;
 - (BOOL) floatingScene: (SIFloatingCollectionScene *)scene shouldRemoveFloatingNodeAtIndex: (int)index;

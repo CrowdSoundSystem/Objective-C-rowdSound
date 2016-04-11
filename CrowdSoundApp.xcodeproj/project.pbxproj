@@ -63,7 +63,7 @@
 
 /* Begin PBXFileReference section */
 		31E7222DBCF9EAB08264F5AB /* Pods-CrowdSoundApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrowdSoundApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CrowdSoundApp/Pods-CrowdSoundApp.debug.xcconfig"; sourceTree = "<group>"; };
-		C71947CF1C2EFB610075FEF8 /* CrowdSoundApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrowdSoundApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C71947CF1C2EFB610075FEF8 /* CrowdSound.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrowdSound.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C71947D31C2EFB610075FEF8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C71947D51C2EFB610075FEF8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C71947D61C2EFB610075FEF8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -186,7 +186,7 @@
 		C71947D01C2EFB610075FEF8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C71947CF1C2EFB610075FEF8 /* CrowdSoundApp.app */,
+				C71947CF1C2EFB610075FEF8 /* CrowdSound.app */,
 				C71947E81C2EFB610075FEF8 /* CrowdSoundAppTests.xctest */,
 				C71947F31C2EFB610075FEF8 /* CrowdSoundAppUITests.xctest */,
 			);
@@ -358,7 +358,7 @@
 			);
 			name = CrowdSoundApp;
 			productName = CrowdSoundApp;
-			productReference = C71947CF1C2EFB610075FEF8 /* CrowdSoundApp.app */;
+			productReference = C71947CF1C2EFB610075FEF8 /* CrowdSound.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C71947E71C2EFB610075FEF8 /* CrowdSoundAppTests */ = {
@@ -694,7 +694,7 @@
 				INFOPLIST_FILE = CrowdSoundApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = CrowdSound.CrowdSoundApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CrowdSound;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -714,7 +714,7 @@
 				INFOPLIST_FILE = CrowdSoundApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = CrowdSound.CrowdSoundApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CrowdSound;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;

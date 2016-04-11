@@ -16,5 +16,6 @@
 - (BFTask *)voteToSkip;
 - (BFTask *) getSessionData;
 - (BFTask *) getTrendingArtists;
+- (BFTask *)voteForArtist:(NSString *)artist withValue: (BOOL)value;
 
 @end

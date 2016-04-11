@@ -86,6 +86,7 @@ static CSServiceInterface *sharedServiceInterface;
                 [song setArtists:[[NSMutableArray alloc]initWithArray:@[response.artist]]];
                 [item setSong:song];
                 [item setIsPlaying:response.isPlaying];
+                [item setIsBuffered:response.isBuffered];
                 [queue addObject:item];
             }
         }
@@ -96,6 +97,9 @@ static CSServiceInterface *sharedServiceInterface;
 
 - (BFTask *) getIsPlaying {
     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    CSGetPlayingRequest *request = [CSGetPlayingRequest message];
+    request.userId = [Helper getUserId];
     
     [_service getPlayingWithRequest:[CSGetPlayingRequest message] handler:^(CSGetPlayingResponse *response, NSError *error) {
         if (!error) {
@@ -179,6 +183,29 @@ static CSServiceInterface *sharedServiceInterface;
         }
     }];
     return task.task;
+}
+
+- (BFTask *)voteForArtist:(NSString *)artist withValue: (BOOL)value {
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    CSVoteArtistRequest *request = [CSVoteArtistRequest message];
+    
+    request.userId = [Helper getUserId];
+    request.artist = artist;
+    request.like = value;
+    
+    [_service voteArtistWithRequest:request handler:^(CSVoteArtistResponse *response, NSError *error) {
+        if (error) {
+            [task setError:error];
+            NSLog(@"Error with vote for artist, %@", error);
+        } else {
+            [task setResult:response];
+        }
+    }];
+    
+    return task.task;
+    
+    
 }
 
 - (BFTask *) getTrendingArtists {

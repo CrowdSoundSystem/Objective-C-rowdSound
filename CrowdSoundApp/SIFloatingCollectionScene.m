@@ -8,6 +8,7 @@
 @property NSTimeInterval touchStartedTime;
 @property NSTimeInterval removingStartedTIme;
 @property (strong) UILongPressGestureRecognizer* lpgr;
+@property NSTimeInterval longPressTIme;
 
 @end
 
@@ -26,13 +27,8 @@
         _touchPoint = CGPointMake(-1, -1);
         _touchStartedTime = -1;
         _removingStartedTIme = -1;
+        _longPressTIme = 0.5;
         _floatingNodes = [[NSMutableArray alloc]init];
-        
-        _lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGestures:)];
-        _lpgr.minimumPressDuration = 1.0f;
-        _lpgr.allowableMovement = 100.0f;
-        
-        [self.view addGestureRecognizer:_lpgr];
     }
     return self;
 }
@@ -125,24 +121,34 @@
 
 - (void) touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     if (_mode != SIFloatingCollectionSceneModeMoving && !CGPointEqualToPoint(_touchPoint, CGPointMake(-1, -1))) {
+        UITouch *touch = touches.anyObject;
+        NSTimeInterval touchEnded = [touch timestamp];
         SKNode *node = [self nodeAtPoint:_touchPoint];
-        if ([node isKindOfClass:SIFloatingNode.class]) {
+        if (![node isKindOfClass:SIFloatingNode.class]) {
+            return;
+        }
+        if ((touchEnded - _touchStartedTime) > _longPressTIme) {
+            [self updateNodeStateWhenLongPressed:(SIFloatingNode *)node];
+        } else {
             [self updateNodeState:(SIFloatingNode *)node];
         }
+        
     }
     _mode = SIFloatingCollectionSceneModeNormal;
 }
 
-- (void)handleLongPressGestures:(UILongPressGestureRecognizer *)sender
+/*- (void)handleLongPressGestures:(UILongPressGestureRecognizer *)sender
 {
     if ([sender isEqual:self.lpgr]) {
-        if (sender.state == UIGestureRecognizerStateBegan)
-        {
+        if (sender.state == UIGestureRecognizerStateBegan) {
             _touchPoint = [sender locationInView:self.view];
-            
+            SKNode *node = [self nodeAtPoint:_touchPoint];
+            if ([node isKindOfClass:SIFloatingNode.class]) {
+                [self updateNodeStateWhenLongPressed:(SIFloatingNode *)node];
+            }
         }
     }
-}
+}*/
 
 
 - (void) touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -164,9 +170,7 @@
     node.physicsBody.dynamic = true;
     node.state = node.previousState;
     int index = (int)[_floatingNodes indexOfObject:node];
-    if (_floatingDelegate) {
-        [_floatingDelegate floatingScene:self canceledRemovingOfFloatingNodeAtIndex:index];
-    }
+    [self cancelledRemovingNodeAtIndex:index];
 }
 
 - (SIFloatingNode *) floatingNodeAtIndex: (int)index {
@@ -176,7 +180,7 @@
     return nil;
 }
 
-- (int) indexOfSelectedNode {
+- (int) indexOfTappedNode {
     int index = -1;
     for (int i = 0; i < _floatingNodes.count; i++) {
         if (((SIFloatingNode*)_floatingNodes[i]).state == SIFloatingNodeStateTapped) {
@@ -187,7 +191,7 @@
     return index;
 }
 
-- (NSArray*) indexOfSelectedNodes {
+- (NSArray*) indexOfTappedNodes {
     NSMutableArray *indexes = [[NSMutableArray alloc]init];
     for (int i = 0; i < _floatingNodes.count; i++) {
         if (((SIFloatingNode*)_floatingNodes[i]).state == SIFloatingNodeStateTapped) {
@@ -211,9 +215,7 @@
         SIFloatingNode *node = _floatingNodes[index];
         [_floatingNodes removeObjectAtIndex:index];
         [node removeFromParent];
-        if (_floatingDelegate) {
-            [_floatingDelegate floatingScene:self didRemoveFloatingNodeAtIndex:index];
-        }
+        [self didRemoveNodeAtIndex:index];
     }
 }
 
@@ -222,35 +224,50 @@
     node.physicsBody.dynamic = false;
     node.state = SIFloatingNodeStateRemoving;
     int index = (int)[_floatingNodes indexOfObject:node];
-    if (_floatingDelegate) {
-        [_floatingDelegate floatingScene:self startedRemovingOfFloatingNodeAtIndex:index];
+    [self startedRemovingNodeAtIndex:index];
+}
+
+- (void) updateNodeStateWhenLongPressed: (SIFloatingNode *)node {
+    int index = (int)[_floatingNodes indexOfObject:node];
+    switch (node.state) {
+        case SIFloatingNodeStateNormal:
+            if (![self shouldLongPressNodeAtIndex:index]) {
+                return;
+            }
+            node.state = SIFloatingNodeStateLongPressed;
+            [self didLongPressNodeAtIndex:index];
+            break;
+        case SIFloatingNodeStateTapped:
+            if (![self shouldLongPressNodeAtIndex:index]) {
+                return;
+            }
+            node.state = SIFloatingNodeStateLongPressed;
+            [self didLongPressNodeAtIndex:index];
+            break;
+        default:
+            break;
     }
-    
+
 }
 
 - (void) updateNodeState: (SIFloatingNode *)node {
     int index = (int)[_floatingNodes indexOfObject:node];
     switch (node.state) {
         case SIFloatingNodeStateNormal:
-            if ([self shouldSelectNodeAtIndex:index]) {
-                int selectedIndex = [self indexOfSelectedNode];
+            if ([self shouldTapNodeAtIndex:index]) {
+                int selectedIndex = [self indexOfTappedNode];
                 if (!_allowMultipleSelection && selectedIndex != -1) {
                     [self updateNodeState:_floatingNodes[selectedIndex]];
                 }
                 node.state = SIFloatingNodeStateTapped;
-                if (_floatingDelegate) {
-                    [_floatingDelegate floatingScene:self didSelectFloatingNodeAtIndex:index];
-                }
+                [self didTapNodeAtIndex:index];
             }
             break;
-        case SIFloatingNodeStateTapped:
-            if ([self shouldDeselectNodeAtIndex:index]) {
-                node.state = SIFloatingNodeStateNormal;
-                if (_floatingDelegate) {
-                    [_floatingDelegate floatingScene:self didDeselectFloatingNodeAtIndex:index];
-                }
+        case SIFloatingNodeStateLongPressed:
+            if ([self shouldTapNodeAtIndex:index]) {
+                node.state = SIFloatingNodeStateTapped;
+                [self didTapNodeAtIndex:index];
             }
-            
             break;
         case SIFloatingNodeStateRemoving:
             [self cancelRemovingNode:node];
@@ -277,6 +294,13 @@
     _magneticField.strength = 8000;
     _magneticField.position = CGPointMake(self.size.width/2, self.size.height/2);
     [self addChild:_magneticField];
+    
+    /*_lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGestures:)];
+    _lpgr.minimumPressDuration = 1.0f;
+    _lpgr.numberOfTouchesRequired = 1;
+    _lpgr.allowableMovement = 100.0f;
+    
+    [self.view addGestureRecognizer:_lpgr];*/
 }
 
 - (void) configureNode: (SIFloatingNode *)node {
@@ -315,7 +339,7 @@
 
 - (BOOL) shouldRemoveNodeAtIndex:(int)index {
     if (index >= 0 && index <= _floatingNodes.count) {
-        if (_floatingDelegate) {
+        if (_floatingDelegate && [_floatingDelegate respondsToSelector:@selector(floatingScene:shouldRemoveFloatingNodeAtIndex:)]) {
             return [_floatingDelegate floatingScene:self shouldRemoveFloatingNodeAtIndex:index];
         }
         return true;
@@ -324,18 +348,68 @@
     return false;
 }
 
-- (BOOL) shouldSelectNodeAtIndex:(int)index {
-    if (_floatingDelegate) {
-        return [_floatingDelegate floatingScene:self shouldSelectFloatingNodeAtIndex:index];
+- (BOOL) shouldLongPressNodeAtIndex: (int)index {
+    if (_floatingDelegate && [_floatingDelegate respondsToSelector:@selector(floatingScene:shouldLongPressFloatingNodeAtIndex:)])
+        return [_floatingDelegate floatingScene:self shouldLongPressFloatingNodeAtIndex:index];
+    return true;
+}
+
+- (BOOL) shouldTapNodeAtIndex:(int)index {
+    if (_floatingDelegate && [_floatingDelegate respondsToSelector:@selector(floatingScene:shouldTapFloatingNodeAtIndex:)]) {
+        return [_floatingDelegate floatingScene:self shouldTapFloatingNodeAtIndex:index];
     }
     return true;
 }
 
-- (BOOL) shouldDeselectNodeAtIndex:(int)index {
-    if (_floatingDelegate) {
-        return [_floatingDelegate floatingScene:self shouldDeselectFloatingNodeAtIndex:index];
+- (BOOL) shouldNormalizeNodeAtIndex:(int)index {
+    if (_floatingDelegate && [_floatingDelegate respondsToSelector:@selector(floatingScene:shouldNormalizeFloatingNodeAtIndex:)]) {
+        return [_floatingDelegate floatingScene:self shouldNormalizeFloatingNodeAtIndex:index];
     }
     return true;
 }
+
+- (BOOL) didLongPressNodeAtIndex:(int)index {
+    if (_floatingDelegate && [_floatingDelegate respondsToSelector:@selector(floatingScene:didLongPressFloatingNodeAtIndex:)]) {
+        return [_floatingDelegate floatingScene:self didLongPressFloatingNodeAtIndex:index];
+    }
+    return true;
+}
+
+- (BOOL) didTapNodeAtIndex:(int)index {
+    if (_floatingDelegate && [_floatingDelegate respondsToSelector:@selector(floatingScene:didTapFloatingNodeAtIndex:)]) {
+        return [_floatingDelegate floatingScene:self didTapFloatingNodeAtIndex:index];
+    }
+    return true;
+}
+
+- (BOOL) didNormalizeNodeAtIndex:(int)index {
+    if (_floatingDelegate && [_floatingDelegate respondsToSelector:@selector(floatingScene:didNormalizeFloatingNodeAtIndex:)]) {
+        return [_floatingDelegate floatingScene:self didNormalizeFloatingNodeAtIndex:index];
+    }
+    return true;
+}
+
+- (BOOL) didRemoveNodeAtIndex:(int)index {
+    if (_floatingDelegate && [_floatingDelegate respondsToSelector:@selector(floatingScene:didRemoveFloatingNodeAtIndex:)]) {
+        return [_floatingDelegate floatingScene:self didRemoveFloatingNodeAtIndex:index];
+    }
+    return true;
+}
+
+- (BOOL) startedRemovingNodeAtIndex:(int)index {
+    if (_floatingDelegate && [_floatingDelegate respondsToSelector:@selector(floatingScene:startedRemovingOfFloatingNodeAtIndex:)]) {
+        return [_floatingDelegate floatingScene:self startedRemovingOfFloatingNodeAtIndex:index];
+    }
+    return true;
+}
+
+- (BOOL) cancelledRemovingNodeAtIndex:(int)index {
+    if (_floatingDelegate && [_floatingDelegate respondsToSelector:@selector(floatingScene:canceledRemovingOfFloatingNodeAtIndex:)]) {
+        return [_floatingDelegate floatingScene:self canceledRemovingOfFloatingNodeAtIndex:index];
+    }
+    return true;
+}
+
+
 
 @end

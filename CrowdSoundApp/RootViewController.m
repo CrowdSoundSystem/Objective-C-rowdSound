@@ -7,6 +7,7 @@
 //
 
 #import "RootViewController.h"
+#import "Helper.h"
 
 @interface RootViewController ()
 
@@ -24,18 +25,17 @@
     
     self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ContentViewController"];
     self.leftMenuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MenuTableViewController"];
-    self.backgroundImage = [UIImage imageNamed:@"mikebg"];
+
+    self.view.backgroundColor = [Helper getCloudGrey];
     self.delegate = self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark -
